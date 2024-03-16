@@ -23,4 +23,9 @@ public class RealController {
         model.addAttribute("realNum", realNum);
         return "index";
     }
+
+    @GetMapping("/login")
+    public String getLogin() {
+        return "login";
+    }
 }

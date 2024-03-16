@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context path="/">
+    <resources mapping="/css/**" location="/resources/static/css/"/>
+    <resources mapping="/js/**" location="/resources/js/"/>
+    <resources mapping="/img/**" location="/resources/img/"/>
+    <resources mapping="/scss/**" location="/resources/scss/"/>
+    <resources mapping="/vendor/**" location="/resources/vendor/"/>
+</Context>
