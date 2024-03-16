@@ -30,7 +30,7 @@ public class SecurityConfig {
         security.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         security.authorizeHttpRequests()
-                .antMatchers("/css/**").permitAll()
+                .antMatchers("/css/**", "/js/**").permitAll()
                 .antMatchers("/**").permitAll()
                 .anyRequest().authenticated();
 

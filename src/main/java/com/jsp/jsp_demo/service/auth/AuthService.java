@@ -37,4 +37,8 @@ public class AuthService {
 
 
     }
+
+    public int selectUserCount(UserInput userInput) {
+        return authMapper.selectUserCount(userInput);
+    }
 }

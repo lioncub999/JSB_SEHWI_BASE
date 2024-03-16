@@ -58,4 +58,16 @@ public class AuthController {
 
         return  loginUserInfo;
     }
+
+    @ResponseBody
+    @PostMapping("/auth/dupcheck")
+    public int dupcheck(
+            UserInput userInput
+    ) {
+        int result = 0;
+
+        result = authService.selectUserCount(userInput);
+
+        return result;
+    }
 }
