@@ -1,7 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <decorators defaultdir="/WEB-INF/views/cmm">
 
+    <!--    ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓-->
+    <!--    ┃  ◉ SiteMesh 제외 -->
+    <!--    ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛-->
+    <excludes>
+        <pattern>/login/*</pattern>
+    </excludes>
+
+    <!--    ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓-->
+    <!--    ┃  ◉ SiteMesh 포함 -->
+    <!--    ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛-->
     <decorator name="default" page="template/default/template.jsp">
-        <pattern>/login</pattern>
+
+
     </decorator>
 </decorators>

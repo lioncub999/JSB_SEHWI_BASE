@@ -1,30 +1,38 @@
 <%--
-  Created by IntelliJ IDEA.
-  User: sehwing
-  Date: 3/16/24
-  Time: 6:32 PM
-  To change this template use File | Settings | File Templates.
+:TODO
+  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+  ┃      ◉ sitemesh Top-Nav
+  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
-<head>
-    <title>Title</title>
-</head>
-<style>
-    .top-nav {
-        width : 90%;
-        display: block;
-        margin: auto;
-        margin-top : 15px;
-        height: 150px;
-        text-align: center;
-        background: #0f6ecd;
-        border-radius: 5px;
-    }
-</style>
+
 <body>
 <div class="top-nav">
-    <p style="line-height: 150px; margin: 0">top-nav 입니다.</p>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Navbar</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Features</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Pricing</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 </div>
 </body>
 </html>
