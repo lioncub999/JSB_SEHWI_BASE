@@ -14,7 +14,7 @@ TODO
 <c:set var="loginUrl" value="/auth/login" />
 <html>
 <head>
-    <link type="text/css" rel="stylesheet" href="<c:url value='/scss/login.scss'/>">
+    <link type="text/css" rel="stylesheet" href="<c:url value='/css/login.css'/>">
 </head>
 <body>
 <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
@@ -58,7 +58,11 @@ TODO
                 cache : false,
                 data : formData,
             }).done(function(response) {
-                console.log(response)
+                if(response != null && response != '') {
+                    console.log(response)
+                } else {
+                    alert('로그인 정보 확인!')
+                }
             })
         }
     }

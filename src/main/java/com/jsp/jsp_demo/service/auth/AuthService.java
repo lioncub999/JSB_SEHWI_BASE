@@ -4,6 +4,7 @@ import com.jsp.jsp_demo.mapper.auth.AuthMapper;
 import com.jsp.jsp_demo.model.auth.UserInput;
 import com.jsp.jsp_demo.model.auth.UserOutput;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,14 +15,26 @@ public class AuthService {
     @Autowired
     private AuthMapper authMapper;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public void signup(UserInput userInput) {
+        userInput.setUserPw(passwordEncoder.encode(userInput.getUserPw()));
+
         authMapper.signup(userInput);
     }
 
     public UserOutput selectUserByNm(UserInput userInput) {
 
+        String encodePw = authMapper.selectUserByNm(userInput).getUserPw();
 
-        return authMapper.selectUserByNm(userInput);
+        if(passwordEncoder.matches(userInput.getUserPw(), encodePw)) {
+            return authMapper.selectUserByNm(userInput);
+        } else {
+            return null;
+        }
+
+
+
     }
 }
