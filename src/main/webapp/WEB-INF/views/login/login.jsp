@@ -16,9 +16,12 @@ TODO
 <html>
 <head>
     <link type="text/css" rel="stylesheet" href="<c:url value='/css/login.css'/>">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"/>
 </head>
 <body>
 <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script src="<c:url value='/js/alert/SweetAlert2.js' />"></script>
 <script>
     $(document).ready(function () {
         $('#signup').on('click', function () {
@@ -42,29 +45,38 @@ TODO
                     data: formData,
                     success: function (response) {
                         if (response) {
-                            alert('이미 같은 이름 있음')
+                            Toast('top', 2000, 'warning', '이미 동일한 이름이 있습니다.');
+                            $('.dupcheckBtn').css({"display": "block"});
                         } else {
-                            alert('회원 가입 가능')
+
+                            Toast('top', 2000, 'success', '가입 가능한 아이디 입니다.');
+
+                            $('#dupcheck').val('1');
+                            $('.dupcheckBtn').css({"display": "none"});
+                            $('.dupcheckComp').css({"display": "block"});
+                            $('#signupUserNm').attr("readonly", true);
                         }
                     },
-                    beforeSend: function() {
-                        $('.dupcheckBtn').css({"display":"none"});
-                        $('.loading').css({"display":"block"});
+                    beforeSend: function () {
+                        $('.dupcheckBtn').css({"display": "none"});
+                        $('.loading').css({"display": "block"});
                     },
-                    complete: function() {
-                        $('.loading').css({"display":"none"});
-                        $('.dupcheckBtn').css({"display":"block"});
+                    complete: function () {
+                        $('.loading').css({"display": "none"});
                     }
                 })
-            }else
-                {
-                    alert('이름을 입력하셈.')
-                }
+            } else {
+                Toast('top', 2000, 'warning', '이름을 입력하세요.');
             }
+        }
         ,
 
-            signupSubmit : function () {
-                var formData = $('#signup-frm').serialize()
+        signupSubmit: function () {
+            var formData = $('#signup-frm').serialize()
+
+            if (
+                $('#dupcheck').val() != null && $('#dupcheck').val() != '' && $('#dupcheck').val() == 1
+            ) {
                 if (
                     $('#signupUserNm').val().trim() != null && $('#signupUserNm').val().trim() != '' &&
                     $('#signupUserPw').val().trim() != null && $('#signupUserPw').val().trim() != '' &&
@@ -78,38 +90,47 @@ TODO
                             data: formData,
                         }).done(function (response) {
                             if (response != null && response != '' && response == 1) {
-                                alert('회원 가입이 완료되었습니다.')
+
+                                Toast('top', 2000, 'success', '회원 가입이 완료되었습니다.');
 
                                 $('#login-slide').removeClass('slide-up');
                                 $('#signup-slide').addClass('slide-up');
+
+                                $('#signupUserPw').attr("disabled", true);
+                                $('#userPwCheck').attr("disabled", true);
+                                $('#submit-btn').html("COMPLETE!")
+                                $('#submit-btn').attr("disabled", true)
                             } else {
-                                alert('오류가 발생했습니다.')
+                                Toast('top', 2000, 'error', '오류가 발생했습니다.');
                             }
                         })
                     } else {
-                        alert('비밀번호가 일치하지 않음!')
+                        Toast('top', 2000, 'warning', '비밀번호가 일치하지 않습니다.');
                     }
                 } else {
-                    alert('회원 정보 모두 입력!')
+                    Toast('top', 2000, 'warning', '회원 정보를 모두 입력해주세요.');
                 }
-            }
-        ,
-            loginSubmit : function (xhr, textStatus, thrownError) {
-                var formData = $('#login-frm').serialize()
-                $.ajax({
-                    url: "${loginUrl}",
-                    type: "post",
-                    cache: false,
-                    data: formData,
-                }).done(function (response) {
-                    if (response != null && response != '') {
-                        console.log(response)
-                    } else {
-                        alert('로그인 정보 확인!')
-                    }
-                })
+            } else {
+                Toast('top', 2000, 'warning', '중복 확인을 먼저 해주세요.');
             }
         }
+        ,
+        loginSubmit: function (xhr, textStatus, thrownError) {
+            var formData = $('#login-frm').serialize()
+            $.ajax({
+                url: "${loginUrl}",
+                type: "post",
+                cache: false,
+                data: formData,
+            }).done(function (response) {
+                if (response != null && response != '') {
+                    Toast('top', 2000, 'success', '로그인 되었습니다.');
+                } else {
+                    Toast('top', 2000, 'warning', '회원 정보를 확인해주세요.');
+                }
+            })
+        }
+    }
 </script>
 
 <style>
@@ -122,17 +143,27 @@ TODO
 
 <div class="form-structor">
     <div class="signup slide-up" id="signup-slide">
-        <h2 class="form-title" id="signup"><span>or</span>Sign up</h2>
+        <h2 class="form-title" id="signup" disabled><span>or</span>Sign Up</h2>
         <div class="form-holder">
             <form class="frm" id="signup-frm">
                 <div style="display: flex"><input type="text" class="input" id="signupUserNm" placeholder="이름"
                                                   name="userNm" style="width : 160px"/>
-                    <button type="button" class="dupcheckBtn" style="display: block;font-size : 12px;height: 25px;margin-top:2px" onclick="AjaxFunc.signupDupcheck()">
+                    <button type="button" class="dupcheckBtn"
+                            style="display: block;font-size : 12px;height: 30px;margin-top:2px"
+                            onclick="AjaxFunc.signupDupcheck()">
                         중복확인
                     </button>
-                    <div class="loading" style="display:none;width: 50px;text-align: center">
+                    <input type="text" id="dupcheck" name="dupcheck" value="" hidden>
+                    <div class="loading" style="display:none;width: 65px;text-align: center">
                         <div>
-                            <img src="<c:url value='/js/plugins/images/loading.gif'/>" alt="" style="width: 20px;margin-top:5px;">
+                            <img src="<c:url value='/js/plugins/images/loading.gif'/>" alt=""
+                                 style="width: 20px;margin-top:5px;">
+                        </div>
+                    </div>
+                    <div class="dupcheckComp" style="display:none;width: 65px;text-align: center">
+                        <div>
+                            <img src="<c:url value='/js/plugins/images/check.png'/>" alt=""
+                                 style="width: 20px;margin-top:5px;">
                         </div>
                     </div>
                 </div>
@@ -140,7 +171,7 @@ TODO
                 <input type="password" class="input" id="userPwCheck" placeholder="비밀번호 확인"/>
             </form>
         </div>
-        <button class="submit-btn" type="button" onclick="AjaxFunc.signupSubmit()">Sign up</button>
+        <button class="submit-btn" id="submit-btn" type="button" onclick="AjaxFunc.signupSubmit()">Sign Up</button>
     </div>
 
     <div class="login" id="login-slide">

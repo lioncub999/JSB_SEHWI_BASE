@@ -31,7 +31,7 @@ public class SecurityConfig {
 
         security.authorizeHttpRequests()
                 .antMatchers("/css/**", "/js/**").permitAll()
-                .antMatchers("/**").permitAll()
+                .antMatchers("/login/**","/auth/**").permitAll()
                 .anyRequest().authenticated();
 
         security.formLogin().disable();
