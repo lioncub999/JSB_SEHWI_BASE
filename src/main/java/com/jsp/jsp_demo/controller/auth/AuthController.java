@@ -68,6 +68,7 @@ public class AuthController {
                 HttpSession session = httpServletRequest.getSession(true);
                 session.setAttribute("userId", loginUserInfo.getUserId());
                 session.setAttribute("userNm", loginUserInfo.getUserNm());
+                session.setAttribute("passReset", loginUserInfo.getPassReset());
                 session.setMaxInactiveInterval(1800);
 
                 result = true;
@@ -96,5 +97,34 @@ public class AuthController {
     ) {
         httpServletRequest.getSession().invalidate();
         return true;
+    }
+
+    @GetMapping("/resetPass")
+    public String resetPass() {
+        return "/login/passReset";
+    }
+
+    @ResponseBody
+    @PostMapping("/auth/resetPass")
+    public Boolean resetPassFunc(
+            HttpServletRequest httpServletRequest,
+            UserInput userInput
+    ) {
+        boolean result;
+
+        System.out.println(httpServletRequest.getSession().getAttribute("userId"));
+        System.out.println(userInput.getUserPw());
+
+        int userId = (int) httpServletRequest.getSession().getAttribute("userId");
+
+        userInput.setUserId(userId);
+
+        authService.updatePassword(userInput);
+
+        httpServletRequest.getSession().invalidate();
+
+        result = true;
+
+        return result;
     }
 }

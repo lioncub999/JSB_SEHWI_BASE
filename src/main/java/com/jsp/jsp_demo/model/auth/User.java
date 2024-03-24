@@ -23,4 +23,6 @@ public class User implements Serializable{
     // 유저 비밀번호
     private String userPw;
 
+    //비밀번호 초기화 여부
+    private String passReset;
 }

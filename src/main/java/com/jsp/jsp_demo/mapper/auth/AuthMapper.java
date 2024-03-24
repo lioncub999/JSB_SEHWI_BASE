@@ -14,4 +14,6 @@ public interface AuthMapper {
     UserOutput selectUserByNm(UserInput userInput);
 
     Integer selectUserCount(UserInput userInput);
+
+    void updatePassword(UserInput userInput);
 }

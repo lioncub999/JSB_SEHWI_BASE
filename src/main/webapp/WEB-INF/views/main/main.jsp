@@ -1,12 +1,5 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%--
-  Created by IntelliJ IDEA.
-  User: sehwing
-  Date: 3/24/24
-  Time: 10:18 PM
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <c:set var="logoutUrl" value="/auth/logout"/>
 <html>
@@ -22,7 +15,7 @@
                 cache: false,
             }).done(function (response) {
                 if (response) {
-                    Toast('top', 1000, 'warning', '로그아웃이 완료되었습니다.');
+                    Toast('top', 1000, 'success', '로그아웃이 완료되었습니다.');
 
                     setTimeout(function() {
                         window.location.href = "/login"

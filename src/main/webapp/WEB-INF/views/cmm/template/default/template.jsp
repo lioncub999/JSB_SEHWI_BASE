@@ -16,6 +16,11 @@
     }, 2000)
   </script>
 </c:if>
+<c:if test="${passReset == 'Y'}">
+  <script>
+    window.location.href = "/resetPass"
+  </script>
+</c:if>
 <%@ include file="/WEB-INF/views/cmm/template/layout/top.jsp" %>
 <div>
   <div class="c-body">
