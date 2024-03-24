@@ -13,5 +13,5 @@ public interface AuthMapper {
 
     UserOutput selectUserByNm(UserInput userInput);
 
-    int selectUserCount(UserInput userInput);
+    Integer selectUserCount(UserInput userInput);
 }

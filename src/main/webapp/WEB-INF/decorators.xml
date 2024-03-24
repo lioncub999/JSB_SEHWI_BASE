@@ -12,7 +12,7 @@
     <!--    ┃  ◉ SiteMesh 포함 -->
     <!--    ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛-->
     <decorator name="default" page="template/default/template.jsp">
-
+        <pattern>/main</pattern>
 
     </decorator>
 </decorators>

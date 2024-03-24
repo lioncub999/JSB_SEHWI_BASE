@@ -20,7 +20,7 @@
 
     <select id="selectUserCount"
             parameterType="com.jsp.jsp_demo.model.auth.UserInput"
-            resultType="int">
+            resultType="integer">
         SELECT count(*)
         FROM TBU_USER_M
         WHERE USER_NM = #{userNm}

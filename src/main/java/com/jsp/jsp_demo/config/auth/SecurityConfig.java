@@ -29,10 +29,10 @@ public class SecurityConfig {
 
         security.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-        security.authorizeHttpRequests()
-                .antMatchers("/css/**", "/js/**").permitAll()
-                .antMatchers("/login/**","/auth/**").permitAll()
-                .anyRequest().authenticated();
+//        security.authorizeHttpRequests()
+//                .antMatchers("/css/**", "/js/**").permitAll()
+//                .antMatchers("/login/**","/auth/**").permitAll()
+//                .anyRequest().authenticated();
 
         security.formLogin().disable();
 

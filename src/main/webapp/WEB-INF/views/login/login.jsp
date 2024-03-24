@@ -22,6 +22,13 @@ TODO
 <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script src="<c:url value='/js/alert/SweetAlert2.js' />"></script>
+
+<c:if test="${userId != null && userId != ''}">
+    <script>
+        window.location.href = "/main"
+    </script>
+</c:if>
+
 <script>
     $(document).ready(function () {
         $('#signup').on('click', function () {
@@ -123,8 +130,11 @@ TODO
                 cache: false,
                 data: formData,
             }).done(function (response) {
-                if (response != null && response != '') {
-                    Toast('top', 2000, 'success', '로그인 되었습니다.');
+                if (response) {
+                    Toast('top', 1000, 'success', '로그인 되었습니다.');
+                    setTimeout(function() {
+                        window.location.href = '/main';
+                    }, 1000)
                 } else {
                     Toast('top', 2000, 'warning', '회원 정보를 확인해주세요.');
                 }
