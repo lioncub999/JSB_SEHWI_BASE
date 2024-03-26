@@ -151,54 +151,54 @@ TODO
     }
 </style>
 
-
-<div class="form-structor">
-    <div class="signup slide-up" id="signup-slide">
-        <h2 class="form-title" id="signup" disabled><span>or</span>Sign Up</h2>
-        <div class="form-holder">
-            <form class="frm" id="signup-frm">
-                <div style="display: flex"><input type="text" class="input" id="signupUserNm" placeholder="이름"
-                                                  name="userNm" style="width : 160px"/>
-                    <button type="button" class="dupcheckBtn"
-                            style="display: block;font-size : 12px;height: 30px;margin-top:2px"
-                            onclick="AjaxFunc.signupDupcheck()">
-                        중복확인
-                    </button>
-                    <input type="text" id="dupcheck" name="dupcheck" value="" hidden>
-                    <div class="loading" style="display:none;width: 65px;text-align: center">
-                        <div>
-                            <img src="<c:url value='/js/plugins/images/loading.gif'/>" alt=""
-                                 style="width: 20px;margin-top:5px;">
-                        </div>
-                    </div>
-                    <div class="dupcheckComp" style="display:none;width: 65px;text-align: center">
-                        <div>
-                            <img src="<c:url value='/js/plugins/images/check.png'/>" alt=""
-                                 style="width: 20px;margin-top:5px;">
-                        </div>
-                    </div>
-                </div>
-                <input type="password" class="input" id="signupUserPw" placeholder="비밀번호" name="userPw"/>
-                <input type="password" class="input" id="userPwCheck" placeholder="비밀번호 확인"/>
-            </form>
-        </div>
-        <button class="submit-btn" id="submit-btn" type="button" onclick="AjaxFunc.signupSubmit()">Sign Up</button>
-    </div>
-
-    <div class="login" id="login-slide">
-        <div class="center">
-            <h2 class="form-title" id="login"><span>or</span>Log in</h2>
+<main>
+    <div class="form-structor">
+        <div class="signup slide-up" id="signup-slide">
+            <h2 class="form-title" id="signup" disabled><span>or</span>회원가입</h2>
             <div class="form-holder">
-                <form class="frm" id="login-frm">
-                    <input type="email" class="input" id="loginUserNm" placeholder="이름" name="userNm"/>
-                    <input type="password" class="input" id="loginUserPw" placeholder="비밀번호" name="userPw"/>
+                <form class="frm" id="signup-frm">
+                    <div style="display: flex"><input type="text" class="input" id="signupUserNm" placeholder="이름"
+                                                      name="userNm" style="width : 160px"/>
+                        <button type="button" class="dupcheckBtn"
+                                style="display: block;font-size : 12px;height: 30px;margin-top:2px"
+                                onclick="AjaxFunc.signupDupcheck()">
+                            중복확인
+                        </button>
+                        <input type="text" id="dupcheck" name="dupcheck" value="" hidden>
+                        <div class="loading" style="display:none;width: 65px;text-align: center">
+                            <div>
+                                <img src="<c:url value='/js/plugins/images/loading.gif'/>" alt=""
+                                     style="width: 20px;margin-top:5px;">
+                            </div>
+                        </div>
+                        <div class="dupcheckComp" style="display:none;width: 65px;text-align: center">
+                            <div>
+                                <img src="<c:url value='/js/plugins/images/check.png'/>" alt=""
+                                     style="width: 20px;margin-top:5px;">
+                            </div>
+                        </div>
+                    </div>
+                    <input type="password" class="input" id="signupUserPw" placeholder="비밀번호" name="userPw"/>
+                    <input type="password" class="input" id="userPwCheck" placeholder="비밀번호 확인"/>
                 </form>
             </div>
-            <button class="submit-btn" type="button" onclick="AjaxFunc.loginSubmit()">Log in</button>
+            <button class="submit-btn" id="submit-btn" type="button" onclick="AjaxFunc.signupSubmit()">Sign Up</button>
+        </div>
+
+        <div class="login" id="login-slide">
+            <div class="center">
+                <h2 class="form-title" id="login"><span>or</span>로그인</h2>
+                <div class="form-holder">
+                    <form class="frm" id="login-frm">
+                        <input type="email" class="input" id="loginUserNm" placeholder="이름" name="userNm"/>
+                        <input type="password" class="input" id="loginUserPw" placeholder="비밀번호" name="userPw"/>
+                    </form>
+                </div>
+                <button class="submit-btn" type="button" onclick="AjaxFunc.loginSubmit()">Log in</button>
+            </div>
         </div>
     </div>
-</div>
-
+</main>
 </div>
 </body>
 </html>

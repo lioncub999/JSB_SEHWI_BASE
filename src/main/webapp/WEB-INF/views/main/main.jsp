@@ -4,6 +4,7 @@
 <c:set var="logoutUrl" value="/auth/logout"/>
 <html>
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"/>
 </head>
 <body>
 <script>
@@ -28,7 +29,6 @@
     }
 </script>
 <div class="activities">
-    <button onclick="AjaxFunc.logout()">로그아웃</button>
     <h1>게임</h1>
     <div class="activity-container">
         <div class="image-container img-one">

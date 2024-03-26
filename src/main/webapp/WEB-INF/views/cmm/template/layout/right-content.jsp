@@ -9,6 +9,7 @@
         <i class="fas fa-bell nav-icon fa-2x" data-count="25"></i>
     </div>
     <h4>${userNm}</h4>
+    <button onclick="AjaxFunc.logout()">로그아웃</button>
     <img src="https://github.com/ecemgo/mini-samples-great-tricks/assets/13468728/40b7cce2-c289-4954-9be0-938479832a9c" alt="user" />
 </div>
 
