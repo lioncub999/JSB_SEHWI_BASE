@@ -15,8 +15,8 @@ TODO
 <c:set var="dupcheckUrl" value="/auth/dupcheck"/>
 <html>
 <head>
-    <link type="text/css" rel="stylesheet" href="<c:url value='/css/login.css'/>">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"/>
+    <link type="text/css" rel="stylesheet" href="<c:url value='/css/login.css'/>">
 </head>
 <body>
 <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
