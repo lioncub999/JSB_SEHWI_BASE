@@ -10,7 +10,6 @@
     </div>
     <h4>${userNm}</h4>
     <button onclick="AjaxFunc.logout()">로그아웃</button>
-    <img src="https://github.com/ecemgo/mini-samples-great-tricks/assets/13468728/40b7cce2-c289-4954-9be0-938479832a9c" alt="user" />
 </div>
 
 <div class="active-calories">
@@ -39,7 +38,6 @@
     <div class="card-container">
         <div class="card">
             <div class="card-user-info">
-                <img src="https://github.com/ecemgo/mini-samples-great-tricks/assets/13468728/9290037d-a5b2-4f50-aea3-9f3f2b53b441" alt="" />
                 <h2>Jane</h2>
             </div>
             <p>We completed the 30-Day Running Streak Challenge!🏃‍♀️🎉</p>
@@ -47,19 +45,15 @@
 
         <div class="card">
             <div class="card-user-info">
-                <img src="https://github.com/ecemgo/mini-samples-great-tricks/assets/13468728/42616ef2-ba96-49c7-80ea-c3cf1e2ecc89" alt="" />
                 <h2>Mike</h2>
             </div>
-            <img class="card-img" src="https://github.com/ecemgo/mini-samples-great-tricks/assets/13468728/2dcc1b94-06c5-4c62-b886-53b9e433fd44" alt="" />
             <p>I just set a new record in cycling: 30 miles!💪</p>
         </div>
 
         <div class="card">
             <div class="card-user-info">
-                <img src="https://github.com/ecemgo/mini-samples-great-tricks/assets/13468728/42616ef2-ba96-49c7-80ea-c3cf1e2ecc89" alt="" />
                 <h2>Mike</h2>
             </div>
-            <img class="card-img" src="https://github.com/ecemgo/mini-samples-great-tricks/assets/13468728/2dcc1b94-06c5-4c62-b886-53b9e433fd44" alt="" />
             <p>I just set a new record in cycling: 30 miles!💪</p>
         </div>
     </div>

@@ -908,9 +908,14 @@ main {
 @media (max-width: 800px) {
     main {
         grid-template-columns: 15% 85%;
+        height : calc(100vh - 140px);
+    }
+    .main-menu {
+        height : calc(100vh - 140px);
     }
 
     .content {
+        height : calc(100vh - 140px);
         grid-template-columns: 100%;
         grid-template-rows: 50% 50%;
         grid-template-areas:
@@ -923,6 +928,7 @@ main {
     }
 
     .right-content {
+        height : calc(100vh - 155px);
         grid-area: rightContent;
         margin: 15px 15px 0 15px;
         padding: 10px 0 0;
