@@ -6,14 +6,12 @@ import com.jsp.jsp_demo.service.auth.AuthService;
 import oracle.jrockit.jfr.jdkevents.throwabletransform.ConstructorTracerWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.List;
 
 @Controller
 public class AuthController {
