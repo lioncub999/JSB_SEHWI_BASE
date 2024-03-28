@@ -3,7 +3,6 @@ package com.jsp.jsp_demo.controller.auth;
 import com.jsp.jsp_demo.model.auth.UserInput;
 import com.jsp.jsp_demo.model.auth.UserOutput;
 import com.jsp.jsp_demo.service.auth.AuthService;
-import oracle.jrockit.jfr.jdkevents.throwabletransform.ConstructorTracerWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,8 +34,6 @@ public class AuthController {
                          UserInput userInput) {
 
         int result = 0;
-
-        ConstructorTracerWriter constructorTracerWriter;
 
         try {
             authService.signup(userInput);
