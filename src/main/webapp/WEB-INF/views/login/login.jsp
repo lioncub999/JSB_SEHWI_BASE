@@ -187,7 +187,7 @@ TODO
 
         <div class="login" id="login-slide">
             <div class="center">
-                <h2 class="form-title" id="login"><span>or</span>로그인:</h2>
+                <h2 class="form-title" id="login"><span>or</span>로그인</h2>
                 <div class="form-holder">
                     <form class="frm" id="login-frm">
                         <input type="email" class="input" id="loginUserNm" placeholder="이름" name="userNm"/>
