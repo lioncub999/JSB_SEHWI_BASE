@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jsp.jsp_demo.mapper.mypage.MypageMapper">
+    <update id="resetPassword"
+            parameterType="com.jsp.jsp_demo.model.auth.UserInput">
+        UPDATE TBU_USER_M
+        SET PASS_RESET = 'Y', USER_PW = '1111'
+        WHERE USER_ID = #{userId}
+    </update>
+</mapper>

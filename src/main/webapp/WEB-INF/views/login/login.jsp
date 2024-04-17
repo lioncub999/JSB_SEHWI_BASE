@@ -81,6 +81,7 @@ TODO
 
         signupSubmit: function () {
             var formData = $('#signup-frm').serialize()
+            console.log(formData)
 
             if (
                 $('#dupcheck').val() != null && $('#dupcheck').val() != '' && $('#dupcheck').val() == 1

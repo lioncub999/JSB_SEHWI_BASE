@@ -9,7 +9,6 @@
         <i class="fas fa-bell nav-icon fa-2x" data-count="25"></i>
     </div>
     <h4>${userNm}</h4>
-    <button onclick="AjaxFunc.logout()">로그아웃</button>
 </div>
 
 <div class="active-calories">

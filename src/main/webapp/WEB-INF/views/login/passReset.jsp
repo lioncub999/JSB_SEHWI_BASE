@@ -12,6 +12,11 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script src="<c:url value='/js/alert/SweetAlert2.js' />"></script>
 
+<c:if test="${passReset == 'N'}">
+    <script>
+        window.location.href = "/main"
+    </script>
+</c:if>
 <script>
     let AjaxFunc = {
         passResetSubmit : function () {
@@ -27,7 +32,7 @@
                     Toast('top', 1000, 'success', '비밀번호 변경이 완료되었습니다.');
 
                     setTimeout(function() {
-                        window.location.href = "/login"
+                        window.location.href = "/main"
                     }, 1000)
                 } else {
                     alert('에러 발생')

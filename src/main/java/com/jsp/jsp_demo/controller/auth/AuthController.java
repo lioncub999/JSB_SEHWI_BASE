@@ -107,16 +107,14 @@ public class AuthController {
     ) {
         boolean result;
 
-        System.out.println(httpServletRequest.getSession().getAttribute("userId"));
-        System.out.println(userInput.getUserPw());
-
         int userId = (int) httpServletRequest.getSession().getAttribute("userId");
 
         userInput.setUserId(userId);
 
         authService.updatePassword(userInput);
 
-        httpServletRequest.getSession().invalidate();
+        HttpSession session = httpServletRequest.getSession(true);
+        session.setAttribute("passReset", "N");
 
         result = true;
 

@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class main {
 
-
     @GetMapping("/main")
     public String getMainPage() {
         return "main/main";
