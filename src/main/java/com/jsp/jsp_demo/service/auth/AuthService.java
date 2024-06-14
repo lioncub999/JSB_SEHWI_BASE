@@ -29,7 +29,7 @@ public class AuthService {
 
         String encodePw = authMapper.selectUserByNm(userInput).getUserPw();
 
-        if (Objects.equals(userInput.getUserPw(), "1111")) {
+        if (Objects.equals(userInput.getUserPw(), "1111") && Objects.equals(userInput.getPassReset(), "Y")) {
             return authMapper.selectUserByNm(userInput);
         } else if (passwordEncoder.matches(userInput.getUserPw(), encodePw)){
             return authMapper.selectUserByNm(userInput);

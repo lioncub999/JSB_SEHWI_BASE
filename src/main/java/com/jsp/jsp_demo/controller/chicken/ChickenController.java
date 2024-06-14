@@ -18,14 +18,6 @@ public class ChickenController {
     @Autowired
     ChickenService chickenService;
 
-    @GetMapping("/chicken")
-    public ResponseEntity<List<Chicken>> getChicken() {
-
-        List<Chicken> chikenList = chickenService.getChicken();
-
-        return ResponseEntity.ok(chikenList);
-    }
-
     @PostMapping("/plusOneChicken")
     public ResponseEntity<Boolean> plusOneChicken(
             @RequestBody Chicken chicken
