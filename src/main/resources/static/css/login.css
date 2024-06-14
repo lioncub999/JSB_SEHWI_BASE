@@ -24,6 +24,12 @@ main {
     z-index: 10;
 }
 
+.content {
+    background: rgb(254, 254, 254);
+    display: grid;
+    grid-template-columns: 50% 50%;
+}
+
 .form-structor {
     background-color: #222;
     border-radius: 15px;

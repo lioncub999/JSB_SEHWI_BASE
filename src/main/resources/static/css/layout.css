@@ -71,10 +71,6 @@ main {
     font-family: "Nunito", sans-serif;
 }
 
-.logo {
-    display: none;
-}
-
 .nav-item {
     position: relative;
     display: block;

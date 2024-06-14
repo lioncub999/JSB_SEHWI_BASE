@@ -34,15 +34,6 @@
 <main>
     <%@ include file="/WEB-INF/views/cmm/template/layout/sidenav.jsp" %>
 
-    <section class="content">
-        <div class="left-content">
-            <decorator:body />
-
-        </div>
-        <div class="right-content">
-            <%@ include file="/WEB-INF/views/cmm/template/layout/right-content.jsp" %>
-        </div>
-    </section>
 </main>
 </body>
 </html>

@@ -8,14 +8,15 @@ TODO
  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 --%>
 <%@ include file="/WEB-INF/views/cmm/include/taglibs.jsp" %>
-<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 
 <c:set var="signupUrl" value="/auth/signup"/>
 <c:set var="loginUrl" value="/auth/login"/>
 <c:set var="dupcheckUrl" value="/auth/dupcheck"/>
 <html>
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"/>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"/>
     <link type="text/css" rel="stylesheet" href="<c:url value='/css/login.css'/>">
 </head>
 <body>
@@ -134,7 +135,7 @@ TODO
             }).done(function (response) {
                 if (response) {
                     Toast('top', 1000, 'success', '로그인 되었습니다.');
-                    setTimeout(function() {
+                    setTimeout(function () {
                         window.location.href = '/main';
                     }, 1000)
                 } else {
@@ -191,6 +192,7 @@ TODO
                 <h2 class="form-title" id="login"><span>or</span>로그인</h2>
                 <div class="form-holder">
                     <form class="frm" id="login-frm">
+                        <p style="text-align: center">레전드 닭가슴살 양심냉장고</p>
                         <input type="email" class="input" id="loginUserNm" placeholder="이름" name="userNm"/>
                         <input type="password" class="input" id="loginUserPw" placeholder="비밀번호" name="userPw"/>
                     </form>

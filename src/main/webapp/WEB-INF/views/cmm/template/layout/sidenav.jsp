@@ -46,39 +46,12 @@
             </a>
         </li>
 
-        <li class="nav-item <c:if test="${url == '/mypage'}">active</c:if>">
-            <b></b>
-            <b></b>
-            <a href="/mypage">
-                <i class="fa fa-user nav-icon"></i>
-                <span class="nav-text">내정보</span>
-            </a>
-        </li>
-
-        <li class="nav-item">
-            <b></b>
-            <b></b>
-            <a href="#">
-                <i class="fa fa-calendar-check nav-icon"></i>
-                <span class="nav-text">게시판</span>
-            </a>
-        </li>
-
-        <li class="nav-item">
-            <b></b>
-            <b></b>
-            <a href="#">
-                <i class="fa fa-sliders nav-icon"></i>
-                <span class="nav-text">설정</span>
-            </a>
-        </li>
-
         <li class="nav-item">
             <b></b>
             <b></b>
             <a onclick="SidebarFunc.logout()" style="color : white;">
                 <i class="fa fa-arrow-right-from-bracket nav-icon"></i>
-                <span class="nav-text">설정</span>
+                <span class="nav-text">로그아웃</span>
             </a>
         </li>
     </ul>
