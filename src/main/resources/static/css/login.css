@@ -42,14 +42,14 @@ main {
         content: '';
         opacity: .8;
         position: absolute;
-        top: 0;
+        top: -150px;
         right: 0;
         bottom: 0;
         left: 0;
         background-repeat: no-repeat;
-        background-position: left bottom;
-        background-size: 500px;
-        background-image: url('https://images.unsplash.com/photo-1503602642458-232111445657?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=bf884ad570b50659c5fa2dc2cfb20ecf&auto=format&fit=crop&w=1000&q=100');
+        background-position: center;
+        background-size: 800px;
+        background-image: url('https://m.atemshop.com/web/product/big/202304/bc3b82cceb1a13e267f5506bca5f4220.jpg');
     }
 
     .signup {
