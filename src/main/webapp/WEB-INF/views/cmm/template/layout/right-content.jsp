@@ -46,13 +46,14 @@
                 <canvas id="myChart"></canvas>
             </div>
 
-    <div class="active-calories-container" style="flex-direction: column;">
+    <div class="active-calories-container" style="flex-direction: column; text-align: center">
+                <br>
                 <c:forEach items="${chickenList}" var="chicken">
-                    <div class="calories-content" style="width: 100px"><p><span>${chicken.userNm} : </span> <span> ${chicken.eat}먹</span></p></div>
-                    <div class="calories-content" style="width: 100px"><p>
-                    <button onclick="AjaxFunc.plusOneChicken(${chicken.consumer}, '${chicken.userNm}')" type="button" class="btn btn-primary">${chicken.userNm} + 1</button>
-                    </p></div>
-
+                    <div class="calories-content" style="width: 100px">
+                        <span>${chicken.userNm} : </span> <span> ${chicken.eat}먹</span>
+                        <button onclick="AjaxFunc.plusOneChicken(${chicken.consumer}, '${chicken.userNm}')" type="button" class="btn btn-primary" style="margin : auto">${chicken.userNm} + 1</button>
+                        <br>
+                    </div>
                 </c:forEach>
             </div>
         </div>
