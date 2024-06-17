@@ -69,7 +69,8 @@
             label: 'EAT',
             data: [25-${chickenList[0].eat+chickenList[1].eat+chickenList[2].eat}, '${chickenList[0].eat}', '${chickenList[1].eat}', '${chickenList[2].eat}'],
             borderWidth: 1,
-            hoverOffset: 4
+            hoverOffset: 4,
+            backgroundColor: ['grey', 'rgb(255, 99, 132)', 'rgb(54, 162, 235)', 'rgb(255, 205, 86)']
         }],
         },
         options: {
