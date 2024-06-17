@@ -31,6 +31,9 @@
       <div class="right-content">
         <%@ include file="/WEB-INF/views/cmm/template/layout/right-content.jsp" %>
       </div>
+      <div class="left-content">
+        asd
+      </div>
     </section>
   </main>
   </body>

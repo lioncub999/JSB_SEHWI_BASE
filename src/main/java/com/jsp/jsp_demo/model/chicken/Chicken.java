@@ -18,5 +18,6 @@ public class Chicken implements Serializable {
     private String consumer;
     private Integer eat;
     private String userNm;
+    private String chickCd;
 
 }

@@ -24,4 +24,12 @@ public class main {
 
         return "main/main";
     }
+
+    @GetMapping("/test")
+    public String getTestPage(
+            Model model
+    ) {
+
+        return "test/test";
+    }
 }

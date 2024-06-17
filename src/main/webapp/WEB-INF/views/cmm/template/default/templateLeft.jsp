@@ -33,7 +33,6 @@
 </c:if>
 <main>
     <%@ include file="/WEB-INF/views/cmm/template/layout/sidenav.jsp" %>
-
 </main>
 </body>
 </html>

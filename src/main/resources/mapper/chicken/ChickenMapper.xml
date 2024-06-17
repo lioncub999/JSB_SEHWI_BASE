@@ -13,7 +13,7 @@
 
     <insert id="plusOneChicken"
             parameterType="com.jsp.jsp_demo.model.chicken.Chicken">
-        INSERT INTO TB_CHICKEN_CONSUME_HIS (CONSUMER, CRE_DTM)
-        VALUES (#{consumer}, NOW())
+        INSERT INTO TB_CHICKEN_CONSUME_HIS (CONSUMER, TASTE_CD,CRE_DTM)
+        VALUES (#{consumer}, #{chickCd}, NOW())
     </insert>
 </mapper>
