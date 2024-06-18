@@ -13,10 +13,14 @@
     <select id="getMyChicken"
             parameterType="com.jsp.jsp_demo.model.auth.UserInput"
             resultType="com.jsp.jsp_demo.model.mypage.Mypage">
-        SELECT distinct CONSUMER, TASTE_CD, count(*) AS count
-        FROM TB_CHICKEN_CONSUME_HIS
-        WHERE CONSUMER = ${userId}
-        GROUP BY CONSUMER, TASTE_CD
-        ORDER BY TASTE_CD
+        SELECT CODE_ID, DESCRIPTION, IFNULL(CNT, 0) AS COUNT
+        FROM (SELECT *
+            FROM TB_CODE_M
+            WHERE CODE_ID IN ('HT01', 'HT02', 'HT03', 'HT04', 'HT05')) CODE
+            LEFT JOIN (SELECT TASTE_CD, count(*) AS CNT
+            FROM TB_CHICKEN_CONSUME_HIS
+            WHERE CONSUMER = #{userId}
+            GROUP BY TASTE_CD) CHICKEN_HIS ON CODE.CODE_ID = CHICKEN_HIS.TASTE_CD
+        ORDER BY CODE_ID
     </select>
 </mapper>

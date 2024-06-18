@@ -45,7 +45,7 @@
 <div class="active-calories" style="height: 500px; overflow-y: scroll; overflow-x:hidden; overscroll-behavior: none">
     <p>${userNm} 의 닭가슴살 처묵 STORY~</p>
     <div>
-        <canvas id="myChart"></canvas>
+        <canvas id="myChart" height="200px"></canvas>
     </div>
     <button onclick="AjaxFunc.resetPassword()">비밀번호 초기화~ "1111"</button>
 </div>

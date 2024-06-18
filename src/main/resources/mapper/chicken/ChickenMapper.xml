@@ -16,4 +16,12 @@
         INSERT INTO TB_CHICKEN_CONSUME_HIS (CONSUMER, TASTE_CD,CRE_DTM)
         VALUES (#{consumer}, #{chickCd}, NOW())
     </insert>
+
+    <select id="eatChickenClassify"
+            resultType="com.jsp.jsp_demo.model.mypage.Mypage">
+        SELECT distinct TASTE_CD, count(*) AS COUNT
+        FROM TB_CHICKEN_CONSUME_HIS
+        GROUP BY TASTE_CD
+        ORDER BY TASTE_CD
+    </select>
 </mapper>

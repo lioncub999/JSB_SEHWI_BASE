@@ -17,4 +17,3 @@ function Toast(position, timer, status, title) {
         title: title
     })
 }
-

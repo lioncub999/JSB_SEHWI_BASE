@@ -2,6 +2,7 @@ package com.jsp.jsp_demo.service.chicken;
 
 import com.jsp.jsp_demo.mapper.chicken.ChickenMapper;
 import com.jsp.jsp_demo.model.chicken.Chicken;
+import com.jsp.jsp_demo.model.mypage.Mypage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,5 +20,9 @@ public class ChickenService {
 
     public void plusOneChicken(Chicken chicken) {
         chickenMapper.plusOneChicken(chicken);
+    }
+
+    public List<Mypage> eatChickenClassify() {
+        return chickenMapper.eatChickenClassify();
     }
 }

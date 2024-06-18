@@ -41,7 +41,6 @@ public class MypageController {
     @PostMapping("/resetPass")
     public Boolean resetPassword(HttpServletRequest httpServletRequest,
                                  UserInput userInput) {
-
         try {
             mypageService.resetPassword(userInput);
         } catch (Exception e) {
