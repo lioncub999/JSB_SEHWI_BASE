@@ -24,7 +24,7 @@
     window.location.href = "/resetPass"
   </script>
 </c:if>
-  <main>
+  <main style="overflow-y: hidden; overscroll-behavior: none;">
     <%@ include file="/WEB-INF/views/cmm/template/layout/sidenav.jsp" %>
 
     <section class="content">
@@ -32,7 +32,7 @@
         <%@ include file="/WEB-INF/views/cmm/template/layout/right-content.jsp" %>
       </div>
       <div class="left-content">
-        asd
+        <%@ include file="/WEB-INF/views/cmm/template/default/templateLeft.jsp" %>
       </div>
     </section>
   </main>

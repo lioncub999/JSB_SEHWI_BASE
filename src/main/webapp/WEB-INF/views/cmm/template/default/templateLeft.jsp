@@ -31,8 +31,8 @@
         window.location.href = "/resetPass"
     </script>
 </c:if>
-<main>
-    <%@ include file="/WEB-INF/views/cmm/template/layout/sidenav.jsp" %>
-</main>
+<decorator:body>
+
+</decorator:body>
 </body>
 </html>

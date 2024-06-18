@@ -919,11 +919,11 @@ main {
       "leftContent";
     }
 
-    .left-content {
+    .right-content {
         display: none;
     }
 
-    .right-content {
+    .left-content {
         height : calc(100vh - 155px);
         grid-area: rightContent;
         margin: 15px 15px 0 15px;

@@ -71,10 +71,6 @@ main {
     font-family: "Nunito", sans-serif;
 }
 
-.logo {
-    display: none;
-}
-
 .nav-item {
     position: relative;
     display: block;
@@ -89,7 +85,7 @@ main {
     color: #fff;
     font-size: 1rem;
     padding: 15px 0;
-    margin-left: 10px;
+    margin-left: 12px;
     border-top-left-radius: 20px;
     border-bottom-left-radius: 20px;
 }
@@ -169,6 +165,7 @@ main {
 .left-content {
     display: grid;
     height : calc(100vh - 80px - 30px);
+    grid-template-rows: 50% 50%;
     background: #f6f7fb;
     margin: 15px;
     padding: 20px;
@@ -776,6 +773,7 @@ main {
     }
 
     .left-content {
+        grid-template-rows: 50% 50%;
         margin: 15px;
         padding: 20px;
     }
@@ -866,6 +864,7 @@ main {
     }
 
     .left-content {
+        grid-template-rows: 50% 50%;
         padding: 30px 20px 20px;
     }
 
@@ -920,6 +919,10 @@ main {
       "leftContent";
     }
 
+    .right-content {
+        display: none;
+    }
+
     .left-content {
         height : calc(100vh - 155px);
         grid-area: rightContent;
@@ -927,10 +930,6 @@ main {
         padding: 10px 0 0;
         gap: 15px;
         overflow-y: scroll;
-    }
-
-    .right-content {
-        display: none;
     }
 
     .activities,
