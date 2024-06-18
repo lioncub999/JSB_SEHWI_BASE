@@ -25,12 +25,12 @@
   </script>
 </c:if>
   <main style="overflow-y: hidden; overscroll-behavior: none;">
-    <%@ include file="/WEB-INF/views/cmm/template/layout/sidenav.jsp" %>
+    <%@ include file="/WEB-INF/views/cmm/template/mylayout/sidenav.jsp" %>
 
     <section class="content">
-      <div class="right-content">
-        <%@ include file="/WEB-INF/views/cmm/template/layout/right-content.jsp" %>
-      </div>
+<%--      <div class="right-content">--%>
+<%--        <%@ include file="/WEB-INF/views/cmm/template/mylayout/right-content.jsp" %>--%>
+<%--      </div>--%>
       <div class="left-content">
         <%@ include file="/WEB-INF/views/cmm/template/default/templateLeft.jsp" %>
       </div>

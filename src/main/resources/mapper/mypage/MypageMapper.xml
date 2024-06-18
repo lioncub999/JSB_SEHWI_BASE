@@ -9,4 +9,14 @@
         SET PASS_RESET = 'Y', USER_PW = '1111'
         WHERE USER_ID = #{userId}
     </update>
+
+    <select id="getMyChicken"
+            parameterType="com.jsp.jsp_demo.model.auth.UserInput"
+            resultType="com.jsp.jsp_demo.model.mypage.Mypage">
+        SELECT distinct CONSUMER, TASTE_CD, count(*) AS count
+        FROM TB_CHICKEN_CONSUME_HIS
+        WHERE CONSUMER = ${userId}
+        GROUP BY CONSUMER, TASTE_CD
+        ORDER BY TASTE_CD
+    </select>
 </mapper>

@@ -13,12 +13,12 @@
     <!--    ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛-->
     <decorator name="default" page="template/default/template.jsp">
         <pattern>/main</pattern>
+        <pattern>/mypage</pattern>
     </decorator>
 
     <!--    ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓-->
     <!--    ┃  ◉ 왼쪽 컨텐츠 모바일 -->
     <!--    ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛-->
     <decorator name="left" page="template/default/templateLeft.jsp">
-        <pattern>/mypage</pattern>
     </decorator>
 </decorators>
