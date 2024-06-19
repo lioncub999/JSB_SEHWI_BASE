@@ -56,7 +56,7 @@
         }
     }
 </script>
-<div class="active-calories" style="height: 500px; overflow-y: scroll; overflow-x:hidden; overscroll-behavior: none">
+<div class="active-calories">
     <h1 style="align-self: flex-start">닭가슴살 근황 (총 75개중)</h1>
     <div>
         <canvas id="myChart"></canvas>
@@ -65,34 +65,34 @@
         <canvas id="leftChicken" style="height: 200px; margin-top : 20px;"></canvas>
     </div>
 
-    <div class="active-calories-container" style="flex-direction: column; text-align: center">
+    <div class="active-calories-container">
         <br>
         <c:forEach items="${chickenList}" var="chicken">
             <div class="calories-content" style="width: 220px">
                 <span>${chicken.userNm} : </span> <span> ${chicken.eat}먹</span>
                 <div style="display: flex;">
                     <button onclick="AjaxFunc.confirm(${chicken.consumer}, '${chicken.userNm}', 'HT01', '갈릭')"
-                            type="button" class="btn btn-primary" style="margin : auto; background: ivory; width: 70px">
+                            type="button" class="btn btn-primary" style="background: ivory; color: black;">
                         갈릭
                     </button>
                     <button onclick="AjaxFunc.confirm(${chicken.consumer}, '${chicken.userNm}', 'HT02', '핫양념')"
                             type="button" class="btn btn-primary"
-                            style="margin : auto; background: darkred; color: white; width: 70px">핫양념
+                            style="background: darkred; color: white;">핫양념
                     </button>
                     <button onclick="AjaxFunc.confirm(${chicken.consumer}, '${chicken.userNm}', 'HT03', '허니소이')"
                             type="button" class="btn btn-primary"
-                            style="margin : auto; background: yellow; width: 70px">허니소이
+                            style="background: yellow; color: black">허니<br>소이
                     </button>
 
                 </div>
                 <div style="display: flex;">
                     <button onclick="AjaxFunc.confirm(${chicken.consumer}, '${chicken.userNm}', 'HT04', '떡볶이')"
                             type="button" class="btn btn-primary"
-                            style="margin : auto; background: orangered; color: white; width: 70px">떡볶이
+                            style="background: orangered; color: white;">떡볶이
                     </button>
                     <button onclick="AjaxFunc.confirm(${chicken.consumer}, '${chicken.userNm}', 'HT05', '핵불닭')"
                             type="button" class="btn btn-primary"
-                            style="margin : auto; background: black; color: red; width: 70px">핵붉닭
+                            style="background: black; color: red;">핵붉닭
                     </button>
                 </div>
                 <br>

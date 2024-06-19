@@ -42,7 +42,7 @@
         }
     }
 </script>
-<div class="active-calories" style="height: 500px; overflow-y: scroll; overflow-x:hidden; overscroll-behavior: none">
+<div class="active-calories">
     <p>${userNm} 의 닭가슴살 처묵 STORY~</p>
     <div>
         <canvas id="myChart" height="200px"></canvas>
