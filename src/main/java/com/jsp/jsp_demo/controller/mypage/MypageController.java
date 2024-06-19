@@ -27,15 +27,21 @@ public class MypageController {
             HttpServletRequest request,
             Model model
     ) {
-        HttpSession session = request.getSession(false);
-        UserInput user = new UserInput();
-        user.setUserId((Integer) session.getAttribute("userId"));
+        try {
+            HttpSession session = request.getSession(false);
+            UserInput user = new UserInput();
+            user.setUserId((Integer) session.getAttribute("userId"));
 
-        List<Mypage> mychicken =  mypageService.getMyChicken(user);
-        List<ConsumeHis> myHis = mypageService.getMyHis(user);
+            List<Mypage> mychicken =  mypageService.getMyChicken(user);
+            List<ConsumeHis> myHis = mypageService.getMyHis(user);
 
-        model.addAttribute("mychicken", mychicken);
-        model.addAttribute("myHis", myHis);
+            model.addAttribute("mychicken", mychicken);
+            model.addAttribute("myHis", myHis);
+        }
+
+        catch (Exception e) {
+            return "main/main";
+        }
 
         return "main/mypage";
     }
