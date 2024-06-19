@@ -18,12 +18,12 @@
 <script src="<c:url value='/js/alert/SweetAlert2.js' />"></script>
 <%--TODO: 로그인 세션 확인--%>
 <c:if test="${userId == null || userId == ''}">
-<%--    <script>--%>
-<%--        Toast('top', 1000, 'warning', '로그인을 해주세요.');--%>
-<%--        setTimeout(function() {--%>
-<%--            window.location.href = "/login"--%>
-<%--        }, 1000)--%>
-<%--    </script>--%>
+    <script>
+        Toast('top', 1000, 'warning', '로그인을 해주세요.');
+        setTimeout(function() {
+            window.location.href = "/login"
+        }, 1000)
+    </script>
 </c:if>
 <%--TODO: 비밀번호 초기화 Y시 초기화 화면--%>
 <c:if test="${passReset == 'Y'}">
