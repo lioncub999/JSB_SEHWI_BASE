@@ -1,6 +1,7 @@
 package com.jsp.jsp_demo.controller.mypage;
 
 import com.jsp.jsp_demo.model.auth.UserInput;
+import com.jsp.jsp_demo.model.mypage.ConsumeHis;
 import com.jsp.jsp_demo.model.mypage.Mypage;
 import com.jsp.jsp_demo.service.mypage.MypageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,8 +32,10 @@ public class MypageController {
         user.setUserId((Integer) session.getAttribute("userId"));
 
         List<Mypage> mychicken =  mypageService.getMyChicken(user);
+        List<ConsumeHis> myHis = mypageService.getMyHis(user);
 
         model.addAttribute("mychicken", mychicken);
+        model.addAttribute("myHis", myHis);
 
         return "main/mypage";
     }

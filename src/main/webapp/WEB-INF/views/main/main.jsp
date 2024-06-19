@@ -18,7 +18,7 @@
         confirm: function (consumer, userNm, chickCd, chickNm) {
             if (userNm == '${userNm}') {
                 Swal.fire({
-                    title: "ㄹㅇ 먹음?",
+                    title: "맛있게 먹음?",
                     text: `님이 먹은건 ` + chickNm,
                     icon: "warning",
                     showCancelButton: true,

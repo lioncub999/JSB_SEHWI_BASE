@@ -23,4 +23,13 @@
             GROUP BY TASTE_CD) CHICKEN_HIS ON CODE.CODE_ID = CHICKEN_HIS.TASTE_CD
         ORDER BY CODE_ID
     </select>
+
+    <select id="getMyHis"
+            parameterType="com.jsp.jsp_demo.model.auth.UserInput"
+            resultType="com.jsp.jsp_demo.model.mypage.ConsumeHis">
+        SELECT TASTE_CD, DATE_FORMAT(CRE_DTM, '%Y-%m-%d %H:%i:%s') AS EAT_DTM
+        FROM TB_CHICKEN_CONSUME_HIS
+        WHERE CONSUMER = #{userId}
+        ORDER BY CRE_DTM DESC
+    </select>
 </mapper>

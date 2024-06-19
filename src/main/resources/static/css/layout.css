@@ -210,6 +210,8 @@ main {
 }
 
 .active-calories h1 {
+    width: 100%;
+    text-align: center;
     margin-top: 10px;
     font-size: 1.2rem;
 }
@@ -228,6 +230,11 @@ main {
         width: 70px;
         height: 60px;
     }
+}
+
+table td, table th {
+    align-content: center;
+    text-align: center;
 }
 
 @media (max-width: 1500px) {

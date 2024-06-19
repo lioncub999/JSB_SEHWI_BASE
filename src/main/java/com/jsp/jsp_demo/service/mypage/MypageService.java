@@ -2,6 +2,7 @@ package com.jsp.jsp_demo.service.mypage;
 
 import com.jsp.jsp_demo.mapper.mypage.MypageMapper;
 import com.jsp.jsp_demo.model.auth.UserInput;
+import com.jsp.jsp_demo.model.mypage.ConsumeHis;
 import com.jsp.jsp_demo.model.mypage.Mypage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,5 +21,9 @@ public class MypageService {
 
     public List<Mypage> getMyChicken(UserInput user) {
         return mypageMapper.getMyChicken(user);
+    }
+
+    public List<ConsumeHis> getMyHis(UserInput user) {
+        return mypageMapper.getMyHis(user);
     }
 }
