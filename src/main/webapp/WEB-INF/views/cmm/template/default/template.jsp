@@ -5,10 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"/>
   <%@ include file="/WEB-INF/views/cmm/template/default/stylesheets.jsp"%>
 </head>
-<body>
+<body class="bdy">
 <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script src="<c:url value='/js/alert/SweetAlert2.js' />"></script>
+<script>
+    let vh = window.innerHeight * 0.01
+    document.documentElement.style.setProperty('--vh', `${vh}px`)
+    document.querySelector('.bdy').style.height = vh*100;
+    window.addEventListener('resize', () => {
+        let vh = window.innerHeight * 0.01
+        document.documentElement.style.setProperty('--vh', `${vh}px`)
+        document.querySelector('.bdy').style.height = vh*100;
+    })
+</script>
 <%--TODO: 로그인 세션 확인--%>
 <c:if test="${userId == null || userId == ''}">
   <script>
@@ -24,7 +34,7 @@
     window.location.href = "/resetPass"
   </script>
 </c:if>
-  <main style="overflow-y: hidden; overscroll-behavior: none;">
+  <main>
     <%@ include file="/WEB-INF/views/cmm/template/mylayout/sidenav.jsp" %>
 
     <section class="content">
