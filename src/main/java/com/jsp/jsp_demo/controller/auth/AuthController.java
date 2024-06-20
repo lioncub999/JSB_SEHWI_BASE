@@ -18,11 +18,6 @@ public class AuthController {
     @Autowired
     private AuthService authService;
 
-    @GetMapping("/")
-    public String defaultPage() {
-        return "index";
-    }
-
     @GetMapping("/login")
     public String getLogin() {
         return "login/login";

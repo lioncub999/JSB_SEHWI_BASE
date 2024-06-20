@@ -13,9 +13,8 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
-public class Chicken implements Serializable {
-    private Integer id;                     // 치킨 섭취 ID
-    private String consumerId;                // 먹은사람 ID
-    private String consumerNm;                // 먹은사람 이름
-    private String tasteCd;                 // 치킨 맛 코드
+public class StoreDetails implements Serializable {
+    private String tasteCd;              // 맛 코드
+    private String tasteNm;              // 맛 이름
+    private Integer tasteStoreAmt;       // 입고 수
 }

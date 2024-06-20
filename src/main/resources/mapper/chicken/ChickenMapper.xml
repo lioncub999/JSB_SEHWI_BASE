@@ -3,13 +3,37 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.jsp.jsp_demo.mapper.chicken.ChickenMapper">
-    <select id="getChicken"
-            resultType="com.jsp.jsp_demo.model.chicken.Chicken">
-        SELECT USER_ID AS CONSUMER, USER_NM, COUNT(CHICKEN.CONSUMER) AS EAT
+    <select id="getStoreAmt"
+            resultType="com.jsp.jsp_demo.model.chicken.StoreDetails">
+        SELECT CODE.CODE_ID AS TASTE_CD, CODE.TASTE AS TASTE_NM, CHICKEN.AMT AS TASTE_STORE_AMT
+        FROM (SELECT *
+              FROM TB_CODE_M
+              WHERE CODE_TP = 'CHICKEN') CODE
+                 LEFT JOIN (SELECT *
+                            FROM TB_CHICKEN_STORE) CHICKEN ON CODE.CODE_ID = CHICKEN.CODE_ID
+    </select>
+
+    <select id="getPersonalEatAmt"
+            resultType="com.jsp.jsp_demo.model.chicken.ChickenOutput">
+        SELECT USER_ID AS CONSUMER_ID, USER_NM AS CONSUMER_NM, COUNT(CHICKEN.CONSUMER_ID) AS EAT_AMT
         FROM TBU_USER_M USER
-                 LEFT JOIN TB_CHICKEN_CONSUME_HIS CHICKEN ON USER.USER_ID = CHICKEN.CONSUMER
+                 LEFT JOIN TB_CHICKEN_CONSUME_HIS CHICKEN ON USER.USER_ID = CHICKEN.CONSUMER_ID
         GROUP BY  USER.USER_ID, USER.USER_NM
     </select>
+
+    <select id="getTasteEatAmt"
+            resultType="com.jsp.jsp_demo.model.chicken.ChickenOutput">
+        SELECT CODE.CODE_ID AS TASTE_CD, CODE.TASTE AS TASTE_NM, CHICKEN.EAT_AMT
+        FROM (SELECT *
+              FROM TB_CODE_M
+              WHERE CODE_TP = 'CHICKEN') CODE
+                 LEFT JOIN (SELECT TASTE_CD, count(*) AS EAT_AMT
+                            FROM TB_CHICKEN_CONSUME_HIS
+                            GROUP BY TASTE_CD) CHICKEN ON CODE.CODE_ID = CHICKEN.TASTE_CD
+    </select>
+
+
+
 
     <insert id="plusOneChicken"
             parameterType="com.jsp.jsp_demo.model.chicken.Chicken">
@@ -17,11 +41,5 @@
         VALUES (#{consumer}, #{chickCd}, NOW())
     </insert>
 
-    <select id="eatChickenClassify"
-            resultType="com.jsp.jsp_demo.model.mypage.Mypage">
-        SELECT distinct TASTE_CD, count(*) AS COUNT
-        FROM TB_CHICKEN_CONSUME_HIS
-        GROUP BY TASTE_CD
-        ORDER BY TASTE_CD
-    </select>
+
 </mapper>

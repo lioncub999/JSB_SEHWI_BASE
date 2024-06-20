@@ -7,15 +7,15 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
-public class Chicken implements Serializable {
-    private Integer id;                     // 치킨 섭취 ID
-    private String consumerId;                // 먹은사람 ID
-    private String consumerNm;                // 먹은사람 이름
-    private String tasteCd;                 // 치킨 맛 코드
+public class StoreAmt implements Serializable {
+    private Integer totalStoreAmt;              // 입고 총 갯수
+    private List<StoreDetails> storeDetail;     // 입고 상세
 }
+

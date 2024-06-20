@@ -15,7 +15,7 @@
 <script src="<c:url value='/js/alert/SweetAlert2.js' />"></script>
 <script>
     let AjaxFunc = {
-        confirm: function (consumer, userNm, chickCd, chickNm) {
+        confirm: function (consumer, chickCd, chickNm) {
             if (userNm == '${userNm}') {
                 Swal.fire({
                     title: "맛있게 먹음?",
@@ -28,7 +28,7 @@
                     cancelButtonText: "아님~!"
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        AjaxFunc.plusOneChicken(consumer, userNm, chickCd);
+                        AjaxFunc.plusOneChicken(consumer, chickCd);
                         Swal.fire({
                             title: "알림!",
                             text: "추가되었음.",
@@ -40,7 +40,7 @@
                 alert("님 아이디에만 플러스 하셈;")
             }
         },
-        plusOneChicken: function(consumer, userNm, chickCd) {
+        plusOneChicken: function(consumer, chickCd) {
             $.ajax({
                 url: "/plusOneChicken",
                 type: "post",
@@ -57,7 +57,7 @@
     }
 </script>
 <div class="active-calories">
-    <h1 style="align-self: flex-start">닭가슴살 근황 (총 75개중)</h1>
+    <h1 style="align-self: flex-start">닭가슴살 근황 (총 ${storeAmt.totalStoreAmt}개중)</h1>
     <div>
         <canvas id="myChart"></canvas>
     </div>
@@ -67,30 +67,29 @@
 
     <div class="active-calories-container">
         <br>
-        <c:forEach items="${chickenList}" var="chicken">
+        <c:forEach items="${personalEatAmt}" var="list">
             <div class="calories-content" style="width: 220px">
-                <span>${chicken.userNm} : </span> <span> ${chicken.eat}먹</span>
+                <span>${list.consumerNm} : </span> <span> ${list.eatAmt}먹</span>
                 <div style="display: flex;">
-                    <button onclick="AjaxFunc.confirm(${chicken.consumer}, '${chicken.userNm}', 'HT01', '갈릭')"
+                    <button onclick="AjaxFunc.confirm(${list.consumerId}, 'HT01', '갈릭')"
                             type="button" class="btn btn-primary" style="background: ivory; color: black;">
                         갈릭
                     </button>
-                    <button onclick="AjaxFunc.confirm(${chicken.consumer}, '${chicken.userNm}', 'HT02', '핫양념')"
+                    <button onclick="AjaxFunc.confirm(${list.consumerId}, 'HT02', '핫양념')"
                             type="button" class="btn btn-primary"
                             style="background: darkred; color: white;">핫양념
                     </button>
-                    <button onclick="AjaxFunc.confirm(${chicken.consumer}, '${chicken.userNm}', 'HT03', '허니소이')"
+                    <button onclick="AjaxFunc.confirm(${list.consumerId}, 'HT03', '허니소이')"
                             type="button" class="btn btn-primary"
                             style="background: yellow; color: black">허니<br>소이
                     </button>
-
                 </div>
                 <div style="display: flex;">
-                    <button onclick="AjaxFunc.confirm(${chicken.consumer}, '${chicken.userNm}', 'HT04', '떡볶이')"
+                    <button onclick="AjaxFunc.confirm(${list.consumerId}, 'HT04', '떡볶이')"
                             type="button" class="btn btn-primary"
                             style="background: orangered; color: white;">떡볶이
                     </button>
-                    <button onclick="AjaxFunc.confirm(${chicken.consumer}, '${chicken.userNm}', 'HT05', '핵불닭')"
+                    <button onclick="AjaxFunc.confirm(${list.consumerId}, 'HT05', '핵불닭')"
                             type="button" class="btn btn-primary"
                             style="background: black; color: red;">핵붉닭
                     </button>
@@ -100,16 +99,17 @@
         </c:forEach>
     </div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     const ctx = document.getElementById('myChart');
+    const labels = `${personalEatAmt}`;
 
     new Chart(ctx, {
         type: 'doughnut',
         data: {
             labels: [
-                '${chickenList[0].userNm}',
+                '${personalEatAmt[0].consumerNm}',
                 '${chickenList[1].userNm}',
                 '${chickenList[2].userNm}',
                 '남은 녀석들',
