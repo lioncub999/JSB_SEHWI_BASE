@@ -4,7 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 
-<c:set var="passResetUrl" value="/resetPass"/>
+<c:set var="passResetUrl" value="/mypage/resetPass"/>
 <c:set var="logoutUrl" value="/auth/logout"/>
 <html>
 <head>
@@ -90,7 +90,7 @@
     const ctx = document.getElementById('myChart');
     let chickenTastList = [];
     let myChickenEat = [];
-    <c:forEach items="${mychicken}" var="list">
+    <c:forEach items="${myChicken}" var="list">
     chickenTastList.push(`${list.tasteNm}`)
     myChickenEat.push(${list.eatAmt})
     </c:forEach>

@@ -39,7 +39,7 @@ public class MypageController {
             List<ChickenOutput> myChicken = mypageService.getMyChicken(user);
             List<ChickenOutput> myHis = mypageService.getMyHis(user);
 
-            model.addAttribute("mychicken", myChicken);
+            model.addAttribute("myChicken", myChicken);
             model.addAttribute("myHis", myHis);
             traceWriter.log(0);
         } catch (Exception e) {
@@ -49,7 +49,7 @@ public class MypageController {
     }
 
     @ResponseBody
-    @PostMapping("/resetPass")
+    @PostMapping("/mypage/resetPass")
     public Boolean resetPassword(HttpServletRequest httpServletRequest,
                                  UserInput userInput) {
         try {
