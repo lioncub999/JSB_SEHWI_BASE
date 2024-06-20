@@ -51,7 +51,7 @@
             <b></b>
             <a href="/mypage">
                 <i class="fa fa-user nav-icon"></i>
-                <span class="nav-text">홈</span>
+                <span class="nav-text">마이페이지</span>
             </a>
         </li>
 
