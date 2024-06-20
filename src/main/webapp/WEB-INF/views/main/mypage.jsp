@@ -34,7 +34,7 @@
                                 window.location.href = "/login"
                             }, 1000)
                         } else {
-                            alert('에러 발생')
+                            Toast('top', 1000, 'success', '레전드 에러 발생 관리자 문의');
                         }
                     })
                 } else {
@@ -65,29 +65,13 @@
                 <tr>
                     <th scope="row">${i.count}</th>
                     <td>
-                        <c:if test="${item.tasteCd == 'HT01'}">
-                            갈릭
-                        </c:if>
-                        <c:if test="${item.tasteCd == 'HT02'}">
-                            핫양념
-                        </c:if>
-                        <c:if test="${item.tasteCd == 'HT03'}">
-                            허니소이
-                        </c:if>
-                        <c:if test="${item.tasteCd == 'HT04'}">
-                            떡볶이
-                        </c:if>
-                        <c:if test="${item.tasteCd == 'HT05'}">
-                            핵불닭
-                        </c:if>
+                        ${item.tasteNm}
                     </td>
                     <td>
                         ${item.eatDtm}
                     </td>
                 </tr>
             </c:forEach>
-
-
             <tr style="border : none;">
                 <td style="border-radius: 0 0 0 15px"></td>
                 <td></td>
@@ -96,19 +80,28 @@
             </tbody>
         </table>
     </div>
-    <button onclick="AjaxFunc.resetPassword()">비밀번호 초기화~ "1111"</button>
+    <button onclick="AjaxFunc.resetPassword()"
+            type="button" class="btn btn-primary"
+            style="background: #6B92A4; color: white; margin-top : 20px">비밀번호 초기화~ "1111"
+    </button>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     const ctx = document.getElementById('myChart');
+    let chickenTastList = [];
+    let myChickenEat = [];
+    <c:forEach items="${mychicken}" var="list">
+    chickenTastList.push(`${list.tasteNm}`)
+    myChickenEat.push(${list.eatAmt})
+    </c:forEach>
 
     new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: ['갈릭', '핫양념', '허니소이', '떡볶이', '핵불닭'],
+            labels: chickenTastList,
             datasets: [{
                 label: '내가 먹은 닭가슴살~',
-                data: [${mychicken[0].count}, ${mychicken[1].count}, ${mychicken[2].count}, ${mychicken[3].count}, ${mychicken[4].count}],
+                data: myChickenEat,
                 backgroundColor: [
                     'ivory',
                     'darkred',

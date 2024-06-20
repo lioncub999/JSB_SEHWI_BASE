@@ -17,4 +17,6 @@ public class StoreDetails implements Serializable {
     private String tasteCd;              // 맛 코드
     private String tasteNm;              // 맛 이름
     private Integer tasteStoreAmt;       // 입고 수
+    private Integer eatAmt;              // 먹은 수
+    private Integer tasteLeftAmt;        // 남은 치킨 수
 }

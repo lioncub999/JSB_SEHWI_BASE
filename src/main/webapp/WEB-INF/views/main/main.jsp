@@ -15,11 +15,11 @@
 <script src="<c:url value='/js/alert/SweetAlert2.js' />"></script>
 <script>
     let AjaxFunc = {
-        confirm: function (consumer, chickCd, chickNm) {
-            if (userNm == '${userNm}') {
+        confirm: function (consumerId, tasteCd, tasteNm) {
+            if (consumerId == ${userId}) {
                 Swal.fire({
                     title: "맛있게 먹음?",
-                    text: `님이 먹은건 ` + chickNm,
+                    text: `님이 먹은건 ` + tasteNm,
                     icon: "warning",
                     showCancelButton: true,
                     confirmButtonColor: "#3085d6",
@@ -28,29 +28,41 @@
                     cancelButtonText: "아님~!"
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        AjaxFunc.plusOneChicken(consumer, chickCd);
+                        AjaxFunc.plusOneChicken(consumerId, tasteCd);
+                    }
+                });
+            } else {
+                Swal.fire({
+                    icon: "error",
+                    title: "알림!",
+                    text: "님 아이디에만 플러스 하셈;",
+                });
+            }
+        },
+        plusOneChicken: function (consumerId, tasteCd) {
+            $.ajax({
+                url: "/chicken/plusOneChicken",
+                type: "post",
+                cache: false,
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify({"consumerId": consumerId, "tasteCd": tasteCd}),
+                success: function (response) {
+                    if (response) {
                         Swal.fire({
                             title: "알림!",
                             text: "추가되었음.",
                             icon: "success"
                         });
+                        setTimeout(function () {
+                            window.location.href = "/main"
+                        }, 1000)
+                    } else {
+                        Swal.fire({
+                            icon: "error",
+                            title: "오류 발생!",
+                            text: "관리자 문의점",
+                        });
                     }
-                });
-            } else {
-                alert("님 아이디에만 플러스 하셈;")
-            }
-        },
-        plusOneChicken: function(consumer, chickCd) {
-            $.ajax({
-                url: "/plusOneChicken",
-                type: "post",
-                cache: false,
-                contentType: "application/json; charset=utf-8",
-                data: JSON.stringify({"consumer": consumer, "chickCd": chickCd}),
-                success: function (response) {
-                    setTimeout(function () {
-                        window.location.href = "/main"
-                    }, 1000)
                 }
             })
         }
@@ -103,25 +115,26 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     const ctx = document.getElementById('myChart');
-    const labels = `${personalEatAmt}`;
+
+    let userNameList = [];
+    let userConsumeAmtList = [];
+    let leftChickenAmt = ${storeAmt.totalStoreAmt};
+
+    <c:forEach items="${personalEatAmt}" var="list">
+    userNameList.push(`${list.consumerNm}`);
+    userConsumeAmtList.push(`${list.eatAmt}`);
+    leftChickenAmt -= ${list.eatAmt};
+    </c:forEach>
+    userNameList.push('남은 닭찌찌~')
+    userConsumeAmtList.push(leftChickenAmt);
 
     new Chart(ctx, {
         type: 'doughnut',
         data: {
-            labels: [
-                '${personalEatAmt[0].consumerNm}',
-                '${chickenList[1].userNm}',
-                '${chickenList[2].userNm}',
-                '남은 녀석들',
-            ],
+            labels: userNameList,
             datasets: [{
                 label: 'EAT',
-                data: [
-                    '${chickenList[0].eat}',
-                    '${chickenList[1].eat}',
-                    '${chickenList[2].eat}',
-                    75-'${chickenList[0].eat}'-'${chickenList[1].eat}'-'${chickenList[2].eat}'
-                ],
+                data: userConsumeAmtList,
                 borderWidth: 1,
                 hoverOffset: 4,
                 backgroundColor: [
@@ -139,21 +152,22 @@
 </script>
 
 <script>
-    const lftChick = document.getElementById('leftChicken');
+    const leftChickenGraph = document.getElementById('leftChicken');
+    let chickenTasteNmList = [];
+    let chickenLeftList = [];
 
-    new Chart(lftChick, {
+    <c:forEach items="${storeAmt.storeDetail}" var="list">
+    chickenTasteNmList.push(`${list.tasteNm}`);
+    chickenLeftList.push(${list.tasteLeftAmt})
+    </c:forEach>
+
+    new Chart(leftChickenGraph, {
         type: 'bar',
         data: {
-            labels: ['갈릭', '핫양념', '허니소이', '떡볶이', '핵불닭'],
+            labels: chickenTasteNmList,
             datasets: [{
                 label: '남은 녀석들 상세',
-                data: [
-                    15 - ${eatChickenClassify[0].count},
-                    15 - ${eatChickenClassify[1].count},
-                    15 - ${eatChickenClassify[2].count},
-                    15 - ${eatChickenClassify[3].count},
-                    15 - ${eatChickenClassify[4].count},
-                ],
+                data: chickenLeftList,
                 backgroundColor: [
                     'ivory',
                     'darkred',

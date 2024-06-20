@@ -1,16 +1,15 @@
 package com.jsp.jsp_demo.controller.mypage;
 
 import com.jsp.jsp_demo.model.auth.UserInput;
-import com.jsp.jsp_demo.model.mypage.ConsumeHis;
-import com.jsp.jsp_demo.model.mypage.Mypage;
+import com.jsp.jsp_demo.model.chicken.ChickenOutput;
 import com.jsp.jsp_demo.service.mypage.MypageService;
+import com.jsp.jsp_demo.util.log.TraceWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.SessionAttribute;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -27,22 +26,25 @@ public class MypageController {
             HttpServletRequest request,
             Model model
     ) {
+        TraceWriter traceWriter = new TraceWriter("", request.getMethod(), request.getServletPath());
+        traceWriter.add("");
+
         try {
+            // TODO: 세션에서 userId 가져오기
             HttpSession session = request.getSession(false);
             UserInput user = new UserInput();
             user.setUserId((Integer) session.getAttribute("userId"));
 
-            List<Mypage> mychicken =  mypageService.getMyChicken(user);
-            List<ConsumeHis> myHis = mypageService.getMyHis(user);
+            // TODO: 내가 먹은 치킨 리스트 가져오기
+            List<ChickenOutput> myChicken = mypageService.getMyChicken(user);
+            List<ChickenOutput> myHis = mypageService.getMyHis(user);
 
-            model.addAttribute("mychicken", mychicken);
+            model.addAttribute("mychicken", myChicken);
             model.addAttribute("myHis", myHis);
-        }
-
-        catch (Exception e) {
+            traceWriter.log(0);
+        } catch (Exception e) {
             return "main/main";
         }
-
         return "main/mypage";
     }
 

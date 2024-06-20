@@ -15,7 +15,7 @@ import java.io.Serializable;
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
 public class Chicken implements Serializable {
     private Integer id;                     // 치킨 섭취 ID
-    private String consumerId;                // 먹은사람 ID
+    private Integer consumerId;                // 먹은사람 ID
     private String consumerNm;                // 먹은사람 이름
     private String tasteCd;                 // 치킨 맛 코드
 }

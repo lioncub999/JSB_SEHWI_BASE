@@ -5,6 +5,7 @@ import com.jsp.jsp_demo.model.chicken.ChickenOutput;
 import com.jsp.jsp_demo.model.chicken.StoreDetails;
 import com.jsp.jsp_demo.model.mypage.Mypage;
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -15,11 +16,6 @@ public interface ChickenMapper {
     List<StoreDetails> getStoreAmt();
     // TODO: 유저별 치킨 총 먹은 수
     List<ChickenOutput> getPersonalEatAmt();
-    // TODO: 맛별 먹은 수
-    List<ChickenOutput> getTasteEatAmt();
-
+    // TODO: 치킨 + 1
     void plusOneChicken(Chicken chicken);
-
-    List<Mypage> eatChickenClassify();
-
 }

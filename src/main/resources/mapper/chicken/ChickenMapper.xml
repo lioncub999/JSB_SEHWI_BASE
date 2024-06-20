@@ -5,12 +5,21 @@
 <mapper namespace="com.jsp.jsp_demo.mapper.chicken.ChickenMapper">
     <select id="getStoreAmt"
             resultType="com.jsp.jsp_demo.model.chicken.StoreDetails">
-        SELECT CODE.CODE_ID AS TASTE_CD, CODE.TASTE AS TASTE_NM, CHICKEN.AMT AS TASTE_STORE_AMT
+        SELECT CODE.CODE_ID AS TASTE_CD, CODE.TASTE AS TASTE_NM, CHICKEN.AMT AS TASTE_STORE_AMT, EAT.EAT_AMT, (CHICKEN.AMT - EAT.EAT_AMT) AS TASTE_LEFT_AMT
         FROM (SELECT *
               FROM TB_CODE_M
               WHERE CODE_TP = 'CHICKEN') CODE
                  LEFT JOIN (SELECT *
                             FROM TB_CHICKEN_STORE) CHICKEN ON CODE.CODE_ID = CHICKEN.CODE_ID
+                 LEFT JOIN (
+            SELECT CODE.CODE_ID AS TASTE_CD, CODE.TASTE AS TASTE_NM, CHICKEN.EAT_AMT
+            FROM (SELECT *
+                  FROM TB_CODE_M
+                  WHERE CODE_TP = 'CHICKEN') CODE
+                     LEFT JOIN (SELECT TASTE_CD, count(*) AS EAT_AMT
+                                FROM TB_CHICKEN_CONSUME_HIS
+                                GROUP BY TASTE_CD) CHICKEN ON CODE.CODE_ID = CHICKEN.TASTE_CD
+        ) EAT ON CODE.CODE_ID = EAT.TASTE_CD;
     </select>
 
     <select id="getPersonalEatAmt"
@@ -21,25 +30,9 @@
         GROUP BY  USER.USER_ID, USER.USER_NM
     </select>
 
-    <select id="getTasteEatAmt"
-            resultType="com.jsp.jsp_demo.model.chicken.ChickenOutput">
-        SELECT CODE.CODE_ID AS TASTE_CD, CODE.TASTE AS TASTE_NM, CHICKEN.EAT_AMT
-        FROM (SELECT *
-              FROM TB_CODE_M
-              WHERE CODE_TP = 'CHICKEN') CODE
-                 LEFT JOIN (SELECT TASTE_CD, count(*) AS EAT_AMT
-                            FROM TB_CHICKEN_CONSUME_HIS
-                            GROUP BY TASTE_CD) CHICKEN ON CODE.CODE_ID = CHICKEN.TASTE_CD
-    </select>
-
-
-
-
     <insert id="plusOneChicken"
             parameterType="com.jsp.jsp_demo.model.chicken.Chicken">
-        INSERT INTO TB_CHICKEN_CONSUME_HIS (CONSUMER, TASTE_CD,CRE_DTM)
-        VALUES (#{consumer}, #{chickCd}, NOW())
+        INSERT INTO TB_CHICKEN_CONSUME_HIS (CONSUMER_ID, TASTE_CD, CRE_DTM)
+        VALUES (#{consumerId}, #{tasteCd}, NOW())
     </insert>
-
-
 </mapper>
