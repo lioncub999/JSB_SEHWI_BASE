@@ -3,9 +3,7 @@ package com.jsp.jsp_demo.mapper.chicken;
 import com.jsp.jsp_demo.model.chicken.Chicken;
 import com.jsp.jsp_demo.model.chicken.ChickenOutput;
 import com.jsp.jsp_demo.model.chicken.StoreDetails;
-import com.jsp.jsp_demo.model.mypage.Mypage;
 import org.apache.ibatis.annotations.Mapper;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 

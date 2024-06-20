@@ -16,15 +16,12 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
-@Api(tags = {"API 정보를 제공하는 Controller"})
 @Controller
 public class MainController {
     @Autowired
     ChickenService chickenService;
 
     // TODO: 디폴트 페이지
-    @ApiOperation(value = "hello 메시지를 반환하는 메소드")
-
     @GetMapping("/")
     public String defaultPage() {
         return "index";

@@ -4,7 +4,6 @@ import com.jsp.jsp_demo.mapper.chicken.ChickenMapper;
 import com.jsp.jsp_demo.model.chicken.Chicken;
 import com.jsp.jsp_demo.model.chicken.ChickenOutput;
 import com.jsp.jsp_demo.model.chicken.StoreDetails;
-import com.jsp.jsp_demo.model.mypage.Mypage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
