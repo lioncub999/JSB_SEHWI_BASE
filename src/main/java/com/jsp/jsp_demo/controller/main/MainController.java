@@ -5,8 +5,6 @@ import com.jsp.jsp_demo.model.chicken.StoreAmt;
 import com.jsp.jsp_demo.model.chicken.StoreDetails;
 import com.jsp.jsp_demo.service.chicken.ChickenService;
 import com.jsp.jsp_demo.util.log.TraceWriter;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
