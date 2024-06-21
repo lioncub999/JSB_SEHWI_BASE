@@ -55,6 +55,15 @@
             </a>
         </li>
 
+        <li class="nav-item <c:if test="${url == '/rullet'}">active</c:if>">
+            <b></b>
+            <b></b>
+            <a href="/rullet">
+            <i class="fa fa-dice nav-icon"></i>
+                <span class="nav-text">룰렛</span>
+            </a>
+        </li>
+
         <li class="nav-item">
             <b></b>
             <b></b>

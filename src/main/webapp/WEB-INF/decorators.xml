@@ -14,6 +14,7 @@
     <decorator name="default" page="template/default/template.jsp">
         <pattern>/main</pattern>
         <pattern>/mypage</pattern>
+        <pattern>/rullet</pattern>
     </decorator>
 
     <!--    ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓-->
