@@ -227,8 +227,9 @@ main {
 
     button {
         margin: auto;
-        width: 70px;
+        width: 80px;
         height: 60px;
+        padding : 5px;
     }
 }
 

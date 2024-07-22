@@ -80,30 +80,114 @@
     <div class="active-calories-container">
         <br>
         <c:forEach items="${personalEatAmt}" var="list">
-            <div class="calories-content" style="width: 220px">
+            <div class="calories-content" style="width: 230px">
                 <span>${list.consumerNm} : </span> <span> ${list.eatAmt}먹</span>
                 <div style="display: flex;">
-                    <button onclick="AjaxFunc.confirm(${list.consumerId}, 'HT01', '갈릭')"
+                    <button onclick="AjaxFunc.confirm(${list.consumerId}, 'HT01', '매콤깐풍기')"
                             type="button" class="btn btn-primary" style="background: ivory; color: black;">
-                        갈릭
+                        매콤<br>깐풍기
                     </button>
-                    <button onclick="AjaxFunc.confirm(${list.consumerId}, 'HT02', '핫양념')"
+                    <button onclick="AjaxFunc.confirm(${list.consumerId}, 'HT02', '스모크바베큐')"
                             type="button" class="btn btn-primary"
-                            style="background: darkred; color: white;">핫양념
+                            style="background: darkred; color: white;">스모크<br>바베큐
                     </button>
-                    <button onclick="AjaxFunc.confirm(${list.consumerId}, 'HT03', '허니소이')"
+                    <button onclick="AjaxFunc.confirm(${list.consumerId}, 'HT03', '스위트콘마요')"
                             type="button" class="btn btn-primary"
-                            style="background: yellow; color: black">허니<br>소이
+                            style="background: yellow; color: black">스위트콘<br>마요
                     </button>
                 </div>
                 <div style="display: flex;">
-                    <button onclick="AjaxFunc.confirm(${list.consumerId}, 'HT04', '떡볶이')"
+                    <button onclick="AjaxFunc.confirm(${list.consumerId}, 'HT04', '트러플스노우')"
+                            type="button" class="btn btn-primary"
+                            style="background: orangered; color: white;">트러플<br>스노우
+                    </button>
+                    <button onclick="AjaxFunc.confirm(${list.consumerId}, 'HT05', '고추마요')"
+                            type="button" class="btn btn-primary"
+                            style="background: black; color: red;">고추마요
+                    </button>
+                    <button onclick="AjaxFunc.confirm(${list.consumerId}, 'HT06', '간장찜닭')"
+                            type="button" class="btn btn-primary"
+                            style="background: black; color: red;">간장찜닭
+                    </button>
+                </div>
+                <div style="display: flex;">
+                    <button onclick="AjaxFunc.confirm(${list.consumerId}, 'HT07', '왕갈비')"
+                            type="button" class="btn btn-primary"
+                            style="background: orangered; color: white;">왕갈비
+                    </button>
+                    <button onclick="AjaxFunc.confirm(${list.consumerId}, 'HT08', '치폴레마요')"
+                            type="button" class="btn btn-primary"
+                            style="background: black; color: red;">치폴레<br>마요
+                    </button>
+                    <button onclick="AjaxFunc.confirm(${list.consumerId}, 'HT09', '버터치킨커리')"
+                            type="button" class="btn btn-primary"
+                            style="background: black; color: red;">버터치킨<br>커리
+                    </button>
+                </div>
+                <div style="display: flex;">
+                    <button onclick="AjaxFunc.confirm(${list.consumerId}, 'HT10', '스위트어니언')"
                             type="button" class="btn btn-primary"
                             style="background: orangered; color: white;">떡볶이
                     </button>
-                    <button onclick="AjaxFunc.confirm(${list.consumerId}, 'HT05', '핵불닭')"
+                    <button onclick="AjaxFunc.confirm(${list.consumerId}, 'HT11', '떡볶이')"
                             type="button" class="btn btn-primary"
-                            style="background: black; color: red;">핵붉닭
+                            style="background: black; color: red;">떡볶이
+                    </button>
+                    <button onclick="AjaxFunc.confirm(${list.consumerId}, 'HT12', '핫양념')"
+                            type="button" class="btn btn-primary"
+                            style="background: black; color: red;">핫양념
+                    </button>
+                </div>
+                <div style="display: flex;">
+                    <button onclick="AjaxFunc.confirm(${list.consumerId}, 'HT10', '스위트어니언')"
+                            type="button" class="btn btn-primary"
+                            style="background: orangered; color: white;">떡볶이
+                    </button>
+                    <button onclick="AjaxFunc.confirm(${list.consumerId}, 'HT11', '떡볶이')"
+                            type="button" class="btn btn-primary"
+                            style="background: black; color: red;">떡볶이
+                    </button>
+                    <button onclick="AjaxFunc.confirm(${list.consumerId}, 'HT12', '핫양념')"
+                            type="button" class="btn btn-primary"
+                            style="background: black; color: red;">핫양념
+                    </button>
+                </div>
+                <div style="display: flex;">
+                    <button onclick="AjaxFunc.confirm(${list.consumerId}, 'HT13', '허니소이')"
+                            type="button" class="btn btn-primary"
+                            style="background: orangered; color: white;">허니소이
+                    </button>
+                    <button onclick="AjaxFunc.confirm(${list.consumerId}, 'HT14', '핵불닭')"
+                            type="button" class="btn btn-primary"
+                            style="background: black; color: red;">핵불닭
+                    </button>
+                    <button onclick="AjaxFunc.confirm(${list.consumerId}, 'HT15', '갈릭')"
+                            type="button" class="btn btn-primary"
+                            style="background: black; color: red;">갈릭
+                    </button>
+                </div>
+                <div style="display: flex;">
+                    <button onclick="AjaxFunc.confirm(${list.consumerId}, 'HT16', '데리야끼')"
+                            type="button" class="btn btn-primary"
+                            style="background: orangered; color: white;">데리야끼
+                    </button>
+                    <button onclick="AjaxFunc.confirm(${list.consumerId}, 'HT17', '화이트머쉬룸')"
+                            type="button" class="btn btn-primary"
+                            style="background: black; color: red;">화이트<br>머쉬룸
+                    </button>
+                    <button onclick="AjaxFunc.confirm(${list.consumerId}, 'HT18', '블랙갈릭')"
+                            type="button" class="btn btn-primary"
+                            style="background: black; color: red;">블랙갈릭
+                    </button>
+                </div>
+                <div style="display: flex;">
+                    <button onclick="AjaxFunc.confirm(${list.consumerId}, 'HT19', '스리라차마요')"
+                            type="button" class="btn btn-primary"
+                            style="background: orangered; color: white;">스리라차<br>마요
+                    </button>
+                    <button onclick="AjaxFunc.confirm(${list.consumerId}, 'HT20', '허니페퍼머스터드')"
+                            type="button" class="btn btn-primary"
+                            style="background: black; color: red;">허니페퍼<br>머스터드
                     </button>
                 </div>
                 <br>
@@ -141,6 +225,7 @@
                     'rgb(255,0,55)',
                     'rgb(0,152,255)',
                     'rgb(255,179,0)',
+                    'rgb(151,105,230)',
                     'grey',
                 ]
             }],

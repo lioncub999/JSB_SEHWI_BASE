@@ -41,7 +41,7 @@
             <b></b>
             <b></b>
             <a href="/main">
-                <i class="fa fa-house nav-icon"></i>
+                <i class="fa fa-house nav-icon fa-spin"></i>
                 <span class="nav-text">홈</span>
             </a>
         </li>
@@ -50,7 +50,7 @@
             <b></b>
             <b></b>
             <a href="/mypage">
-                <i class="fa fa-user nav-icon"></i>
+                <i class="fa fa-user nav-icon fa-spin fa-spin-reverse"></i>
                 <span class="nav-text">마이페이지</span>
             </a>
         </li>
@@ -59,7 +59,7 @@
             <b></b>
             <b></b>
             <a href="/rullet">
-            <i class="fa fa-dice nav-icon"></i>
+            <i class="fa fa-dice nav-icon fa-spin"></i>
                 <span class="nav-text">룰렛</span>
             </a>
         </li>
@@ -68,7 +68,7 @@
             <b></b>
             <b></b>
             <a onclick="SidebarFunc.logout()" style="color : white;">
-                <i class="fa fa-arrow-right-from-bracket nav-icon"></i>
+                <i class="fa fa-arrow-right-from-bracket nav-icon fa-spin fa-spin-reverse"></i>
                 <span class="nav-text">로그아웃</span>
             </a>
         </li>
