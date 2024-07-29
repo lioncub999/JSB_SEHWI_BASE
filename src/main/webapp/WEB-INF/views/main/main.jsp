@@ -127,21 +127,7 @@
                 <div style="display: flex;">
                     <button onclick="AjaxFunc.confirm(${list.consumerId}, 'HT10', '스위트어니언')"
                             type="button" class="btn btn-primary"
-                            style="background: orangered; color: white;">떡볶이
-                    </button>
-                    <button onclick="AjaxFunc.confirm(${list.consumerId}, 'HT11', '떡볶이')"
-                            type="button" class="btn btn-primary"
-                            style="background: black; color: red;">떡볶이
-                    </button>
-                    <button onclick="AjaxFunc.confirm(${list.consumerId}, 'HT12', '핫양념')"
-                            type="button" class="btn btn-primary"
-                            style="background: black; color: red;">핫양념
-                    </button>
-                </div>
-                <div style="display: flex;">
-                    <button onclick="AjaxFunc.confirm(${list.consumerId}, 'HT10', '스위트어니언')"
-                            type="button" class="btn btn-primary"
-                            style="background: orangered; color: white;">떡볶이
+                            style="background: orangered; color: white;">스위트<br>어니언
                     </button>
                     <button onclick="AjaxFunc.confirm(${list.consumerId}, 'HT11', '떡볶이')"
                             type="button" class="btn btn-primary"
@@ -254,18 +240,10 @@
                 label: '남은 녀석들 상세',
                 data: chickenLeftList,
                 backgroundColor: [
-                    'ivory',
-                    'darkred',
-                    'yellow',
-                    'orangered',
-                    'black',
+
                 ],
                 borderColor: [
-                    'ivory',
-                    'darkred',
-                    'yellow',
-                    'orangered',
-                    'black',
+
                 ],
                 borderWidth: 1
             }]

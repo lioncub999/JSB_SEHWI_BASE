@@ -5,7 +5,7 @@
 <mapper namespace="com.jsp.jsp_demo.mapper.chicken.ChickenMapper">
     <select id="getStoreAmt"
             resultType="com.jsp.jsp_demo.model.chicken.StoreDetails">
-        SELECT CODE.CODE_ID AS TASTE_CD, CODE.TASTE AS TASTE_NM, CHICKEN.AMT AS TASTE_STORE_AMT, EAT.EAT_AMT, (CHICKEN.AMT - EAT.EAT_AMT) AS TASTE_LEFT_AMT
+        SELECT CODE.CODE_ID AS TASTE_CD, CODE.TASTE AS TASTE_NM, CHICKEN.AMT AS TASTE_STORE_AMT, COALESCE(EAT.EAT_AMT, 0) AS EAT_AMT, (CHICKEN.AMT - COALESCE(EAT.EAT_AMT, 0)) AS TASTE_LEFT_AMT
         FROM (SELECT *
               FROM TB_CODE_M
               WHERE CODE_TP = 'CHICKEN') CODE

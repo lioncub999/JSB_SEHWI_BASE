@@ -103,18 +103,10 @@
                 label: '내가 먹은 닭가슴살~',
                 data: myChickenEat,
                 backgroundColor: [
-                    'ivory',
-                    'darkred',
-                    'yellow',
-                    'orangered',
-                    'black',
+
                 ],
                 borderColor: [
-                    'ivory',
-                    'darkred',
-                    'yellow',
-                    'orangered',
-                    'black',
+
                 ],
                 borderWidth: 1
             }]
