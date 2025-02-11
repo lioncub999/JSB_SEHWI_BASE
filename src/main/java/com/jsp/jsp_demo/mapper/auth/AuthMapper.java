@@ -11,7 +11,7 @@ public interface AuthMapper {
 
     void signup(UserInput userInput);
 
-    UserOutput selectUserByNm(UserInput userInput);
+    UserOutput selectUserById(UserInput userInput);
 
     Integer selectUserCount(UserInput userInput);
 

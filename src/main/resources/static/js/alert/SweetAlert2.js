@@ -2,7 +2,7 @@ function Toast(position, timer, status, title) {
     const Toast = Swal.mixin({
         toast: true,
         position: position,
-        width:"320px",
+        width:"400",
         showConfirmButton: false,
         timer: timer,
         timerProgressBar: true,

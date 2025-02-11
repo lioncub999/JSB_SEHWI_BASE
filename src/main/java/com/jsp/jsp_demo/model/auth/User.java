@@ -14,8 +14,8 @@ import java.io.Serializable;
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
 public class User implements Serializable{
-    // 유저 ID
-    private int userId;
+    // 유저 ID (핸드폰 번호)
+    private String userId;
 
     // 유저 이름
     private String userNm;

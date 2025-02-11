@@ -32,15 +32,15 @@ public class MypageController {
         try {
             // TODO: 세션에서 userId 가져오기
             HttpSession session = request.getSession(false);
-            UserInput user = new UserInput();
-            user.setUserId((Integer) session.getAttribute("userId"));
-
-            // TODO: 내가 먹은 치킨 리스트 가져오기
-            List<ChickenOutput> myChicken = mypageService.getMyChicken(user);
-            List<ChickenOutput> myHis = mypageService.getMyHis(user);
-
-            model.addAttribute("myChicken", myChicken);
-            model.addAttribute("myHis", myHis);
+//            UserInput user = new UserInput();
+//            user.setUserId((String) session.getAttribute("userId"));
+//
+//            // TODO: 내가 먹은 치킨 리스트 가져오기
+//            List<ChickenOutput> myChicken = mypageService.getMyChicken(user);
+//            List<ChickenOutput> myHis = mypageService.getMyHis(user);
+//
+//            model.addAttribute("myChicken", myChicken);
+//            model.addAttribute("myHis", myHis);
             traceWriter.log(0);
         } catch (Exception e) {
             return "main/main";

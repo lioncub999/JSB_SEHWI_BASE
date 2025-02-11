@@ -1,50 +1,55 @@
+<%--
+ ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ ┃
+ ┃     ● Template JSP (기본 템플릿)
+ ┃
+ ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+--%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/WEB-INF/views/cmm/include/taglibs.jsp" %>
+
 <html>
-<head>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"/>
-  <%@ include file="/WEB-INF/views/cmm/template/default/stylesheets.jsp"%>
-</head>
-<body class="bdy">
-<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-<script src="<c:url value='/js/alert/SweetAlert2.js' />"></script>
-<script>
-    let vh = window.innerHeight * 0.01
-    document.documentElement.style.setProperty('--vh', `${vh}px`)
-    document.querySelector('.bdy').style.height = vh*100;
-    window.addEventListener('resize', () => {
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"/>
+    <%@ include file="/WEB-INF/views/cmm/template/default/stylesheets.jsp"%>
+  </head>
+  <body class="bdy">
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="<c:url value='/js/alert/SweetAlert2.js' />"></script>
+
+    <script>
         let vh = window.innerHeight * 0.01
         document.documentElement.style.setProperty('--vh', `${vh}px`)
         document.querySelector('.bdy').style.height = vh*100;
-    })
-</script>
-<%--TODO: 로그인 세션 확인--%>
-<c:if test="${userId == null || userId == ''}">
-  <script>
-    Toast('top', 1000, 'warning', '로그인을 해주세요.');
-    setTimeout(function() {
-      window.location.href = "/login"
-    }, 1000)
-  </script>
-</c:if>
-<%--TODO: 비밀번호 초기화 Y시 초기화 화면--%>
-<c:if test="${passReset == 'Y'}">
-  <script>
-    window.location.href = "/resetPass"
-  </script>
-</c:if>
-  <main>
-    <%@ include file="/WEB-INF/views/cmm/template/mylayout/sidenav.jsp" %>
+        window.addEventListener('resize', () => {
+            let vh = window.innerHeight * 0.01
+            document.documentElement.style.setProperty('--vh', `${vh}px`)
+            document.querySelector('.bdy').style.height = vh*100;
+        })
+    </script>
 
-    <section class="content">
-<%--      <div class="right-content">--%>
-<%--        <%@ include file="/WEB-INF/views/cmm/template/mylayout/right-content.jsp" %>--%>
-<%--      </div>--%>
-      <div class="left-content">
-        <%@ include file="/WEB-INF/views/cmm/template/default/templateLeft.jsp" %>
-      </div>
-    </section>
-  </main>
+    <%--TODO: 로그인 세션 확인--%>
+    <c:if test="${userId == null || userId == ''}">
+      <script>
+        window.location.href = "/login"
+      </script>
+    </c:if>
+
+    <%--TODO: 비밀번호 초기화 Y시 초기화 화면--%>
+    <c:if test="${passReset == 'Y'}">
+      <script>
+        window.location.href = "/resetPass"
+      </script>
+    </c:if>
+
+    <main>
+      <%@ include file="/WEB-INF/views/cmm/template/mylayout/sidenav.jsp" %>
+      <section class="content">
+        <div class="main-content">
+          <%@ include file="/WEB-INF/views/cmm/template/default/mainContents.jsp" %>
+        </div>
+      </section>
+    </main>
   </body>
 </html>

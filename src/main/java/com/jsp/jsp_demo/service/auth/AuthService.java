@@ -25,19 +25,19 @@ public class AuthService {
         authMapper.signup(userInput);
     }
 
-    public UserOutput selectUserByNm(UserInput userInput) {
+    public UserOutput selectUserById(UserInput userInput) {
 
-        String encodePw = authMapper.selectUserByNm(userInput).getUserPw();
+        String encodePw = authMapper.selectUserById(userInput).getUserPw();
 
         if (Objects.equals(userInput.getUserPw(), "1111")) {
-            UserOutput user = authMapper.selectUserByNm(userInput);
+            UserOutput user = authMapper.selectUserById(userInput);
             if(Objects.equals(user.getPassReset(), "Y")) {
                 return user;
             } else {
                 return null;
             }
         } else if (passwordEncoder.matches(userInput.getUserPw(), encodePw)){
-            return authMapper.selectUserByNm(userInput);
+            return authMapper.selectUserById(userInput);
         } else {
             return null;
         }

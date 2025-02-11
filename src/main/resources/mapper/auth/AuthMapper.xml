@@ -6,16 +6,16 @@
     <insert id="signup"
             parameterType="com.jsp.jsp_demo.model.auth.UserInput">
     INSERT INTO TBU_USER_M
-    (USER_NM, USER_PW, PASS_RESET)
-    VALUES (#{userNm}, #{userPw}, 'N')
+    (USER_ID, USER_NM, USER_PW, PASS_RESET)
+    VALUES (#{userId} ,#{userNm}, #{userPw}, 'N')
     </insert>
 
-    <select id="selectUserByNm"
+    <select id="selectUserById"
             parameterType="com.jsp.jsp_demo.model.auth.UserInput"
             resultType="com.jsp.jsp_demo.model.auth.UserOutput">
         SELECT *
         FROM TBU_USER_M
-        WHERE USER_NM = #{userNm}
+        WHERE USER_ID = #{userId}
     </select>
 
     <select id="selectUserCount"
@@ -23,7 +23,7 @@
             resultType="integer">
         SELECT count(*)
         FROM TBU_USER_M
-        WHERE USER_NM = #{userNm}
+        WHERE USER_ID = #{userId}
     </select>
     
     <update id="updatePassword"

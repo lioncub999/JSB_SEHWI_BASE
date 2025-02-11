@@ -35,22 +35,22 @@ public class MainController {
         traceWriter.add("");
 
         try {
-            // TODO: 입고된 치킨 총 수량
-            List<StoreDetails> storeDetails = chickenService.getStoreAmt();
-            AtomicReference<Integer> totalStoreAmt = new AtomicReference<>(0);
-            storeDetails.stream().forEach(item -> totalStoreAmt.updateAndGet(v -> v + item.getTasteStoreAmt()));
-
-            StoreAmt storeAmt = new StoreAmt();
-            storeAmt.setTotalStoreAmt(totalStoreAmt.get());
-            storeAmt.setStoreDetail(storeDetails);
-
-            // TODO: 유저별 치킨 총 먹은 수
-            List<ChickenOutput> personalEatAmt = chickenService.getPersonalEatAmt();
-
-            model.addAttribute("storeAmt", storeAmt);
-            model.addAttribute("personalEatAmt", personalEatAmt);
-
-            traceWriter.add("totalStoreAmt: " + totalStoreAmt.get());
+//            // TODO: 입고된 치킨 총 수량
+//            List<StoreDetails> storeDetails = chickenService.getStoreAmt();
+//            AtomicReference<Integer> totalStoreAmt = new AtomicReference<>(0);
+//            storeDetails.stream().forEach(item -> totalStoreAmt.updateAndGet(v -> v + item.getTasteStoreAmt()));
+//
+//            StoreAmt storeAmt = new StoreAmt();
+//            storeAmt.setTotalStoreAmt(totalStoreAmt.get());
+//            storeAmt.setStoreDetail(storeDetails);
+//
+//            // TODO: 유저별 치킨 총 먹은 수
+//            List<ChickenOutput> personalEatAmt = chickenService.getPersonalEatAmt();
+//
+//            model.addAttribute("storeAmt", storeAmt);
+//            model.addAttribute("personalEatAmt", personalEatAmt);
+//
+//            traceWriter.add("totalStoreAmt: " + totalStoreAmt.get());
         } catch (Exception e) {
             traceWriter.add("Exception : " + e);
         }

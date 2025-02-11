@@ -1,8 +1,9 @@
 <%--
-:TODO
-  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-  ┃      ◉ sitemesh Side-Nav
-  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+ ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ ┃
+ ┃     ● 공통 좌측 네비게이션바
+ ┃
+ ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <c:set var="logoutUrl" value="/auth/logout"/>
@@ -14,6 +15,7 @@
 <body>
 <script>
     let SidebarFunc = {
+        <%-- 로그아웃 --%>
         logout: function () {
             $.ajax({
                 url: "${logoutUrl}",
@@ -21,7 +23,7 @@
                 cache: false,
             }).done(function (response) {
                 if (response) {
-                    Toast('top', 1000, 'success', '로그아웃이 완료되었습니다.');
+                    Toast('top', 2000, 'success', '로그아웃이 완료되었습니다.');
 
                     setTimeout(function () {
                         window.location.href = "/login"
@@ -33,42 +35,43 @@
         }
     }
 </script>
-<nav class="main-menu">
-    <h1>RulletMan</h1>
-    <img class="logo" src="<c:url value='/js/plugins/images/logo.png'/>" alt="" style="width : 100%"/>
+<nav class="side-nav-main">
+    <%-- 타이틀 --%>
+    <div style="height : 10px"></div>
+    <h1>모두솔루션</h1>
+    <h1>영상 편집 관리</h1>
+
+    <%-- 로고 이미지 --%>
+    <img class="logo" src="<c:url value='/images/logo/modusol_logo.png'/>" alt=""/>
+
+    <%-- 메뉴 리스트 --%>
     <ul>
+        <%-- 홈 --%>
         <li class="nav-item <c:if test="${url == '/main'}">active</c:if>">
             <b></b>
             <b></b>
             <a href="/main">
-                <i class="fa fa-house nav-icon fa-spin"></i>
+                <i class="fa fa-house nav-icon"></i>
                 <span class="nav-text">홈</span>
             </a>
         </li>
 
+        <%-- 마이페이지 --%>
         <li class="nav-item <c:if test="${url == '/mypage'}">active</c:if>">
             <b></b>
             <b></b>
             <a href="/mypage">
-                <i class="fa fa-user nav-icon fa-spin fa-spin-reverse"></i>
+                <i class="fa fa-user nav-icon"></i>
                 <span class="nav-text">마이페이지</span>
             </a>
         </li>
 
-        <li class="nav-item <c:if test="${url == '/rullet'}">active</c:if>">
-            <b></b>
-            <b></b>
-            <a href="/rullet">
-            <i class="fa fa-dice nav-icon fa-spin"></i>
-                <span class="nav-text">룰렛</span>
-            </a>
-        </li>
-
+        <%-- 로그아웃 --%>
         <li class="nav-item">
             <b></b>
             <b></b>
             <a onclick="SidebarFunc.logout()" style="color : white;">
-                <i class="fa fa-arrow-right-from-bracket nav-icon fa-spin fa-spin-reverse"></i>
+                <i class="fa fa-arrow-right-from-bracket nav-icon"></i>
                 <span class="nav-text">로그아웃</span>
             </a>
         </li>

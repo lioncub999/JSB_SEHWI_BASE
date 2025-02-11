@@ -29,6 +29,7 @@ public class ChickenController {
         TraceWriter traceWriter = new TraceWriter("", request.getMethod(), request.getServletPath());
         traceWriter.add("");
 
+
         boolean result = false;
 
         try {
