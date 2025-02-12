@@ -15,6 +15,9 @@
         <pattern>/main</pattern>
         <pattern>/mypage</pattern>
         <pattern>/rullet</pattern>
+
+        <pattern>/videoReq</pattern>
+        <pattern>/videoReq/*</pattern>
     </decorator>
 
     <!--    ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓-->

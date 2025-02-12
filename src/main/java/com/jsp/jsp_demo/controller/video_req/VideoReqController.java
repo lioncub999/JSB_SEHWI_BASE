@@ -1,4 +1,4 @@
-package com.jsp.jsp_demo.controller.main;
+package com.jsp.jsp_demo.controller.video_req;
 
 import com.jsp.jsp_demo.service.main.MainService;
 import com.jsp.jsp_demo.util.log.TraceWriter;
@@ -13,20 +13,11 @@ import javax.servlet.http.HttpServletRequest;
 /* TODO:
  *  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
  *  ┃
- *  ┃    ● MainController
+ *  ┃    ● VideoReqController
  *  ┃
  *  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━*/
 @Controller
-public class MainController {
-    // TODO: 디폴트 페이지
-    @GetMapping("/")
-    public String defaultPage() {
-        return "index";
-    }
-
-    // TODO : MainService
-    @Autowired
-    MainService chickenService;
+public class VideoReqController {
 
     @Value("${naver.maps.client.id}")
     private String naverMapsClientId;
@@ -34,10 +25,35 @@ public class MainController {
     /* TODO:
      *  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
      *  ┃    <GET>
-     *  ┃    ● 메인 페이지
+     *  ┃    ● 비디오 신청 리스트 페이지
      *  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━*/
-    @GetMapping("/main")
-    public String getMainPage(
+    @GetMapping("/videoReq")
+    public String getVideoReqPage(
+            HttpServletRequest request,
+            Model model
+    ) {
+        TraceWriter traceWriter = new TraceWriter("", request.getMethod(), request.getServletPath());
+        traceWriter.add("");
+
+
+        try {
+        } catch (Exception e) {
+            traceWriter.add("Exception : " + e);
+
+        }
+
+        traceWriter.log(0);
+
+        return "video_req/video_req_main";
+    }
+
+    /* TODO:
+     *  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     *  ┃    <GET>
+     *  ┃    ● 비디오 신청 추가 페이지로 이동
+     *  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━*/
+    @GetMapping("/videoReq/reqCreate")
+    public String getVideoReqCreate(
             HttpServletRequest request,
             Model model
     ) {
@@ -45,22 +61,6 @@ public class MainController {
         traceWriter.add("");
 
         try {
-//            // TODO: 입고된 치킨 총 수량
-//            List<StoreDetails> storeDetails = chickenService.getStoreAmt();
-//            AtomicReference<Integer> totalStoreAmt = new AtomicReference<>(0);
-//            storeDetails.stream().forEach(item -> totalStoreAmt.updateAndGet(v -> v + item.getTasteStoreAmt()));
-//
-//            StoreAmt storeAmt = new StoreAmt();
-//            storeAmt.setTotalStoreAmt(totalStoreAmt.get());
-//            storeAmt.setStoreDetail(storeDetails);
-//
-//            // TODO: 유저별 치킨 총 먹은 수
-//            List<ChickenOutput> personalEatAmt = chickenService.getPersonalEatAmt();
-//
-//            model.addAttribute("storeAmt", storeAmt);
-//            model.addAttribute("personalEatAmt", personalEatAmt);
-//
-//            traceWriter.add("totalStoreAmt: " + totalStoreAmt.get());
             model.addAttribute("naverMapsClientId", naverMapsClientId);
         } catch (Exception e) {
             traceWriter.add("Exception : " + e);
@@ -68,6 +68,6 @@ public class MainController {
 
         traceWriter.log(0);
 
-        return "main/main";
+        return "video_req/video_req_create";
     }
 }

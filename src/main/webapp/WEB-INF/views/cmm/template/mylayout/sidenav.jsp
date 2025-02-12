@@ -6,6 +6,8 @@
  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+
 <c:set var="logoutUrl" value="/auth/logout"/>
 <%
     String url = request.getServletPath();
@@ -47,7 +49,7 @@
     <%-- 메뉴 리스트 --%>
     <ul>
         <%-- 홈 --%>
-        <li class="nav-item <c:if test="${url == '/main'}">active</c:if>">
+        <li class="nav-item <c:if test="${fn:startsWith(url, '/main')}">active</c:if>">
             <b></b>
             <b></b>
             <a href="/main">
@@ -56,8 +58,18 @@
             </a>
         </li>
 
+        <%-- 촬영 신청 리스트 --%>
+        <li class="nav-item <c:if test="${fn:startsWith(url, '/videoReq')}">active</c:if>">
+            <b></b>
+            <b></b>
+            <a href="/videoReq">
+                <i class="fa fa-list nav-icon"></i>
+                <span class="nav-text">촬영 신청 리스트</span>
+            </a>
+        </li>
+
         <%-- 마이페이지 --%>
-        <li class="nav-item <c:if test="${url == '/mypage'}">active</c:if>">
+        <li class="nav-item <c:if test="${fn:startsWith(url, '/mypage')}">active</c:if>">
             <b></b>
             <b></b>
             <a href="/mypage">
