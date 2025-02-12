@@ -13,33 +13,35 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+
+/* TODO:
+ *  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ *  ┃
+ *  ┃    ● AuthController
+ *  ┃
+ *  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━*/
 @Controller
 public class AuthController {
+
     // TODO: AuthService
     @Autowired
     private AuthService authService;
 
-    /*
-     * TODO:
+    /* TODO:
      *  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
      *  ┃    <GET>
-     *  ┃    ● 로그인 페이지
-     *  ┃
-     *  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-     */
+     *  ┃    ● 로그인 화면
+     *  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━*/
     @GetMapping("/login")
     public String getLogin() {
         return "auth/login";
     }
 
-    /*
-     * TODO:
+    /* TODO:
      *  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
      *  ┃    <POST>
-     *  ┃    ● 로그인
-     *  ┃
-     *  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-     */
+     *  ┃    ● 로그인 기능
+     *  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━*/
     @ResponseBody
     @PostMapping("/auth/login")
     public String login(
@@ -60,13 +62,14 @@ public class AuthController {
             Integer userExistCheck = authService.selectUserCount(userInput);
 
             if (userExistCheck != 0) {
-                UserOutput loginUserInfo = authService.selectUserById(userInput);
+                UserOutput loginUserInfo = authService.signIn(userInput);
 
                 if (loginUserInfo != null) {
                     request.getSession().invalidate();
                     HttpSession session = request.getSession(true);
                     session.setAttribute("userId", loginUserInfo.getUserId());
                     session.setAttribute("userNm", loginUserInfo.getUserNm());
+                    session.setAttribute("userGrade", loginUserInfo.getUserGrade());
                     session.setAttribute("passReset", loginUserInfo.getPassReset());
                     session.setMaxInactiveInterval(1800);
 
@@ -88,14 +91,11 @@ public class AuthController {
         return result;
     }
 
-    /*
-     * TODO:
+    /* TODO:
      *  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
      *  ┃    <POST>
-     *  ┃    ● 회원 가입
-     *  ┃
-     *  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-     */
+     *  ┃    ● 회원 가입 기능
+     *  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━*/
     @ResponseBody
     @PostMapping("/auth/signup")
     public String signup(HttpServletRequest request,
@@ -105,7 +105,8 @@ public class AuthController {
         traceWriter.add("< INPUT >");
         traceWriter.add("[userInput.getUserId() : " + userInput.getUserId() + "]");
         traceWriter.add("[userInput.getUserNm() : " + userInput.getUserNm() + "]");
-        traceWriter.add("[userInput.getUserPw() : " + userInput.getUserPw() + "]");
+        traceWriter.add("[userInput.getPhone() : " + userInput.getPhone() + "]");
+        traceWriter.add("[userInput.getUserGrade() : " + userInput.getUserGrade() + "]");
         traceWriter.add("");
 
         String result = "";
@@ -126,14 +127,11 @@ public class AuthController {
 
 
 
-    /*
-     * TODO:
+    /* TODO:
      *  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
      *  ┃    <POST>
-     *  ┃    ● 아이디 중복확인
-     *  ┃
-     *  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-     */
+     *  ┃    ● 아이디 중복확인 기능
+     *  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━*/
 //    @ResponseBody
 //    @PostMapping("/auth/dupCheck")
 //    public int dupCheck(
@@ -150,8 +148,7 @@ public class AuthController {
      * TODO:
      *  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
      *  ┃    <POST>
-     *  ┃    ● 로그아웃
-     *  ┃
+     *  ┃    ● 로그아웃 기능
      *  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
      */
     @ResponseBody
@@ -163,27 +160,21 @@ public class AuthController {
         return true;
     }
 
-    /*
-     * TODO:
+    /* TODO:
      *  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
      *  ┃    <GET>
      *  ┃    ● 비밀번호 초기화 화면
-     *  ┃
-     *  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-     */
+     *  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━*/
     @GetMapping("/resetPass")
     public String resetPass() {
         return "/login/passReset";
     }
 
-    /*
-     * TODO:
+    /* TODO:
      *  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
      *  ┃    <GET>
-     *  ┃    ● 비밀번호 초기화 (비밀번호 1111로 초기화)
-     *  ┃
-     *  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-     */
+     *  ┃    ● 비밀번호 초기화 기능 (비밀번호 1111로 초기화)
+     *  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━*/
     @ResponseBody
     @PostMapping("/auth/resetPass")
     public Boolean resetPassFunc(

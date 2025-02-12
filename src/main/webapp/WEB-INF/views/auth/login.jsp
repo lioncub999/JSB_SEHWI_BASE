@@ -77,7 +77,7 @@
                 <div>
                     <form class="login-frm", id="login-frm">
                         <div class="input-box">
-                            <input type="phone" class="input" placeholder="핸드폰 번호 ('-' 제외)" name="userId"/>
+                            <input type="phone" class="input" placeholder="아이디" name="userId"/>
                         </div>
                         <div class="input-box">
                             <input type="password" class="input password" placeholder="비밀번호" name="userPw"/>

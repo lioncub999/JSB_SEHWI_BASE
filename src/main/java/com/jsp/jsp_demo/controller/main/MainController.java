@@ -1,9 +1,6 @@
 package com.jsp.jsp_demo.controller.main;
 
-import com.jsp.jsp_demo.model.chicken.ChickenOutput;
-import com.jsp.jsp_demo.model.chicken.StoreAmt;
-import com.jsp.jsp_demo.model.chicken.StoreDetails;
-import com.jsp.jsp_demo.service.chicken.ChickenService;
+import com.jsp.jsp_demo.service.main.MainService;
 import com.jsp.jsp_demo.util.log.TraceWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,19 +8,24 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
+/* TODO:
+ *  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ *  ┃
+ *  ┃    ● MainController
+ *  ┃
+ *  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━*/
 @Controller
 public class MainController {
-    @Autowired
-    ChickenService chickenService;
-
     // TODO: 디폴트 페이지
     @GetMapping("/")
     public String defaultPage() {
         return "index";
     }
+
+    // TODO : MainService
+    @Autowired
+    MainService chickenService;
 
     // TODO: 메인 페이지
     @GetMapping("/main")

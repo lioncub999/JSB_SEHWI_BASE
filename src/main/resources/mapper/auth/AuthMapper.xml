@@ -5,9 +5,9 @@
 <mapper namespace="com.jsp.jsp_demo.mapper.auth.AuthMapper">
     <insert id="signup"
             parameterType="com.jsp.jsp_demo.model.auth.UserInput">
-    INSERT INTO TBU_USER_M
-    (USER_ID, USER_NM, USER_PW, PASS_RESET)
-    VALUES (#{userId} ,#{userNm}, #{userPw}, 'N')
+        INSERT INTO TBU_USER_M
+        (USER_ID, USER_NM, USER_PW, PHONE, USER_GRADE, PASS_RESET)
+        VALUES (#{userId} ,#{userNm}, #{userPw}, #{phone}, #{userGrade}, 'N')
     </insert>
 
     <select id="selectUserById"

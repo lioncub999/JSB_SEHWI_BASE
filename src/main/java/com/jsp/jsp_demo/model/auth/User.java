@@ -14,15 +14,16 @@ import java.io.Serializable;
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
 public class User implements Serializable{
-    // 유저 ID (핸드폰 번호)
-    private String userId;
 
-    // 유저 이름
-    private String userNm;
+    private String userId; // 유저 ID (핸드폰 번호)
 
-    // 유저 비밀번호
-    private String userPw;
+    private String userNm; // 유저 이름
 
-    //비밀번호 초기화 여부
-    private String passReset;
+    private String userPw; // 유저 비밀번호
+
+    private String phone; // 유저 핸드폰 번호
+
+    private String passReset; // 비밀번호 초기화 여부
+
+    private String userGrade; // 유저 등급 (0 : 최고관리자, 1:팀장, 2: 팀원)
 }

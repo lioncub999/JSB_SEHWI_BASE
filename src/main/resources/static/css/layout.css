@@ -146,74 +146,8 @@ main {
 
 /* MAIN CONTENT */
 .main-content {
-    display: flex;
     height : calc(100% - 30px);
     background: #e6eaff;
     border-radius: 10px;
     margin : 15px 15px 15px 15px;
-}
-
-/* ACTIVITIES */
-.activities h1 {
-    margin: 0 0 20px;
-    font-size: 1.4rem;
-    font-weight: 700;
-}
-
-/* RIGHT CONTENT */
-.right-content {
-    display: grid;
-    height : calc(100vh - 80px - 30px);
-    background: #f6f7fb;
-    margin: 15px 15px 15px 0;
-    padding: 10px 0;
-    border-radius: 15px;
-    overflow-y: scroll;
-}
-
-/* ACTIVE CALORIES  */
-.active-calories {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    padding: 10px 10px;
-
-    width: 100%;
-    height : calc(100vh - 180px);
-    background-color: rgb(214, 227, 248);
-    overflow-x:hidden;
-    overflow-y: scroll;
-    overscroll-behavior: none;
-    border-radius: 15px;
-    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 3px;
-}
-
-.active-calories h1 {
-    width: 100%;
-    text-align: center;
-    margin-top: 10px;
-    font-size: 1.2rem;
-}
-
-.active-calories-container {
-    display: flex;
-    flex-direction: column;
-
-    align-items: center;
-    text-align: center;
-
-    gap: 10px;
-
-    button {
-        margin: auto;
-        width: 80px;
-        height: 60px;
-        padding : 5px;
-    }
-}
-
-table td, table th {
-    align-content: center;
-    text-align: center;
 }

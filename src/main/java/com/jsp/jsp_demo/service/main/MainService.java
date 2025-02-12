@@ -1,4 +1,4 @@
-package com.jsp.jsp_demo.service.chicken;
+package com.jsp.jsp_demo.service.main;
 
 import com.jsp.jsp_demo.mapper.chicken.ChickenMapper;
 import com.jsp.jsp_demo.model.chicken.Chicken;
@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.List;
 
 @Service
-public class ChickenService {
+public class MainService {
 
     @Autowired
     ChickenMapper chickenMapper;

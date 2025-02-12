@@ -1,7 +1,8 @@
 package com.jsp.jsp_demo.controller.mypage;
 
 import com.jsp.jsp_demo.model.auth.UserInput;
-import com.jsp.jsp_demo.model.chicken.ChickenOutput;
+import com.jsp.jsp_demo.model.auth.UserOutput;
+import com.jsp.jsp_demo.service.auth.AuthService;
 import com.jsp.jsp_demo.service.mypage.MypageService;
 import com.jsp.jsp_demo.util.log.TraceWriter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +16,28 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
+/* TODO:
+ *  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ *  ┃
+ *  ┃    ● MyPageController
+ *  ┃
+ *  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━*/
 @Controller
 public class MypageController {
 
+    // TODO : AuthService
+    @Autowired
+    AuthService authService;
+
+    // TODO : MypageService
     @Autowired
     MypageService mypageService;
 
+    /* TODO:
+     *  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     *  ┃    <GET>
+     *  ┃    ● 마이페이지 화면
+     *  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━*/
     @GetMapping("/mypage")
     public String mypage(
             HttpServletRequest request,
@@ -32,20 +49,23 @@ public class MypageController {
         try {
             // TODO: 세션에서 userId 가져오기
             HttpSession session = request.getSession(false);
-//            UserInput user = new UserInput();
-//            user.setUserId((String) session.getAttribute("userId"));
-//
-//            // TODO: 내가 먹은 치킨 리스트 가져오기
-//            List<ChickenOutput> myChicken = mypageService.getMyChicken(user);
-//            List<ChickenOutput> myHis = mypageService.getMyHis(user);
-//
-//            model.addAttribute("myChicken", myChicken);
-//            model.addAttribute("myHis", myHis);
-            traceWriter.log(0);
+            UserInput userInput = new UserInput();
+
+            userInput.setUserId((String) session.getAttribute("userId"));
+
+            UserOutput currentUserInfo = authService.selectUserById(userInput);
+
+            System.out.println(currentUserInfo.getPhone());
+
+            model.addAttribute("currentUserInfo", currentUserInfo);
+
         } catch (Exception e) {
+            traceWriter.add("[Error] : " + e);
             return "main/main";
+        } finally {
+            traceWriter.log(0);
         }
-        return "main/mypage";
+        return "mypage/mypage";
     }
 
     @ResponseBody
