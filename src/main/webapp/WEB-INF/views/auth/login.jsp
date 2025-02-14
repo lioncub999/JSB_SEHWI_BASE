@@ -12,13 +12,6 @@
 <c:set var="loginUrl" value="/auth/login"/>
 <c:set var="dupCheckUrl" value="/auth/dupCheck"/>
 
-<%-- 로그인 되있는지 체크 (userId가 빈값이 아니면 메인 페이지로 이동) --%>
-<c:if test="${userId != null && userId != ''}">
-    <script>
-        window.location.href = "/main"
-    </script>
-</c:if>
-
 <html>
     <head>
         <meta name="viewport"z
@@ -59,7 +52,7 @@
                         Toast('top', 1000, 'success', '로그인 되었습니다.');
                         setTimeout(function () {
                             window.location.href = '/main';
-                        }, 1000)
+                        }, 1000);
                     })
                 }
             }

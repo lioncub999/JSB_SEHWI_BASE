@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jsp.jsp_demo.mapper.video.VideoReqMapper">
+    <select id="getUnStartedVideoReq"
+            resultType="com.jsp.jsp_demo.model.video.VideoReq">
+        SELECT CRE_ID, STORE_NM, CONTRACT_DT, PHONE, LONGITUDE, LATITUDE FROm TBV_VIDEO_REQ_M TVRM WHERE STATUS =
+        "COORDINATION" ORDER BY CRE_DTM DESC;
+    </select>
+
+    <insert id="createVideoReq"
+            parameterType="com.jsp.jsp_demo.model.video.VideoReq">
+        INSERT INTO TBV_VIDEO_REQ_M
+        (CRE_ID, STORE_NM, ADDRESS, CONTRACT_DT, CRE_DTM, PHONE, LONGITUDE, LATITUDE, NOTE, STATUS)
+        VALUES (#{creId} ,#{storeNm}, #{address}, #{contractDt}, NOW(), #{phone}, #{longitude}, #{latitude}, #{note},
+        'COORDINATION')
+    </insert>
+</mapper>

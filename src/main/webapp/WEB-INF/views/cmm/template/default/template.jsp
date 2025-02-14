@@ -18,17 +18,6 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="<c:url value='/js/alert/SweetAlert2.js' />"></script>
 
-    <script>
-        let vh = window.innerHeight * 0.01
-        document.documentElement.style.setProperty('--vh', `${vh}px`)
-        document.querySelector('.bdy').style.height = vh*100;
-        window.addEventListener('resize', () => {
-            let vh = window.innerHeight * 0.01
-            document.documentElement.style.setProperty('--vh', `${vh}px`)
-            document.querySelector('.bdy').style.height = vh*100;
-        })
-    </script>
-
     <%--TODO: 로그인 세션 확인--%>
     <c:if test="${userId == null || userId == ''}">
       <script>

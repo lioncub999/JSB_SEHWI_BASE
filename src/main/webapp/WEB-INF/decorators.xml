@@ -19,10 +19,4 @@
         <pattern>/videoReq</pattern>
         <pattern>/videoReq/*</pattern>
     </decorator>
-
-    <!--    ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓-->
-    <!--    ┃  ◉ 왼쪽 컨텐츠 모바일 -->
-    <!--    ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛-->
-    <!-- <decorator name="left" page="template/default/templateLeft.jsp">
-    </decorator> -->
 </decorators>

@@ -1,6 +1,9 @@
 package com.jsp.jsp_demo.controller.main;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jsp.jsp_demo.model.video.VideoReq;
 import com.jsp.jsp_demo.service.main.MainService;
+import com.jsp.jsp_demo.service.video.VideoReqService;
 import com.jsp.jsp_demo.util.log.TraceWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -9,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /* TODO:
  *  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -26,7 +30,7 @@ public class MainController {
 
     // TODO : MainService
     @Autowired
-    MainService chickenService;
+    VideoReqService videoReqService;
 
     @Value("${naver.maps.client.id}")
     private String naverMapsClientId;
@@ -41,26 +45,20 @@ public class MainController {
             HttpServletRequest request,
             Model model
     ) {
+        ObjectMapper objectMapper = new ObjectMapper();
+
         TraceWriter traceWriter = new TraceWriter("", request.getMethod(), request.getServletPath());
         traceWriter.add("");
 
         try {
-//            // TODO: 입고된 치킨 총 수량
-//            List<StoreDetails> storeDetails = chickenService.getStoreAmt();
-//            AtomicReference<Integer> totalStoreAmt = new AtomicReference<>(0);
-//            storeDetails.stream().forEach(item -> totalStoreAmt.updateAndGet(v -> v + item.getTasteStoreAmt()));
-//
-//            StoreAmt storeAmt = new StoreAmt();
-//            storeAmt.setTotalStoreAmt(totalStoreAmt.get());
-//            storeAmt.setStoreDetail(storeDetails);
-//
-//            // TODO: 유저별 치킨 총 먹은 수
-//            List<ChickenOutput> personalEatAmt = chickenService.getPersonalEatAmt();
-//
-//            model.addAttribute("storeAmt", storeAmt);
-//            model.addAttribute("personalEatAmt", personalEatAmt);
-//
-//            traceWriter.add("totalStoreAmt: " + totalStoreAmt.get());
+
+            List<VideoReq> videoReqList = videoReqService.getUnStartedVideoReq();
+
+            String testList = objectMapper.writeValueAsString(videoReqList);
+
+
+
+            model.addAttribute("testList", testList);
             model.addAttribute("naverMapsClientId", naverMapsClientId);
         } catch (Exception e) {
             traceWriter.add("Exception : " + e);
