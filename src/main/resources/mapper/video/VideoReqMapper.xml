@@ -5,7 +5,7 @@
 <mapper namespace="com.jsp.jsp_demo.mapper.video.VideoReqMapper">
     <select id="getUnStartedVideoReq"
             resultType="com.jsp.jsp_demo.model.video.VideoReq">
-        SELECT CRE_ID, STORE_NM, CONTRACT_DT, PHONE, LONGITUDE, LATITUDE FROm TBV_VIDEO_REQ_M TVRM WHERE STATUS =
+        SELECT REQ_ID, CRE_ID, STORE_NM, CONTRACT_DT, PHONE, LONGITUDE, LATITUDE, NOTE FROM TBV_VIDEO_REQ_M TERM WHERE STATUS =
         "COORDINATION" ORDER BY CRE_DTM DESC;
     </select>
 

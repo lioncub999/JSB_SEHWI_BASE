@@ -108,8 +108,8 @@ public class VideoReqController {
         String result = "";
 
         try {
-            String userId = (String) request.getSession().getAttribute("userId");
-            videoReq.setCreId(userId);
+//            String userId = (String) request.getSession().getAttribute("userId");
+            videoReq.setCreId(videoReq.getCreId());
 
             videoReqService.createVideoReq(videoReq);
 

@@ -57,6 +57,7 @@
         let AjaxFunc = {
             <%-- 촬영 신청 --%>
             reqCreate: function (xhr, textStatus, thrownError) {
+                LoadingOverlay.show();
                 var formData = $('#video-req-frm').serialize()
 
                 var warningTxt = '';
@@ -84,6 +85,7 @@
                 <%-- 워닝 표시 --%>
                 if (warningTxt != '') {
                     Toast('top', 1500, 'warning', warningTxt);
+                    LoadingOverlay.hide();
                     return;
                 }
 
@@ -111,7 +113,8 @@
                             allowOutsideClick: false, // 팝업 외부 클릭 비활성화
                         });
                     }
-                })
+                });
+                LoadingOverlay.hide();
             }
         }
     </script>
@@ -124,6 +127,9 @@
             <input type="hidden" id="longitude" name="longitude"/>
             <input type="hidden" id="latitude" name="latitude"/>
             <input type="hidden" id="address" name="address"/>
+            <div class="input-box">
+                <input type="text" class="input" placeholder="신청자 (임시))" id="storeNm" name="creId"/>
+            </div>
             <div class="input-box">
                 <input type="text" class="input" placeholder="매장명" id="storeNm" name="storeNm"/>
             </div>

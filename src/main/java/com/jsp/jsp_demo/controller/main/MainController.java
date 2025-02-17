@@ -54,11 +54,9 @@ public class MainController {
 
             List<VideoReq> videoReqList = videoReqService.getUnStartedVideoReq();
 
-            String testList = objectMapper.writeValueAsString(videoReqList);
+            String reqList = objectMapper.writeValueAsString(videoReqList);
 
-
-
-            model.addAttribute("testList", testList);
+            model.addAttribute("reqList", reqList);
             model.addAttribute("naverMapsClientId", naverMapsClientId);
         } catch (Exception e) {
             traceWriter.add("Exception : " + e);

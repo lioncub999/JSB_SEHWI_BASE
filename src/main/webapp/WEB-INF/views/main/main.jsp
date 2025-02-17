@@ -22,10 +22,40 @@
         <script src="<c:url value='/js/alert/SweetAlert2.js' />"></script>
         <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${naverMapsClientId}"></script>
         <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${naverMapsClientId}&submodules=geocoder"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 
-        <input type="text" id="address" placeholder="주소 입력" style="width: 300px;">
-        <button onclick="searchAddressToCoordinate()">주소 변환 및 저장</button>
-        <div id="map" style="width:100%;height:95%;"></div>
+        <!-- Modal -->
+        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="1" aria-labelledby="staticBackdropLabel" aria-hidden="false" >
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p id="modal-store-name">Store Name: </p>
+                        <p id="modal-phone">Phone: </p>
+                        <p id="modal-note">Note: </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div id="map" style="width:100%;height:100%;"></div>
+
+        <script>
+            let PageControlFunc ={
+                <%-- 회원가입 화면으로 이동 --%>
+                moveToReqDetailPage : function(id) {
+                    window.location.href = '/videoReq/detail?id='+id;
+                },
+            }
+        </script>
 
 
         <script>
@@ -38,7 +68,7 @@
 
             map.setCursor('pointer');
 
-            const videoReqList = ${testList};
+            const videoReqList = ${reqList};
 
             videoReqList.forEach(function (videoReq) {
                 var marker = new naver.maps.Marker({
@@ -47,14 +77,33 @@
                     title : videoReq.storeNm
                 });
 
-                var infoWindow = new naver.maps.InfoWindow({
-                    content: '<div style="padding:10px;"><h4>[' +videoReq.storeNm + ']</h1></div>'
-                });
 
-                naver.maps.Event.addListener(marker, 'click', function () {
+                
+            var infoWindow = new naver.maps.InfoWindow({
+                content: '<div style="padding:10px;">' +
+                            '<h5>[' + videoReq.storeNm + ']</h5>' +
+                            '<h6>번호: ' + videoReq.phone + '</h6>' +
+                            '<h7>특이사항: ' + videoReq.note + '</h7>' +
+                            '<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop" ' +
+                                'data-bs-toggle="modal" ' +
+                                'data-bs-target="#exampleModal" ' +
+                                'onclick="updateModal(\'' + videoReq.storeNm + '\', \'' + videoReq.phone + '\', \'' + videoReq.note + '\')">' +
+                                'Launch demo modal' +
+                            '</button>' +
+                        '</div>'
+            });
+
+            naver.maps.Event.addListener(marker, 'click', function () {
                     infoWindow.open(map, marker);
                 });
             });
+
+            function updateModal(storeName, phone, note) {
+                document.getElementById('modal-store-name').textContent = 'Store Name: '+storeName;
+                document.getElementById('modal-phone').textContent = 'Phone: '+phone;
+                document.getElementById('modal-note').textContent = 'Note: '+note;
+            }
         </script>
+
     </body>
 </html>

@@ -90,6 +90,7 @@ main {
     .login-btn-box {
         display: flex;
         justify-content: center;
+        margin-bottom: 10px;
 
         .login-btn {
             width: 250px;

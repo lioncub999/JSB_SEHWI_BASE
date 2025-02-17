@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
@@ -91,13 +92,24 @@ public class AuthController {
         return result;
     }
 
+
+    /* TODO:
+     *  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     *  ┃    <POST>
+     *  ┃    ● 회원 가입 페이지
+     *  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━*/
+    @GetMapping("/auth/signUp")
+    public String getSignUp() {
+        return "auth/signUp";
+    }
+
     /* TODO:
      *  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
      *  ┃    <POST>
      *  ┃    ● 회원 가입 기능
      *  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━*/
     @ResponseBody
-    @PostMapping("/auth/signup")
+    @PostMapping("/auth/signUp")
     public String signup(HttpServletRequest request,
                          UserInput userInput) {
 
@@ -132,17 +144,18 @@ public class AuthController {
      *  ┃    <POST>
      *  ┃    ● 아이디 중복확인 기능
      *  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━*/
-//    @ResponseBody
-//    @PostMapping("/auth/dupCheck")
-//    public int dupCheck(
-//            UserInput userInput
-//    ) {
-//        int result = 0;
-//
+    @ResponseBody
+    @PostMapping("/auth/dupCheck")
+    public int dupCheck(
+            @RequestBody UserInput userInput
+    ) {
+        int result = 0;
+        System.out.println(userInput.getUserId());
+
 //        result = authService.selectUserCount(userInput);
-//
-//        return result;
-//    }
+
+        return result;
+    }
 
     /*
      * TODO:
