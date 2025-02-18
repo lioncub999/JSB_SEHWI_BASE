@@ -1,6 +1,7 @@
-package com.jsp.jsp_demo.model.auth;
+package com.jsp.jsp_demo.model.video;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.jsp.jsp_demo.model.auth.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,6 +10,7 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
-public class UserInput extends User {
-    private String signUpCode; // 가입 코드
+public class VideoReqOutput extends VideoReq {
+
+    private String stringCreDtm;
 }

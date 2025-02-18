@@ -2,7 +2,9 @@ package com.jsp.jsp_demo.mapper.video;
 
 import com.jsp.jsp_demo.model.auth.UserInput;
 import com.jsp.jsp_demo.model.auth.UserOutput;
+import com.jsp.jsp_demo.model.paging.PagingModel;
 import com.jsp.jsp_demo.model.video.VideoReq;
+import com.jsp.jsp_demo.model.video.VideoReqOutput;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -15,6 +17,19 @@ import java.util.List;
  *  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━*/
 @Mapper
 public interface VideoReqMapper {
+
+    /* TODO:
+     *  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     *  ┃    ● 모든 요청 갯수
+     *  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━*/
+    Integer getAllReqCount();
+
+    /* TODO:
+     *  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     *  ┃    ● 요청 페이징
+     *  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━*/
+    List<VideoReqOutput> getReqList(PagingModel pagingModel);
+
 
     /* TODO:
      *  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

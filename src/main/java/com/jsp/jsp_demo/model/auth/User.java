@@ -23,6 +23,8 @@ public class User implements Serializable{
 
     private String phone; // 유저 핸드폰 번호
 
+    private String jobGrade; // 유저 직급
+
     private String passReset; // 비밀번호 초기화 여부
 
     private String userGrade; // 유저 등급 (0 : 최고관리자, 1:팀장, 2: 팀원)

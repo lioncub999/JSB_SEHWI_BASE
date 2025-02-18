@@ -29,44 +29,96 @@
     </script>
     
 
-    <input type="text" id="address" placeholder="주소 입력" style="width: 300px;">
-    <button onclick="">검색</button>
+    <div class="reqTopBox" style="display:flex;justify-content: space-between;">
+        <button onclick="PageControlFunc.moveToReqAddPage()" class="common-blue-btn" style="margin-top:15px;margin-left:15px; margin-bottom:15px">촬영 신청</button>
 
-    <button onclick="PageControlFunc.moveToReqAddPage()">추가</button>
+        <div style="margin-top:15px;margin-right:15px">
+            <input type="text" id="searchTxt" placeholder="" style="width: 300px; height:50px">
+            <button onclick="" class="common-blue-btn">검색</button>
+        </div>
+    </div>
 
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th scope="col">촬영 신청일</th>
-                <th scope="col">신청자</th>
-                <th scope="col">계약일</th>
-                <th scope="col">연락처</th>
-                <th scope="col">주소</th>
-                <th scope="col">촬영완료여부</th>
-                <th scope="col">촬영담당자</th>
-                <th scope="col">진행상태</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>1</td>
-                <td>홍길동</td>
-                <td>30</td>
-                <td>개발자</td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>김철수</td>
-                <td>25</td>
-                <td>디자이너</td>
-            </tr>
-            <tr>
-                <td>3</td>
-                <td>이영희</td>
-                <td>28</td>
-                <td>마케터</td>
-            </tr>
-        </tbody>
-    </table>
+    
+
+    <div style="margin-left:10px;margin-right:10px">
+        <%-- 요청 리스트 테이블 --%>
+        <table class="table table-striped table-bordered" >
+            <thead class="text-center" style="height:50px">
+                <tr>
+                    <th style="width: 3%; border-top-left-radius:10px;">신청ID</th>
+                    <th style="width: 8%;">신청일</th>
+                    <th style="width: 8%;">신청자</th>
+                    <th style="width: 10%;">연락처</th>
+                    <th style="width: 25%;">주소</th>
+                    <th style="width: 25%;">특이사항</th>
+                    <th style="width: 5%;">촬영완료여부</th>
+                    <th style="width: 5%;">촬영담당자</th>
+                    <th style="width: 5%; border-top-right-radius:10px;">진행상태</th>
+                </tr>
+            </thead>
+            <tbody>
+                <c:forEach var="videoReq" items="${videoReqList}">
+                    <tr>
+                        <td class="text-center">${videoReq.reqId}</td>
+                        <td class="text-center">${videoReq.stringCreDtm}</td>
+                        <td class="text-center">${videoReq.creId}</td>
+                        <td class="text-center">
+                            ${videoReq.phone.substring(0,3)}-${videoReq.phone.substring(3,7)}-${videoReq.phone.substring(7)}
+                        </td>
+                        <td>${videoReq.address}</td>
+                        <td><pre style="margin:0px"><span>${videoReq.note}</span></pre></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center">
+                            <c:choose>
+                                <c:when test="${videoReq.status == 'COORDINATION'}">
+                                    일정조율중
+                                </c:when>
+                                <c:otherwise>
+                                    ${videoReq.status}
+                                </c:otherwise>
+                            </c:choose>
+                        </td>
+                    </tr>
+                </c:forEach>
+            </tbody>
+        </table>
+    </div>
+
+    <%-- 페이지네이션 --%>
+    <nav aria-label="Page navigation example" style="justify-items : center">
+        <ul class="pagination">
+            <li class="page-item">
+                <a class="page-link" href="/videoReq?curPage=1" aria-label="Previous">
+                    <span aria-hidden="true">&lt;&lt;</span>
+                </a>
+            </li>
+
+            <li class="page-item">
+                <a class="page-link" href="/videoReq?curPage=${curPage - 1 > 0 ? curPage- 1 : 1}" aria-label="">
+                    <span aria-hidden="true">&lt;</span>
+                </a>
+            </li>
+                
+            <!-- 현재 페이지 그룹에 맞는 페이지 버튼만 출력 -->
+            <c:forEach begin="${startPage}" end="${endPage}" var="i">
+                <li class="page-item ${i == curPage ? 'active' : ''}">
+                    <a class="page-link" href="/videoReq?curPage=${i}" aria-label="">
+                        <span aria-hidden="true">${i}</span>
+                    </a>
+                </li>
+            </c:forEach>
+            
+            <li class="page-item">
+                <a class="page-link" href="/videoReq?curPage=${curPage + 1 <= maxPage ? curPage + 1 : maxPage}" aria-label="">
+                    <span aria-hidden="true">&gt;</span>
+                </a>
+            </li>
+            <a class="page-link" href="/videoReq?curPage=${maxPage}" aria-label="Next">
+                <span aria-hidden="true">&gt;&gt;</span>
+            </a>
+            </li>
+        </ul>
+    </nav>
 </body>
 </html>

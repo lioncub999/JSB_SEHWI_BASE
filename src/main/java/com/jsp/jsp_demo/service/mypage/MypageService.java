@@ -23,14 +23,4 @@ public class MypageService {
     public void resetPassword(UserInput userInput) {
         mypageMapper.resetPassword(userInput);
     }
-
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public List<ChickenOutput> getMyChicken(UserInput user) {
-        return mypageMapper.getMyChicken(user);
-    }
-
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public List<ChickenOutput> getMyHis(UserInput user) {
-        return mypageMapper.getMyHis(user);
-    }
 }

@@ -427,6 +427,17 @@ template {
     display: none;
 }
 
+pre {
+    border: none;          /* 테두리 제거 */
+    background: none;      /* 배경색 제거 */
+    padding: 0px;            /* 내부 여백 제거 */
+    margin: 0px;            /* 외부 여백 제거 */
+    font-size: inherit;    /* 폰트 크기를 상속받음 */
+    font-family: inherit;  /* 폰트 스타일 상속받음 */
+    white-space: pre-wrap; /* 개행 문자 처리 및 자동 줄바꿈 허용 */
+    color : black;
+}
+
 /* 브라우저는 렌더링 속도, 정밀도에 대한 가독성을 강조 */
 @media screen and (min-width:960px) {
 

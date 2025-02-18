@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Objects;
 
 
 /* TODO:
@@ -52,7 +53,6 @@ public class AuthController {
         TraceWriter traceWriter = new TraceWriter("", request.getMethod(), request.getServletPath());
         traceWriter.add("< INPUT >");
         traceWriter.add("[userInput.getUserId() : " + userInput.getUserId() + "]");
-        traceWriter.add("[userInput.getUserPw() : " + userInput.getUserPw() + "]");
         traceWriter.add("");
 
 
@@ -115,29 +115,32 @@ public class AuthController {
 
         TraceWriter traceWriter = new TraceWriter("", request.getMethod(), request.getServletPath());
         traceWriter.add("< INPUT >");
+        traceWriter.add("[userInput.getSignUpCode() : " + userInput.getSignUpCode() + "]");
         traceWriter.add("[userInput.getUserId() : " + userInput.getUserId() + "]");
         traceWriter.add("[userInput.getUserNm() : " + userInput.getUserNm() + "]");
+        traceWriter.add("[userInput.getJobGrade() : " + userInput.getJobGrade() + "]");
         traceWriter.add("[userInput.getPhone() : " + userInput.getPhone() + "]");
-        traceWriter.add("[userInput.getUserGrade() : " + userInput.getUserGrade() + "]");
         traceWriter.add("");
 
-        String result = "";
+        userInput.setUserGrade("3");
 
         try {
+            if (!Objects.equals(userInput.getSignUpCode(), "modusol24")) {
+
+                return "codeError";
+            }
+
             authService.signup(userInput);
-            result = "success";
+
+            return "success";
 
         } catch (Exception e) {
             traceWriter.add("[Error] : " + e);
-            result = "error";
+            return "error";
         } finally {
             traceWriter.log(0);
         }
-
-        return result;
     }
-
-
 
     /* TODO:
      *  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -149,12 +152,7 @@ public class AuthController {
     public int dupCheck(
             @RequestBody UserInput userInput
     ) {
-        int result = 0;
-        System.out.println(userInput.getUserId());
-
-//        result = authService.selectUserCount(userInput);
-
-        return result;
+        return authService.selectUserCount(userInput);
     }
 
     /*

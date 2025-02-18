@@ -3,9 +3,22 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.jsp.jsp_demo.mapper.video.VideoReqMapper">
+    <select id="getAllReqCount"
+            resultType="integer">
+        SELECT COUNT(*) FROM TBV_VIDEO_REQ_M;
+    </select>
+
+    <select id="getReqList"
+            parameterType="com.jsp.jsp_demo.model.paging.PagingModel"
+            resultType="com.jsp.jsp_demo.model.video.VideoReqOutput">
+        SELECT REQ_ID, CRE_ID, STORE_NM, ADDRESS, DATE_FORMAT(CRE_DTM, '%Y-%m-%d') AS STRING_CRE_DTM, SHOOT_SCHEDULE, PHONE, NOTE, MANAGER_ID, STATUS FROM TBV_VIDEO_REQ_M tvrm ORDER BY REQ_ID DESC LIMIT #{startRow}, #{pageSize} ;
+    </select>
+
+
+
     <select id="getUnStartedVideoReq"
             resultType="com.jsp.jsp_demo.model.video.VideoReq">
-        SELECT REQ_ID, CRE_ID, STORE_NM, CONTRACT_DT, PHONE, LONGITUDE, LATITUDE, NOTE FROM TBV_VIDEO_REQ_M TERM WHERE STATUS =
+        SELECT REQ_ID, CRE_ID, STORE_NM, CONTRACT_DT, PHONE, ADDRESS, LONGITUDE, LATITUDE, NOTE FROM TBV_VIDEO_REQ_M TERM WHERE STATUS =
         "COORDINATION" ORDER BY CRE_DTM DESC;
     </select>
 

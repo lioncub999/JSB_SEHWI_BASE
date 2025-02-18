@@ -119,15 +119,17 @@
         }
     </script>
     
-    <button class="common-blue-btn" type="button" onclick="PageControlFunc.moveToReqListPage()">목록으로 이동</button>
+    <button class="common-blue-btn" type="button" onclick="PageControlFunc.moveToReqListPage()" style="margin-top:15px;margin-left:15px;">목록으로 이동</button>
 
     <%-- 신청 폼 --%>
-    <div>
+    <div style="margin-left:15px;margin-top:15px">
         <form class="video-req-frm", id="video-req-frm">
             <input type="hidden" id="longitude" name="longitude"/>
             <input type="hidden" id="latitude" name="latitude"/>
             <input type="hidden" id="address" name="address"/>
+
             <div class="input-box">
+                <span>신청자 (임시) : </span>
                 <input type="text" class="input" placeholder="신청자 (임시))" id="storeNm" name="creId"/>
             </div>
             <div class="input-box">
@@ -137,7 +139,7 @@
                 <input type="text" class="input" placeholder="대표님 연락처 ('-' 제외)" id="phone" name="phone"/>
             </div>
             <div class="input-box">
-                <input type="text" class="input" placeholder="특이사항" id="note" name="note"/>
+                <textarea class="input" placeholder="특이사항" name="note" id="note"></textarea>
             </div>
             <div class="mb-3">
                 <label for="datepicker" class="form-label">계약일</label>

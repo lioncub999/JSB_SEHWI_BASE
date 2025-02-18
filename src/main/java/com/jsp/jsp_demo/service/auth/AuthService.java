@@ -6,7 +6,10 @@ import com.jsp.jsp_demo.model.auth.UserOutput;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.Objects;
 
 /* TODO:
@@ -30,9 +33,11 @@ public class AuthService {
      *  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
      *  ┃    ● 회원가입
      *  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━*/
+    @Transactional(
+            propagation = Propagation.REQUIRED,
+            rollbackFor = IOException.class)
     public void signup(UserInput userInput) {
         userInput.setUserPw(passwordEncoder.encode(userInput.getUserPw()));
-
         authMapper.signup(userInput);
     }
 
@@ -40,6 +45,7 @@ public class AuthService {
      *  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
      *  ┃    ● 로그인
      *  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━*/
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public UserOutput signIn(UserInput userInput) {
 
         String encodePw = authMapper.selectUserById(userInput).getUserPw();
@@ -62,6 +68,7 @@ public class AuthService {
      *  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
      *  ┃    ● 유저 아이디로 유저 정보 조회
      *  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━*/
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public UserOutput selectUserById(UserInput userInput) {
         return  authMapper.selectUserById(userInput);
     }
@@ -70,6 +77,7 @@ public class AuthService {
      *  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
      *  ┃    ● 유저 DB 존재 확인
      *  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━*/
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public Integer selectUserCount(UserInput userInput) {
         return authMapper.selectUserCount(userInput);
     }
@@ -78,6 +86,9 @@ public class AuthService {
      *  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
      *  ┃    ● 비밀번호 초기화
      *  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━*/
+    @Transactional(
+            propagation = Propagation.REQUIRED,
+            rollbackFor = IOException.class)
     public void updatePassword(UserInput userInput) {
         userInput.setUserPw(passwordEncoder.encode(userInput.getUserPw()));
 

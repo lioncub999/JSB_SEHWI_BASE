@@ -24,29 +24,29 @@
         <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${naverMapsClientId}&submodules=geocoder"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 
-        <!-- Modal -->
+        <!-- 매장 상세 모달 -->
         <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="1" aria-labelledby="staticBackdropLabel" aria-hidden="false" >
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">[매장명]</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <p id="modal-store-name">Store Name: </p>
-                        <p id="modal-phone">Phone: </p>
-                        <p id="modal-note">Note: </p>
+                        <p id="modal-phone">휴대폰 번호: </p>
+                        <p id="modal-note">특이사항 : </p>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save changes</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                        <button type="button" class="btn btn-primary">저장</button>
                     </div>
                 </div>
             </div>
         </div>
 
 
-        <div id="map" style="width:100%;height:100%;"></div>
+        <!-- 지도 -->
+        <div id="map" style="width:100%;height:100%; border-radius: 10px;"></div>
 
         <script>
             let PageControlFunc ={
@@ -54,11 +54,21 @@
                 moveToReqDetailPage : function(id) {
                     window.location.href = '/videoReq/detail?id='+id;
                 },
+            };
+
+            let PageFunc = {
+                <%-- 모달창 정보 업데이트 --%>
+                updateModal : function(storeName, phone, note) {
+                    document.getElementById('exampleModalLabel').textContent = '['+storeName+']';
+                    document.getElementById('modal-phone').textContent = '휴대폰 번호 : '+phone;
+                    document.getElementById('modal-note').textContent = '특이사항: '+note;
+                }
             }
         </script>
 
 
         <script>
+            <!-- 지도 그리기 -->
             var mapOptions = {
                 center: new naver.maps.LatLng(35.8, 127.5),
                 zoom: 7
@@ -79,31 +89,26 @@
 
 
                 
-            var infoWindow = new naver.maps.InfoWindow({
-                content: '<div style="padding:10px;">' +
-                            '<h5>[' + videoReq.storeNm + ']</h5>' +
-                            '<h6>번호: ' + videoReq.phone + '</h6>' +
-                            '<h7>특이사항: ' + videoReq.note + '</h7>' +
-                            '<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop" ' +
-                                'data-bs-toggle="modal" ' +
-                                'data-bs-target="#exampleModal" ' +
-                                'onclick="updateModal(\'' + videoReq.storeNm + '\', \'' + videoReq.phone + '\', \'' + videoReq.note + '\')">' +
-                                'Launch demo modal' +
-                            '</button>' +
-                        '</div>'
-            });
+                <!-- 핀 클릭 나오는 설명 -->
+                var infoWindow = new naver.maps.InfoWindow({
+                    content: '<div style="padding:10px;">' +
+                                '<h5>[' + videoReq.storeNm + ']</h5>' +
+                                '<h6>번호: ' + videoReq.phone + '</h6>' +
+                                '<h6>주소: ' + videoReq.address + '</h6>' +
+                                '<h7>특이사항: ' + videoReq.note + '</h7>' +
+                                '<div><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop" ' +
+                                    'data-bs-toggle="modal" ' +
+                                    'data-bs-target="#exampleModal" ' +
+                                    'onclick="PageFunc.updateModal(\'' + videoReq.storeNm + '\', \'' + videoReq.phone + '\', \'' + videoReq.note + '\')">' +
+                                    '매장상세' +
+                                '</button></div>' +
+                            '</div>'
+                });
 
-            naver.maps.Event.addListener(marker, 'click', function () {
+                naver.maps.Event.addListener(marker, 'click', function () {
                     infoWindow.open(map, marker);
                 });
             });
-
-            function updateModal(storeName, phone, note) {
-                document.getElementById('modal-store-name').textContent = 'Store Name: '+storeName;
-                document.getElementById('modal-phone').textContent = 'Phone: '+phone;
-                document.getElementById('modal-note').textContent = 'Note: '+note;
-            }
         </script>
-
     </body>
 </html>

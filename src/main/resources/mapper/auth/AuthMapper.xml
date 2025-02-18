@@ -6,8 +6,8 @@
     <insert id="signup"
             parameterType="com.jsp.jsp_demo.model.auth.UserInput">
         INSERT INTO TBU_USER_M
-        (USER_ID, USER_NM, USER_PW, PHONE, USER_GRADE, PASS_RESET)
-        VALUES (#{userId} ,#{userNm}, #{userPw}, #{phone}, #{userGrade}, 'N')
+        (USER_ID, USER_NM, USER_PW, PHONE, USER_GRADE, PASS_RESET, JOB_GRADE)
+        VALUES (#{userId} ,#{userNm}, #{userPw}, #{phone}, #{userGrade}, 'N', #{jobGrade})
     </insert>
 
     <select id="selectUserById"

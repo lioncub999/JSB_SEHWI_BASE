@@ -18,42 +18,6 @@
             content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"/>
         <link type="text/css" rel="stylesheet" href="<c:url value='/css/normalize.css'/>">
         <link type="text/css" rel="stylesheet" href="<c:url value='/css/login.css'/>">
-
-        <style>
-        /* 로딩 오버레이 스타일 */
-        #loading-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 9999;
-        }
-
-        #loading-spinner {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 50px;
-            height: 50px;
-            border: 5px solid #ccc;
-            border-top: 5px solid #3498db;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            from {
-                transform: rotate(0deg);
-            }
-            to {
-                transform: rotate(360deg);
-            }
-        }
-        </style>
     </head>
 
     <body>
@@ -61,6 +25,7 @@
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
         <script src="<c:url value='/js/alert/SweetAlert2.js' />"></script>
 
+        <%-- 로딩 오버레이 --%>
         <script>
             const LoadingOverlay = {
                 show: function () {
@@ -82,42 +47,77 @@
             });
 
             let PageControlFunc ={
-                <%-- 회원가입 화면으로 이동 --%>
+                // 회원가입 화면으로 이동
                 moveToSignUpPage : function() {
                     window.location.href = '/auth/signUp';
+                }
+            };
+
+            let SubmitFunc = {
+                // 로그인 값 valid 확인
+                loginSubmit: function() {
+                    var warningTxt = '';
+
+                    // 아이디 입력 확인
+                    if ($('#userId').val() == '') {
+                        warningTxt += "아이디를 입력해주세요!\n"
+                    }
+                    // 비밀번호 입력 확인
+                    if ($('#userPw').val() == '') {
+                        warningTxt += "비밀번호 입력해주세요!\n"
+                    }
+
+                    // 워닝 표시
+                    if (warningTxt != '') {
+                        Toast('top', 1500, 'warning', warningTxt);
+                        return;
+                    }
+
+                    AjaxFunc.login();
                 }
             }
 
             let AjaxFunc = {
-                <%-- 로그인 --%>
-                loginSubmit: function (xhr, textStatus, thrownError) {
-                    var formData = $('#login-frm').serialize()
+                // 로그인 ajax
+                login: function () {
+                    const formData = $('#login-frm').serialize();
+                    
+                    const messages = {
+                        noExist: { type: 'error', message: '존재하지 않는 계정입니다', duration: 1000 },
+                        passError: { type: 'warning', message: '비밀번호를 확인해주세요.', duration: 1000 },
+                        success: { type: 'success', message: '로그인 되었습니다.', duration: 1000 },
+                    };
+
+                    LoadingOverlay.show();
                     $.ajax({
-                        url: "${loginUrl}",
-                        type: "post",
+                        url: `${loginUrl}`,
+                        type: 'POST',
                         cache: false,
                         data: formData,
-                    }).done(function (response) {
-                        // 존재하지 않는 계정
-                        if (response == "noExist") {
-                            Toast('top', 1000, 'error', "존재하지 않는 계정입니다");
-                            return;
-                        }
-
-                        // 패스워드 오류
-                        if (response == "passError") {
-                            Toast('top', 2000, 'warning', '비밀번호를 확인해주세요.');
-                            return;
-                        }
-
-                        // 로그인 완료
-                        Toast('top', 1000, 'success', '로그인 되었습니다.');
-                        setTimeout(function () {
-                            window.location.href = '/main';
-                        }, 1000);
                     })
-                }
-            }
+                    .done((response) => {
+                        const toast = messages[response];
+
+                        if (toast) {
+                            Toast('top', toast.duration, toast.type, toast.message);
+                            if (response === 'success') {
+                                setTimeout(() => {
+                                    window.location.href = '/main';
+                                }, toast.duration);
+                            }
+                        } else {
+                            console.error('Unhandled response:', response);
+                        }
+
+                        LoadingOverlay.hide();
+                    })
+                    .fail((xhr, textStatus, thrownError) => {
+                        console.error('AJAX error:', textStatus, thrownError);
+                        Toast('top', 1000, 'error', '로그인 중 문제가 발생했습니다.');
+                        LoadingOverlay.hide();
+                    });
+                },
+            };
         </script>
 
         <!-- 로딩 오버레이 -->
@@ -136,10 +136,10 @@
                 <div>
                     <form class="login-frm", id="login-frm">
                         <div class="input-box">
-                            <input type="text" class="input" placeholder="아이디" name="userId"/>
+                            <input type="text" class="input" placeholder="아이디" name="userId" id="userId"/>
                         </div>
                         <div class="input-box">
-                            <input type="password" class="input password" placeholder="비밀번호" name="userPw"/>
+                            <input type="password" class="input password" placeholder="비밀번호" name="userPw" id="userPw"/>
                         </div>
                     </form>
                 </div>
@@ -147,7 +147,7 @@
 
                 <%-- 로그인 버튼 --%>
                 <div class="login-btn-box">
-                    <button class="login-btn" id="loginButton" type="button" onclick="AjaxFunc.loginSubmit()">로그인</button>
+                    <button class="login-btn" id="loginButton" type="button" onclick="SubmitFunc.loginSubmit()">로그인</button>
                 </div>
 
                 <%-- 회원가입 버튼 --%>
