@@ -12,5 +12,7 @@ import lombok.Setter;
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
 public class VideoReqOutput extends VideoReq {
 
-    private String stringCreDtm;
+    private String stringCreDt; // 신청일 String 변환
+
+    private String stringContractDt; // 계약일 String 변환
 }

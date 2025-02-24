@@ -145,7 +145,7 @@ main {
 
 /* MAIN CONTENT */
 .main-content {
-    overflow: scro;
+    overflow: scroll;
     height : calc(100% - 30px);
     background: #e6eaff;
     border-radius: 10px;

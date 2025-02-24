@@ -55,7 +55,7 @@ public class VideoReqService {
      *  ┃    ● 일정 조율 안한 촬영 요청 리스트 전부 가져오기
      *  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━*/
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public List<VideoReq> getUnStartedVideoReq() {
+    public List<VideoReqOutput> getUnStartedVideoReq() {
         return videoReqMapper.getUnStartedVideoReq();
     }
 

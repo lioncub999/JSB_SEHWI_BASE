@@ -46,11 +46,12 @@
             <thead class="text-center" style="height:50px">
                 <tr>
                     <th style="width: 3%; border-top-left-radius:10px;">신청ID</th>
-                    <th style="width: 8%;">신청일</th>
-                    <th style="width: 8%;">신청자</th>
+                    <th style="width: 7%;">신청일</th>
+                    <th style="width: 7%;">신청자</th>
                     <th style="width: 10%;">연락처</th>
-                    <th style="width: 25%;">주소</th>
-                    <th style="width: 25%;">특이사항</th>
+                    <th style="width: 10%;">상호명</th>
+                    <th style="width: 20%;">주소</th>
+                    <th style="width: 20%;">특이사항</th>
                     <th style="width: 5%;">촬영완료여부</th>
                     <th style="width: 5%;">촬영담당자</th>
                     <th style="width: 5%; border-top-right-radius:10px;">진행상태</th>
@@ -60,11 +61,12 @@
                 <c:forEach var="videoReq" items="${videoReqList}">
                     <tr>
                         <td class="text-center">${videoReq.reqId}</td>
-                        <td class="text-center">${videoReq.stringCreDtm}</td>
+                        <td class="text-center">${videoReq.stringCreDt}</td>
                         <td class="text-center">${videoReq.creId}</td>
                         <td class="text-center">
                             ${videoReq.phone.substring(0,3)}-${videoReq.phone.substring(3,7)}-${videoReq.phone.substring(7)}
                         </td>
+                        <td>${videoReq.storeNm}</td>
                         <td>${videoReq.address}</td>
                         <td><pre style="margin:0px"><span>${videoReq.note}</span></pre></td>
                         <td class="text-center"></td>

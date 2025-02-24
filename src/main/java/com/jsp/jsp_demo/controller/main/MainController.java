@@ -2,6 +2,7 @@ package com.jsp.jsp_demo.controller.main;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jsp.jsp_demo.model.video.VideoReq;
+import com.jsp.jsp_demo.model.video.VideoReqOutput;
 import com.jsp.jsp_demo.service.main.MainService;
 import com.jsp.jsp_demo.service.video.VideoReqService;
 import com.jsp.jsp_demo.util.log.TraceWriter;
@@ -52,7 +53,7 @@ public class MainController {
 
         try {
 
-            List<VideoReq> videoReqList = videoReqService.getUnStartedVideoReq();
+            List<VideoReqOutput> videoReqList = videoReqService.getUnStartedVideoReq();
 
             String reqList = objectMapper.writeValueAsString(videoReqList);
 
