@@ -62,10 +62,6 @@
                                 <td class="text-center">진행상태</td>
                                 <td class="text-center" id ="modal-status"></td>
                             </tr>
-                            <tr>
-                                <td class="text-center">촬영담당자</td>
-                                <td class="text-center" id ="modal-manager">${userGrade}</td>
-                            </tr>
                         </table>
                     </div>
                     <div class="modal-footer">
@@ -100,8 +96,8 @@
                     document.getElementById('modal-note').textContent = note;
 
                     convertedStatus = '';
-                    if (status == 'COORDINATION') {
-                        if (${userGrade} === 0) {
+
+                    if (${userGrade} === 0) {
                             const modalStatusCell = document.getElementById('modal-status');
 
                             // <div> 생성
@@ -136,7 +132,8 @@
 
                             // <div>를 모달의 상태 셀에 추가
                             modalStatusCell.appendChild(inputBoxDiv);
-                        } else {
+                    } else {
+                        if (status == 'COORDINATION') {
                             convertedStatus = "일정조율중"
                             document.getElementById('modal-status').textContent = convertedStatus;
                         }
