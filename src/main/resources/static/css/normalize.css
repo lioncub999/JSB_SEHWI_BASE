@@ -25,7 +25,7 @@
 
 html {
     /* 폰트 적용 */
-    font-family: 'BMDOHYEON', sans-serif;
+    font-family: 'BMDOHYEON', sans-serif !important;
     /* `font` 속성 리셋 */
     font-size                  : 16px;
     /* 기본 글골 사이즈 정의            : 16x => 1rem */
@@ -436,6 +436,14 @@ pre {
     font-family: inherit;  /* 폰트 스타일 상속받음 */
     white-space: pre-wrap; /* 개행 문자 처리 및 자동 줄바꿈 허용 */
     color : black;
+}
+
+pre {
+    margin: 0px !important;
+}
+
+span {
+    font-size: 13px !important;
 }
 
 /* 브라우저는 렌더링 속도, 정밀도에 대한 가독성을 강조 */

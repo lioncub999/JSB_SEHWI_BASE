@@ -12,7 +12,7 @@
             parameterType="com.jsp.jsp_demo.model.paging.PagingModel"
             resultType="com.jsp.jsp_demo.model.video.VideoReqOutput">
         SELECT
-        REQ_ID, CRE_ID, STORE_NM, ADDRESS, DATE_FORMAT(CRE_DTM, '%Y-%m-%d') AS STRING_CRE_DTM, SHOOT_SCHEDULE,
+        REQ_ID, CRE_ID, STORE_NM, ADDRESS, DATE_FORMAT(CRE_DTM, '%Y-%m-%d') AS STRING_CRE_DT, SHOOT_SCHEDULE,
         PHONE, NOTE, MANAGER_ID, STATUS FROM TBV_VIDEO_REQ_M tvrm ORDER BY REQ_ID DESC LIMIT #{startRow}, #{pageSize} ;
     </select>
 
@@ -20,7 +20,7 @@
     <select id="getUnStartedVideoReq"
             resultType="com.jsp.jsp_demo.model.video.VideoReqOutput">
         SELECT REQ_ID, CRE_ID, STORE_NM, DATE_FORMAT(CONTRACT_DT,'%Y-%m-%d') AS STRING_CONTRACT_DT, PHONE, ADDRESS, DATE_FORMAT(CRE_DTM ,'%Y-%m-%d') AS STRING_CRE_DT,
-        LONGITUDE, LATITUDE, NOTE, STATUS FROM TBV_VIDEO_REQ_M TERM WHERE STATUS =
+        LONGITUDE, LATITUDE, NOTE, PROGRESS_NOTE, STATUS FROM TBV_VIDEO_REQ_M TERM WHERE STATUS =
         "COORDINATION" ORDER BY CRE_DTM DESC;
     </select>
 
@@ -31,4 +31,15 @@
         VALUES (#{creId} ,#{storeNm}, #{address}, #{contractDt}, NOW(), #{phone}, #{longitude}, #{latitude}, #{note},
         'COORDINATION')
     </insert>
+
+    <update id="updateVideoReq"
+            parameterType="com.jsp.jsp_demo.model.video.VideoReqInput">
+        UPDATE TBV_VIDEO_REQ_M
+        SET NOTE = #{note},
+        PROGRESS_NOTE = #{progressNote},
+        STATUS = #{status},
+        UPD_ID = #{updId},
+        UPD_DTM = NOW()
+        WHERE REQ_ID = #{reqId};
+    </update>
 </mapper>

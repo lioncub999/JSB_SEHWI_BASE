@@ -10,11 +10,12 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 
 
+<c:set var="getVideoReqUrl" value="/videoReq/getRecentReqList"/>
+<c:set var="updateVideoReqUrl" value="/videoReq/updateVideoReq"/>
 <html>
 <head>
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"/>
-    <link type="text/css" rel="stylesheet" href="<c:url value='/css/main.css'/>">
 </head>
     <body>
         <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
@@ -24,49 +25,304 @@
         <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${naverMapsClientId}&submodules=geocoder"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 
+        <script>
+            $(document).ready(function() {
+                PageFunc.drawMap(${reqList}); // 초기 지도 생성 및 핀 그리기
+            });
+
+            let PageFunc = {
+                // 모달창 정보 업데이트
+                updateModal : function(reqId, storeName, creId, stringContractDt, stringCreDt, address, phone, note, status, progressNote) {
+                    document.getElementById('reqId').value = reqId;
+                    document.getElementById('exampleModalLabel').textContent = '['+storeName+']';
+                    document.getElementById('modal-cre-id').textContent = creId;
+                    document.getElementById('modal-contract-dt').textContent = stringContractDt;
+                    document.getElementById('modal-cre-dt').textContent = stringCreDt;
+                    document.getElementById('modal-address').textContent = address;
+                    document.getElementById('modal-phone').textContent = phone;
+
+
+                    // 특이사항 (전체 수정 가능)
+                    const modalNoteCell = document.getElementById('modal-note');
+                    modalNoteCell.innerHTML = '';
+
+                    // 특이사항 <textarea> 생성
+                    const textArea = document.createElement('textarea');
+
+                    textArea.value = note;// note 값을 디폴트로 설정
+                    textArea.style.resize = 'none'; // 크기 조절 불가
+                    textArea.style.overflowY = 'auto'; // 세로 스크롤 활성화
+                    textArea.rows = 4; // 최대 4줄 표시
+                    textArea.style.width = '100%'; // 부모 요소 크기에 맞게 설정
+                    textArea.style.boxSizing = 'border-box'; // 패딩 포함 크기 계산
+                    textArea.name = "note";
+
+                    // 특이사항 <textarea>를 td에 추가
+                    modalNoteCell.appendChild(textArea);
+
+                    // 진행 상태 수정
+                    const modalStatusCell = document.getElementById('modal-status');
+
+                    modalStatusCell.innerHTML = '';
+
+                    // <div> 생성
+                    const inputBoxDiv = document.createElement('div');
+                    inputBoxDiv.className = 'input-box';
+
+                    // <select> 생성
+                    const selectElement = document.createElement('select');
+                    selectElement.className = 'form-select';
+                    selectElement.id = 'status';
+                    selectElement.name = 'status';
+
+                    var options;
+                    // <option> 요소 추가
+                    if (${userGrade} == 0) {
+                        options = [
+                            { value: 'COORDINATION', text: '일정조율중' },
+                            { value: 'STANDBY', text: '촬영대기' },
+                            { value: 'COMPLETEFILM', text: '촬영완료' },
+                            { value: 'COMPLETEUPLOAD', text: '촬영&업로드 완료' },
+                            { value: 'NONEEDFILM', text: '촬영 불필요' },
+                        ];
+                    } else {
+                        options = [
+                            { value: 'COORDINATION', text: '일정조율중' },
+                            { value: 'NONEEDFILM', text: '촬영 불필요' },
+                        ];
+                    }
+
+                    options.forEach(optionData => {
+                    const option = document.createElement('option');
+                    option.value = optionData.value;
+                    option.textContent = optionData.text;
+                    if (optionData.value === status) {
+                        option.selected = true; // status 값에 따라 기본 선택 설정
+                    }
+                    selectElement.appendChild(option);
+                    });
+
+                    // <select>를 <div> 안에 추가
+                    inputBoxDiv.appendChild(selectElement);
+
+                    // <div>를 모달의 상태 셀에 추가
+                    modalStatusCell.appendChild(inputBoxDiv);
+
+                    if (${userGrade} === 0) {
+                        // 촬영 담당자 작성 특이사항(촬영자만 수정가능)
+                        const modalProgressNoteCell = document.getElementById('modal-progress-note');
+                        modalProgressNoteCell.innerHTML = '';
+
+                        // 촬영 담당자 특이사항 <textarea> 생성
+                        const progressNoteTextArea = document.createElement('textarea');
+
+                        if (progressNote != 'null') {
+                            progressNoteTextArea.value = progressNote;// note 값을 디폴트로 설정
+                        }
+                        progressNoteTextArea.style.resize = 'none'; // 크기 조절 불가
+                        progressNoteTextArea.style.overflowY = 'auto'; // 세로 스크롤 활성화
+                        progressNoteTextArea.rows = 4; // 최대 4줄 표시
+                        progressNoteTextArea.style.width = '100%'; // 부모 요소 크기에 맞게 설정
+                        progressNoteTextArea.style.boxSizing = 'border-box'; // 패딩 포함 크기 계산
+                        progressNoteTextArea.name = "progressNote";
+
+                        // 촬영 담당자 특이사항 <textarea>를 td에 추가
+                        modalProgressNoteCell.appendChild(progressNoteTextArea);
+                    } else {
+                        document.getElementById('modal-progress-note').textContent = progressNote;
+                    }
+                },
+                // 지도 그리기
+                map : null,
+                markers : [],
+                openInfoWindow: null, // 현재 열린 InfoWindow를 저장
+
+                initMap: function() {
+                    var mapOptions = {
+                        center: new naver.maps.LatLng(35.8, 127.5),
+                        zoom: 7
+                    };
+
+                    this.map = new naver.maps.Map('map', mapOptions);
+                    this.map.setCursor('pointer');
+                },
+
+                // 핀 업데이트
+                updatePins: function(reqList) {
+                    // 기존 핀 제거
+                    this.markers.forEach(marker => marker.setMap(null));
+                    this.markers = [];
+
+                    // 새로운 핀 추가
+                    reqList.forEach(videoReq => {
+                        var marker = new naver.maps.Marker({
+                            position: new naver.maps.LatLng(videoReq.latitude, videoReq.longitude),
+                            map: this.map,
+                            title: videoReq.storeNm
+                        });
+
+                        this.markers.push(marker);
+
+                        // 핀 클릭 시 나오는 설명
+                        var infoWindow = new naver.maps.InfoWindow({
+                            content: 
+                            '<div style="padding:10px;">' +
+                                '<h6>상호명 : [' + videoReq.storeNm + ']</h6>' +
+                                '<table class="table table-striped table-bordered" >' +
+                                    '<tbody>'+
+                                        '<tr>'+
+                                            '<td class="text-center">계약일</td>'+
+                                            '<td class="text-center">'+videoReq.stringContractDt+'</td>'+
+                                        '</tr>'+
+                                        '<tr>'+
+                                            '<td class="text-center">휴대폰번호</td>'+
+                                            '<td class="text-center">'+videoReq.phone.substring(0,3)+'-'+videoReq.phone.substring(3,7)+'-'+videoReq.phone.substring(7)+'</td>'+
+                                        '</tr>'+
+                                        '<tr>'+
+                                            '<td class="text-center">주소</td>'+
+                                            '<td class="text-center">'+videoReq.address+'</td>'+
+                                        '</tr>'+
+                                        '<tr>'+
+                                            '<td class="text-center">특이사항</td>'+
+                                            '<td class="text-center"><pre><span>'+videoReq.note.replace(/\\n/g, '\n')+'<span></pre></td>'+
+                                        '</tr>'+
+                                    '</tbody>'+
+                                '</table>'+
+                                '<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop" ' +
+                                    'onclick="PageFunc.updateModal('+ 
+                                    '\''+ videoReq.reqId + '\'' +','+ 
+                                    '\''+ videoReq.storeNm + '\'' +','+ 
+                                    '\''+ videoReq.creId + '\'' +','+
+                                    '\''+ videoReq.stringContractDt + '\'' +','+
+                                    '\''+ videoReq.stringCreDt + '\'' +','+
+                                    '\''+ videoReq.address + '\'' +','+
+                                    '\''+ videoReq.phone.substring(0,3)+'-'+videoReq.phone.substring(3,7)+'-'+videoReq.phone.substring(7) + '\'' +','+ 
+                                    '\''+ videoReq.note.replace(/\n/g, '\n') + '\'' +','+ 
+                                    '\''+ videoReq.status + '\'' +','+ 
+                                    '\''+ videoReq.progressNote + '\'' +')">'+
+                                    '매장상세' +
+                                '</button>'+
+                            '</div>'
+                        });
+
+                        naver.maps.Event.addListener(marker, 'click', function () {
+                            infoWindow.open(PageFunc.map, marker);
+                            PageFunc.openInfoWindow = infoWindow; // 새 InfoWindow 저장
+                        });
+                    });
+                },
+
+                // 지도 및 핀 그리기
+                drawMap: function(reqList) {
+                    if (!this.map) {
+                        this.initMap(); // 처음 한 번만 지도를 생성
+                    }
+                    this.updatePins(reqList); // 핀만 업데이트
+                }
+            };
+
+            let AjaxFunc = {
+                updateVideoReq: function() {
+                    var formData = $('#video-req-frm').serializeArray();
+
+                    formData.find(field => field.name === "note").value = formData.find(field => field.name === "note").value.replace(/\r?\n/g, "\\n");
+                    formData.find(field => field.name === "progressNote").value = formData.find(field => field.name === "progressNote").value.replace(/\r?\n/g, "\\n");
+
+                    $.ajax({
+                        url: `${updateVideoReqUrl}`,
+                        type: 'POST',
+                        cache: false,
+                        data: formData,
+                    })
+                    .done((response) => {
+                        // 모달 닫기
+                        $('#staticBackdrop').modal('hide');
+                        
+                        Toast('top', 1000, 'success', '수정되었습니다!');
+
+                        // 열린 InfoWindow 닫기
+                        PageFunc.openInfoWindow.close();
+                        
+                        AjaxFunc.loadUpdatedData();
+                        LoadingOverlay.hide();
+                    })
+                    .fail((xhr, textStatus, thrownError) => {
+                        console.log('AJAX error:', textStatus, thrownError);
+                        Toast('top', 1000, 'error', '업데이트 중 문제가 발생했습니다.');
+                        LoadingOverlay.hide();
+                    });
+                },
+                loadUpdatedData: function() {
+                    $.ajax({
+                        url: `${getVideoReqUrl}`,
+                        type: 'POST',
+                        dataType: 'json',
+                    })
+                    .done((updatedReqList) => {
+
+                        // 지도를 다시 그림
+                        PageFunc.drawMap(updatedReqList);
+                    })
+                    .fail((xhr, textStatus, thrownError) => {
+                        console.log('AJAX error while loading updated data:', textStatus, thrownError);
+                        Toast('top', 1000, 'error', '데이터를 가져오는 중 문제가 발생했습니다.');
+                    });
+                }
+            }
+        </script>
+
         <!-- 매장 상세 모달 -->
         <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="1" aria-labelledby="staticBackdropLabel" aria-hidden="false" >
-            <div class="modal-dialog modal-lg">
+            <div class="modal-dialog modal-md">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel">[상호명]</h1>
+                        <h6 class="modal-title fs-5" id="exampleModalLabel">[상호명]</h6>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <table class="table table-striped table-bordered" >
-                            <tr>
-                                <td class="text-center">신청자</td>
-                                <td class="text-center" id ="modal-cre-id"></td>
-                            </tr>
-                            <tr>
-                                <td class="text-center">계약일</td>
-                                <td class="text-center" id ="modal-contract-dt"></td>
-                            </tr>
-                            <tr>
-                                <td class="text-center">촬영 신청일</td>
-                                <td class="text-center" id ="modal-cre-dt"></td>
-                            </tr>
-                            <tr>
-                                <td class="text-center">휴대폰번호</td>
-                                <td class="text-center" id ="modal-phone"></td>
-                            </tr>
-                            <tr>
-                                <td class="text-center">주소</td>
-                                <td class="text-center" id ="modal-address"></td>
-                            </tr>
-                            <tr>
-                                <td class="text-center">특이사항</td>
-                                <td id ="modal-note"></td>
-                            </tr>
-                            <tr>
-                                <td class="text-center">진행상태</td>
-                                <td class="text-center" id ="modal-status"></td>
-                            </tr>
-                        </table>
+                        <form class="video-req-frm", id="video-req-frm">
+                            <input type="hidden" id="reqId" name="reqId"/>
+                            
+                            <table class="table table-striped table-bordered" >
+                                <tr>
+                                    <td class="text-center">신청자</td>
+                                    <td class="text-center" id ="modal-cre-id"></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center">계약일</td>
+                                    <td class="text-center" id ="modal-contract-dt"></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center">촬영 신청일</td>
+                                    <td class="text-center" id ="modal-cre-dt"></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center">휴대폰번호</td>
+                                    <td class="text-center" id ="modal-phone"></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center">주소</td>
+                                    <td class="text-center" id ="modal-address"></td>
+                                </tr>
+                                
+                                <tr>
+                                    <td class="text-center">특이사항</td>
+                                    <td id ="modal-note"></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center">진행상태</td>
+                                    <td class="text-center" id ="modal-status"></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center">촬영담당자<br>특이사항</td>
+                                    <td class="text-center" id ="modal-progress-note"></td>
+                                </tr>
+                            </table>
+                        </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-                        <button type="button" class="btn btn-primary">저장</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >닫기</button>
+                        <button type="button" class="btn btn-primary" onclick=AjaxFunc.updateVideoReq()>저장</button>
                     </div>
                 </div>
             </div>
@@ -75,138 +331,5 @@
 
         <!-- 지도 -->
         <div id="map" style="width:100%;height:100%; border-radius: 10px;"></div>
-
-        <script>
-            let PageControlFunc ={
-                <%-- 회원가입 화면으로 이동 --%>
-                moveToReqDetailPage : function(id) {
-                    window.location.href = '/videoReq/detail?id='+id;
-                },
-            };
-
-            let PageFunc = {
-                <%-- 모달창 정보 업데이트 --%>
-                updateModal : function(storeName, creId, stringContractDt, stringCreDt, address, phone, note, status) {
-                    document.getElementById('exampleModalLabel').textContent = '['+storeName+']';
-                    document.getElementById('modal-cre-id').textContent = creId;
-                    document.getElementById('modal-contract-dt').textContent = stringContractDt;
-                    document.getElementById('modal-cre-dt').textContent = stringCreDt;
-                    document.getElementById('modal-address').textContent = address;
-                    document.getElementById('modal-phone').textContent = phone;
-                    document.getElementById('modal-note').textContent = note;
-
-                    convertedStatus = '';
-
-                    if (${userGrade} === 0) {
-                            const modalStatusCell = document.getElementById('modal-status');
-
-                            // <div> 생성
-                            const inputBoxDiv = document.createElement('div');
-                            inputBoxDiv.className = 'input-box';
-
-                            // <select> 생성
-                            const selectElement = document.createElement('select');
-                            selectElement.className = 'form-select';
-                            selectElement.style.width = '300px';
-                            selectElement.id = 'jobGrade';
-                            selectElement.name = 'jobGrade';
-
-                            // <option> 요소 추가
-                            const options = [
-                                { value: 'COORDINATION', text: '일정조율중' },
-                                { value: 'TEST', text: '테스트' },
-                            ];
-
-                            options.forEach(optionData => {
-                            const option = document.createElement('option');
-                            option.value = optionData.value;
-                            option.textContent = optionData.text;
-                            if (optionData.value === status) {
-                               option.selected = true; // status 값에 따라 기본 선택 설정
-                            }
-                            selectElement.appendChild(option);
-                            });
-
-                            // <select>를 <div> 안에 추가
-                            inputBoxDiv.appendChild(selectElement);
-
-                            // <div>를 모달의 상태 셀에 추가
-                            modalStatusCell.appendChild(inputBoxDiv);
-                    } else {
-                        if (status == 'COORDINATION') {
-                            convertedStatus = "일정조율중"
-                            document.getElementById('modal-status').textContent = convertedStatus;
-                        }
-                    }
-                }
-            }
-        </script>
-
-
-        <script>
-            <!-- 지도 그리기 -->
-            var mapOptions = {
-                center: new naver.maps.LatLng(35.8, 127.5),
-                zoom: 7
-            };
-
-            var map = new naver.maps.Map('map', mapOptions);
-
-            map.setCursor('pointer');
-
-            const videoReqList = ${reqList};
-
-            videoReqList.forEach(function (videoReq) {
-                var marker = new naver.maps.Marker({
-                    position: new naver.maps.LatLng(videoReq.latitude, videoReq.longitude),
-                    map: map,
-                    title : videoReq.storeNm
-                });
-
-
-                
-                <!-- 핀 클릭 나오는 설명 -->
-                var infoWindow = new naver.maps.InfoWindow({
-                    content: 
-                    '<div style="padding:10px;">' +
-                        '<h5>상호명 : [' + videoReq.storeNm + ']</h5>' +
-                        '<table class="table table-striped table-bordered" >' +
-                            '<tbody>'+
-                                // 계약일
-                                '<tr>'+
-                                    '<td class="text-center">계약일</td>'+
-                                    '<td class="text-center">'+videoReq.stringContractDt+'</td>'+
-                                '</tr>'+
-                                // 휴대폰 번호
-                                '<tr>'+
-                                    '<td class="text-center">휴대폰번호</td>'+
-                                    '<td class="text-center">'+videoReq.phone.substring(0,3)+'-'+videoReq.phone.substring(3,7)+'-'+videoReq.phone.substring(7)+'</td>'+
-                                '</tr>'+
-                                // 주소
-                                '<tr>'+
-                                    '<td class="text-center">주소</td>'+
-                                    '<td class="text-center">'+videoReq.address+'</td>'+
-                                '</tr>'+
-                                // 특이사항
-                                '<tr>'+
-                                    '<td class="text-center">특이사항</td>'+
-                                    '<td class="text-center">'+videoReq.note+'</td>'+
-                                '</tr>'+
-                            '</tbody>'+
-                        '</table>'+
-                        '<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop" ' +
-                            'data-bs-toggle="modal" ' +
-                            'data-bs-target="#exampleModal" ' +
-                            'onclick="PageFunc.updateModal(\'' + videoReq.storeNm + '\', \'' + videoReq.creId + '\', \'' + videoReq.stringContractDt + '\', \'' + videoReq.stringCreDt + '\', \'' + videoReq.address + '\', \'' +videoReq.phone.substring(0,3)+'-'+videoReq.phone.substring(3,7)+'-'+videoReq.phone.substring(7)+ '\', \'' + videoReq.note + '\', \'' + videoReq.status + '\')">' +
-                            '매장상세' +
-                        '</button>'+
-                    '</div>'
-                });
-
-                naver.maps.Event.addListener(marker, 'click', function () {
-                    infoWindow.open(map, marker);
-                });
-            });
-        </script>
     </body>
 </html>

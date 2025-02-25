@@ -39,7 +39,11 @@ public class VideoReq implements Serializable {
 
     private String note; // 특이사항
 
+    private String progressNote; // 촬영자 작성 특이사항
+
     private String managerId; // 촬영 담당자 아이디
 
     private String status; // 촬영 진행상황
+
+    private String updId; // 수정자 아이디
 }

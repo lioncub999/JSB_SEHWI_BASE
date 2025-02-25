@@ -4,6 +4,7 @@ import com.jsp.jsp_demo.model.auth.UserInput;
 import com.jsp.jsp_demo.model.auth.UserOutput;
 import com.jsp.jsp_demo.model.paging.PagingModel;
 import com.jsp.jsp_demo.model.video.VideoReq;
+import com.jsp.jsp_demo.model.video.VideoReqInput;
 import com.jsp.jsp_demo.model.video.VideoReqOutput;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -39,7 +40,13 @@ public interface VideoReqMapper {
 
     /* TODO:
      *  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-     *  ┃    ● 회원가입
+     *  ┃    ● 촬영 신청 생성
      *  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━*/
     void createVideoReq(VideoReq videoReq);
+
+    /* TODO:
+     *  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     *  ┃    ● 촬영 신청 수정
+     *  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━*/
+    void updateVideoReq(VideoReqInput videoReqInput);
 }

@@ -2,6 +2,7 @@ package com.jsp.jsp_demo.controller.video_req;
 
 import com.jsp.jsp_demo.model.paging.PagingModel;
 import com.jsp.jsp_demo.model.video.VideoReq;
+import com.jsp.jsp_demo.model.video.VideoReqInput;
 import com.jsp.jsp_demo.model.video.VideoReqOutput;
 import com.jsp.jsp_demo.service.video.VideoReqService;
 import com.jsp.jsp_demo.util.log.TraceWriter;
@@ -35,6 +36,30 @@ public class VideoReqController {
 
     /* TODO:
      *  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     *  ┃    <POST>
+     *  ┃    ● 최신 리스트 가져오기
+     *  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━*/
+    @ResponseBody
+    @PostMapping("/videoReq/getRecentReqList")
+    public List<VideoReqOutput> getRecentReqList(
+            HttpServletRequest request
+    ) {
+        TraceWriter traceWriter = new TraceWriter("", request.getMethod(), request.getServletPath());
+        traceWriter.add("");
+
+        try {
+            return videoReqService.getUnStartedVideoReq();
+        } catch (Exception e) {
+            traceWriter.add("Exception : " + e);
+
+            return null;
+        } finally {
+            traceWriter.log(0);
+        }
+    }
+
+    /* TODO:
+     *  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
      *  ┃    <GET>
      *  ┃    ● 비디오 신청 리스트 페이지
      *  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━*/
@@ -61,7 +86,7 @@ public class VideoReqController {
             int endPage = Math.min(startPage + pageBlock - 1, maxPage);
 
             PagingModel pagingModel = new PagingModel();
-            pagingModel.setStartRow((curPage-1)*pageSize);
+            pagingModel.setStartRow((curPage - 1) * pageSize);
             pagingModel.setPageSize((pageSize));
 
             List<VideoReqOutput> videoReqList = videoReqService.getReqList(pagingModel);
@@ -137,6 +162,47 @@ public class VideoReqController {
             videoReq.setCreId(videoReq.getCreId());
 
             videoReqService.createVideoReq(videoReq);
+
+            result = "success";
+
+        } catch (Exception e) {
+            result = "error";
+            traceWriter.add("[Error] : " + e);
+        } finally {
+            traceWriter.log(0);
+        }
+
+        return result;
+    }
+
+    /* TODO:
+     *  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     *  ┃    <POST>
+     *  ┃    ● 신청 촬영 내용 업데이트
+     *  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━*/
+    @ResponseBody
+    @PostMapping("/videoReq/updateVideoReq")
+    public String updateVideoReq(
+            HttpServletRequest request,
+            VideoReqInput videoReqInput
+    ) {
+        String userId = (String) request.getSession().getAttribute("userId");
+        videoReqInput.setUpdId(userId);
+
+        TraceWriter traceWriter = new TraceWriter("", request.getMethod(), request.getServletPath());
+        traceWriter.add("< INPUT >");
+        traceWriter.add("[userInput.getReqId() : " + videoReqInput.getReqId() + "]");
+        traceWriter.add("[userInput.getNote() : " + videoReqInput.getNote() + "]");
+        traceWriter.add("[userInput.getProgressNote() : " + videoReqInput.getProgressNote() + "]");
+        traceWriter.add("[userInput.getStatus() : " + videoReqInput.getStatus() + "]");
+        traceWriter.add("[userInput.getUpdId() : " + videoReqInput.getUpdId() + "]");
+        traceWriter.add("");
+        traceWriter.log(0);
+
+        String result = "";
+
+        try {
+            videoReqService.updateVideoReq(videoReqInput);
 
             result = "success";
 

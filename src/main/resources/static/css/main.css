@@ -1,0 +1,16 @@
+.text-center {
+    font-size: 13px;
+}
+
+select {
+    font-size: 13px !important; /* <select>와 옵션의 폰트 크기 설정 */
+}
+
+textarea {
+    font-size: 13px !important;
+}
+
+.btn {
+    font-size : 13px !important;
+}
+

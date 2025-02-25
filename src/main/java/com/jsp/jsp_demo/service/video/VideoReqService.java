@@ -6,6 +6,7 @@ import com.jsp.jsp_demo.model.auth.UserInput;
 import com.jsp.jsp_demo.model.auth.UserOutput;
 import com.jsp.jsp_demo.model.paging.PagingModel;
 import com.jsp.jsp_demo.model.video.VideoReq;
+import com.jsp.jsp_demo.model.video.VideoReqInput;
 import com.jsp.jsp_demo.model.video.VideoReqOutput;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -49,7 +50,6 @@ public class VideoReqService {
     }
 
 
-
     /* TODO:
      *  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
      *  ┃    ● 일정 조율 안한 촬영 요청 리스트 전부 가져오기
@@ -69,5 +69,16 @@ public class VideoReqService {
             rollbackFor = IOException.class)
     public void createVideoReq(VideoReq videoReq) {
         videoReqMapper.createVideoReq(videoReq);
+    }
+
+    /* TODO:
+     *  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     *  ┃    ● 신청 촬영 업데이트
+     *  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━*/
+    @Transactional(
+            propagation = Propagation.REQUIRED,
+            rollbackFor = IOException.class)
+    public void updateVideoReq(VideoReqInput videoReqInput) {
+        videoReqMapper.updateVideoReq(videoReqInput);
     }
 }

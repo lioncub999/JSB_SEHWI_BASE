@@ -58,7 +58,9 @@
             <%-- 촬영 신청 --%>
             reqCreate: function (xhr, textStatus, thrownError) {
                 LoadingOverlay.show();
-                var formData = $('#video-req-frm').serialize()
+                var formData = $('#video-req-frm').serializeArray();
+
+                formData.find(field => field.name === "note").value = formData.find(field => field.name === "note").value.replace(/\r?\n/g, "\\n");
 
                 var warningTxt = '';
                 <%-- 매장명 입력 확인 --%>
@@ -95,7 +97,6 @@
                     cache: false,
                     data: formData,
                 }).done(function (response) {
-                    console.log(response);
                     if (response == "success") {
                         Swal.fire({
                             icon: 'success',

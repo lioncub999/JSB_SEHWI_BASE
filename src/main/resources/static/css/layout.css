@@ -182,3 +182,8 @@ input {
     border-radius: 10px;
     transition: border-color 0.3s ease; /* 부드러운 보더 색상 변경 */
 }
+
+th, td {
+    text-align: center; /* 좌우 가운데 정렬 */
+    vertical-align: middle; /* 상하 가운데 정렬 */
+}
