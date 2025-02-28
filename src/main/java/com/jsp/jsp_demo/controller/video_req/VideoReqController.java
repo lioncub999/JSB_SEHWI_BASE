@@ -66,6 +66,7 @@ public class VideoReqController {
     @GetMapping("/videoReq")
     public String getVideoReqPage(
             @RequestParam(value = "curPage", defaultValue = "1") int curPage,
+            @RequestParam(value = "searchStoreNm", defaultValue = "") String searchStoreNm,
             HttpServletRequest request,
             Model model
     ) {
@@ -78,16 +79,19 @@ public class VideoReqController {
         int pageBlock = 10;
 
         try {
-            Integer totalReqCount = videoReqService.getAllReqCount();
+            PagingModel pagingModel = new PagingModel();
+            pagingModel.setSearchStoreNm(searchStoreNm);
+
+            Integer totalReqCount = videoReqService.getAllReqCount(pagingModel);
 
             // 전체 게시글 수 가져오기 (DB에서)
             int maxPage = (totalReqCount / pageSize) + (totalReqCount % pageSize == 0 ? 0 : 1);
             int startPage = ((curPage - 1) / pageBlock) * pageBlock + 1;
             int endPage = Math.min(startPage + pageBlock - 1, maxPage);
 
-            PagingModel pagingModel = new PagingModel();
             pagingModel.setStartRow((curPage - 1) * pageSize);
             pagingModel.setPageSize((pageSize));
+
 
             List<VideoReqOutput> videoReqList = videoReqService.getReqList(pagingModel);
 

@@ -4,16 +4,42 @@
 
 <mapper namespace="com.jsp.jsp_demo.mapper.video.VideoReqMapper">
     <select id="getAllReqCount"
+            parameterType="com.jsp.jsp_demo.model.paging.PagingModel"
             resultType="integer">
-        SELECT COUNT(*) FROM TBV_VIDEO_REQ_M;
+        SELECT COUNT(*)
+        FROM TBV_VIDEO_REQ_M
+        <where>
+            <if test="searchStoreNm != null and searchStoreNm != ''">
+                STORE_NM LIKE CONCAT('%', #{searchStoreNm}, '%')
+            </if>
+        </where>
     </select>
 
     <select id="getReqList"
             parameterType="com.jsp.jsp_demo.model.paging.PagingModel"
             resultType="com.jsp.jsp_demo.model.video.VideoReqOutput">
         SELECT
-        REQ_ID, CRE_ID, STORE_NM, ADDRESS, DATE_FORMAT(CRE_DTM, '%Y-%m-%d') AS STRING_CRE_DT, SHOOT_SCHEDULE,
-        PHONE, NOTE, MANAGER_ID, STATUS FROM TBV_VIDEO_REQ_M tvrm ORDER BY REQ_ID DESC LIMIT #{startRow}, #{pageSize} ;
+        REQ_ID,
+        CRE_ID,
+        STORE_NM,
+        ADDRESS,
+        DATE_FORMAT(CRE_DTM, '%Y-%m-%d') AS STRING_CRE_DT,
+        DATE_FORMAT(CONTRACT_DT,'%Y-%m-%d') AS STRING_CONTRACT_DT,
+        SHOOT_SCHEDULE,
+        PHONE,
+        NOTE,
+        PROGRESS_NOTE,
+        MANAGER_ID,
+        STATUS,
+        DATE_FORMAT(SHOOT_COMPLETE_DT,'%Y-%m-%d') AS SHOOT_COMPLETE_DT,
+        DATE_FORMAT(UPLOAD_COMPLETE_DT,'%Y-%m-%d') AS UPLOAD_COMPLETE_DT
+        FROM TBV_VIDEO_REQ_M TVRM
+        <where>
+            <if test="searchStoreNm != null and searchStoreNm != ''">
+                STORE_NM LIKE CONCAT('%', #{searchStoreNm}, '%')
+            </if>
+        </where>
+        ORDER BY REQ_ID DESC LIMIT #{startRow}, #{pageSize} ;
     </select>
 
 
@@ -38,6 +64,8 @@
         SET NOTE = #{note},
         PROGRESS_NOTE = #{progressNote},
         STATUS = #{status},
+        SHOOT_COMPLETE_DT = #{shootCompleteDt},
+        UPLOAD_COMPLETE_DT = #{uploadCompleteDt},
         UPD_ID = #{updId},
         UPD_DTM = NOW()
         WHERE REQ_ID = #{reqId};

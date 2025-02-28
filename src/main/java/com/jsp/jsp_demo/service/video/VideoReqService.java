@@ -36,8 +36,8 @@ public class VideoReqService {
      *  ┃    ● 모든 요청 갯수
      *  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━*/
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public Integer getAllReqCount() {
-        return videoReqMapper.getAllReqCount();
+    public Integer getAllReqCount(PagingModel pagingModel) {
+        return videoReqMapper.getAllReqCount(pagingModel);
     }
 
     /* TODO:

@@ -40,10 +40,10 @@
         <script>
             // 엔터키 감지 및 버튼 클릭 트리거
             document.addEventListener('keydown', function(event) {
-            if (event.key === 'Enter') {
-                // 로그인 버튼 클릭
-                document.getElementById('loginButton').click();
-            }
+                if (event.key === 'Enter') {
+                    // 로그인 버튼 클릭
+                    document.getElementById('loginButton').click();
+                }
             });
 
             let PageControlFunc ={

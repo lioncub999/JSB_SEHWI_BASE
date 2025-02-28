@@ -18,4 +18,6 @@ public class PagingModel implements Serializable{
     private int startRow;
 
     private int pageSize;
+
+    private String searchStoreNm;
 }

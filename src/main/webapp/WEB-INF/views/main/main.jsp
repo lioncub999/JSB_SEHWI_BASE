@@ -27,8 +27,145 @@
 
         <script>
             $(document).ready(function() {
-                PageFunc.drawMap(${reqList}); // 초기 지도 생성 및 핀 그리기
+                MapFunc.drawMap(${reqList}); // 초기 지도 생성 및 핀 그리기
+
+                // 엔터키 감지 및 버튼 클릭 트리거
+                document.addEventListener('keydown', function(event) {
+                    if (event.key === 'Enter') {
+                        // 로그인 버튼 클릭
+                        MapFunc.searchAddressToCoordinate();
+                    }
+                });
             });
+
+            // 지도 함수
+            let MapFunc = {
+                map : null,
+                markers : [],
+                openInfoWindow: null, // 현재 열린 InfoWindow를 저장
+            
+
+                // 지도 초기화
+                initMap: function() {
+                    var mapOptions = {
+                        center: new naver.maps.LatLng(35.8, 127.5),
+                        zoom: 7
+                    };
+
+                    this.map = new naver.maps.Map('map', mapOptions);
+                    this.map.setCursor('pointer');
+
+                    naver.maps.Event.addListener(this.map, 'click', function () {
+                        if (MapFunc.openInfoWindow) {
+                            MapFunc.openInfoWindow.close();
+                            MapFunc.openInfoWindow = null; // 열린 InfoWindow 초기화
+                        }
+                    });
+                },
+
+                // 지도 핀 업데이트 (내용 수정시 핀 동적으로 업데이트용)
+                updatePins: function(reqList) {
+                    // 기존 핀 제거
+                    this.markers.forEach(marker => marker.setMap(null));
+                    this.markers = [];
+
+                    // 새로운 핀 추가
+                    reqList.forEach(videoReq => {
+                        var marker = new naver.maps.Marker({
+                            position: new naver.maps.LatLng(videoReq.latitude, videoReq.longitude),
+                            map: this.map,
+                            title: videoReq.storeNm,
+                            animation: naver.maps.Animation.DROP,
+                            icon: {
+                                url: '/images/common/blue_marker.png',
+                                size: new naver.maps.Size(15, 23),
+                                origin: new naver.maps.Point(0, 0),
+                                anchor: new naver.maps.Point(5, 23)
+                            }
+                        });
+
+                        this.markers.push(marker);
+
+                        // 핀 클릭 시 나오는 설명
+                        var infoWindow = new naver.maps.InfoWindow({
+                            content: 
+                            '<div style="padding:10px;">' +
+                                '<h6>상호명 : [' + videoReq.storeNm + ']</h6>' +
+                                '<table class="table table-striped table-bordered" >' +
+                                    '<tbody>'+
+                                        '<tr>'+
+                                            '<td class="text-center">계약일</td>'+
+                                            '<td class="text-center">'+videoReq.stringContractDt+'</td>'+
+                                        '</tr>'+
+                                        '<tr>'+
+                                            '<td class="text-center">휴대폰번호</td>'+
+                                            '<td class="text-center">'+videoReq.phone.substring(0,3)+'-'+videoReq.phone.substring(3,7)+'-'+videoReq.phone.substring(7)+'</td>'+
+                                        '</tr>'+
+                                        '<tr>'+
+                                            '<td class="text-center">주소</td>'+
+                                            '<td class="text-center">'+videoReq.address+'</td>'+
+                                        '</tr>'+
+                                        '<tr>'+
+                                            '<td class="text-center">특이사항</td>'+
+                                            '<td class="text-center"><pre><span>'+videoReq.note.replace(/\\n/g, '\n')+'<span></pre></td>'+
+                                        '</tr>'+
+                                    '</tbody>'+
+                                '</table>'+
+                                '<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop" ' +
+                                    'onclick="PageFunc.updateModal('+ 
+                                    '\''+ videoReq.reqId + '\'' +','+ 
+                                    '\''+ videoReq.storeNm + '\'' +','+ 
+                                    '\''+ videoReq.creId + '\'' +','+
+                                    '\''+ videoReq.stringContractDt + '\'' +','+
+                                    '\''+ videoReq.stringCreDt + '\'' +','+
+                                    '\''+ videoReq.address + '\'' +','+
+                                    '\''+ videoReq.phone.substring(0,3)+'-'+videoReq.phone.substring(3,7)+'-'+videoReq.phone.substring(7) + '\'' +','+ 
+                                    '\''+ videoReq.note.replace(/\n/g, '\n') + '\'' +','+ 
+                                    '\''+ videoReq.status + '\'' +','+ 
+                                    '\''+ videoReq.progressNote + '\'' +')">'+
+                                    '매장상세' +
+                                '</button>'+
+                            '</div>'
+                        });
+
+                        naver.maps.Event.addListener(marker, 'click', function () {
+                            infoWindow.open(MapFunc.map, marker);
+                            MapFunc.openInfoWindow = infoWindow; // 새 InfoWindow 저장
+                        });
+                    });
+                },
+
+                // 지도 및 핀 그리기
+                drawMap: function(reqList) {
+                    if (!this.map) {
+                        this.initMap(); // 처음 한 번만 지도를 생성
+                    }
+                    this.updatePins(reqList); // 핀만 업데이트
+                },
+
+                // 주소 검색하고 해당 주소로 이동
+                searchAddressToCoordinate: function() {
+                    const address = document.getElementById("addressSearch").value; // 사용자 입력 주소
+                    naver.maps.Service.geocode({
+                        query: address
+                    }, (status, response) => { // 화살표 함수 사용
+                        if (status === naver.maps.Service.Status.ERROR) {
+                            return alert('Something Wrong!');
+                        }
+
+                        if (response.v2.meta.totalCount === 0) {
+                            return alert('주소를 찾을 수 없습니다.');
+                        }
+
+                        var item = response.v2.addresses[0],
+                            point = new naver.maps.Point(item.x, item.y);
+
+                        this.map.setCenter(point); // 화살표 함수로 this 유지
+                        this.map.setZoom(15);
+                    });
+                }
+
+            };
 
             let PageFunc = {
                 // 모달창 정보 업데이트
@@ -131,97 +268,11 @@
                     } else {
                         document.getElementById('modal-progress-note').textContent = progressNote;
                     }
-                },
-                // 지도 그리기
-                map : null,
-                markers : [],
-                openInfoWindow: null, // 현재 열린 InfoWindow를 저장
-
-                initMap: function() {
-                    var mapOptions = {
-                        center: new naver.maps.LatLng(35.8, 127.5),
-                        zoom: 7
-                    };
-
-                    this.map = new naver.maps.Map('map', mapOptions);
-                    this.map.setCursor('pointer');
-                },
-
-                // 핀 업데이트
-                updatePins: function(reqList) {
-                    // 기존 핀 제거
-                    this.markers.forEach(marker => marker.setMap(null));
-                    this.markers = [];
-
-                    // 새로운 핀 추가
-                    reqList.forEach(videoReq => {
-                        var marker = new naver.maps.Marker({
-                            position: new naver.maps.LatLng(videoReq.latitude, videoReq.longitude),
-                            map: this.map,
-                            title: videoReq.storeNm
-                        });
-
-                        this.markers.push(marker);
-
-                        // 핀 클릭 시 나오는 설명
-                        var infoWindow = new naver.maps.InfoWindow({
-                            content: 
-                            '<div style="padding:10px;">' +
-                                '<h6>상호명 : [' + videoReq.storeNm + ']</h6>' +
-                                '<table class="table table-striped table-bordered" >' +
-                                    '<tbody>'+
-                                        '<tr>'+
-                                            '<td class="text-center">계약일</td>'+
-                                            '<td class="text-center">'+videoReq.stringContractDt+'</td>'+
-                                        '</tr>'+
-                                        '<tr>'+
-                                            '<td class="text-center">휴대폰번호</td>'+
-                                            '<td class="text-center">'+videoReq.phone.substring(0,3)+'-'+videoReq.phone.substring(3,7)+'-'+videoReq.phone.substring(7)+'</td>'+
-                                        '</tr>'+
-                                        '<tr>'+
-                                            '<td class="text-center">주소</td>'+
-                                            '<td class="text-center">'+videoReq.address+'</td>'+
-                                        '</tr>'+
-                                        '<tr>'+
-                                            '<td class="text-center">특이사항</td>'+
-                                            '<td class="text-center"><pre><span>'+videoReq.note.replace(/\\n/g, '\n')+'<span></pre></td>'+
-                                        '</tr>'+
-                                    '</tbody>'+
-                                '</table>'+
-                                '<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop" ' +
-                                    'onclick="PageFunc.updateModal('+ 
-                                    '\''+ videoReq.reqId + '\'' +','+ 
-                                    '\''+ videoReq.storeNm + '\'' +','+ 
-                                    '\''+ videoReq.creId + '\'' +','+
-                                    '\''+ videoReq.stringContractDt + '\'' +','+
-                                    '\''+ videoReq.stringCreDt + '\'' +','+
-                                    '\''+ videoReq.address + '\'' +','+
-                                    '\''+ videoReq.phone.substring(0,3)+'-'+videoReq.phone.substring(3,7)+'-'+videoReq.phone.substring(7) + '\'' +','+ 
-                                    '\''+ videoReq.note.replace(/\n/g, '\n') + '\'' +','+ 
-                                    '\''+ videoReq.status + '\'' +','+ 
-                                    '\''+ videoReq.progressNote + '\'' +')">'+
-                                    '매장상세' +
-                                '</button>'+
-                            '</div>'
-                        });
-
-                        naver.maps.Event.addListener(marker, 'click', function () {
-                            infoWindow.open(PageFunc.map, marker);
-                            PageFunc.openInfoWindow = infoWindow; // 새 InfoWindow 저장
-                        });
-                    });
-                },
-
-                // 지도 및 핀 그리기
-                drawMap: function(reqList) {
-                    if (!this.map) {
-                        this.initMap(); // 처음 한 번만 지도를 생성
-                    }
-                    this.updatePins(reqList); // 핀만 업데이트
                 }
             };
 
             let AjaxFunc = {
+                // 비디오 신청정보 업데이트
                 updateVideoReq: function() {
                     var formData = $('#video-req-frm').serializeArray();
 
@@ -241,7 +292,7 @@
                         Toast('top', 1000, 'success', '수정되었습니다!');
 
                         // 열린 InfoWindow 닫기
-                        PageFunc.openInfoWindow.close();
+                        MapFunc.openInfoWindow.close();
                         
                         AjaxFunc.loadUpdatedData();
                         LoadingOverlay.hide();
@@ -252,6 +303,8 @@
                         LoadingOverlay.hide();
                     });
                 },
+
+                // 업데이트 후 핀 재생성을 위한 데이터 불러오기
                 loadUpdatedData: function() {
                     $.ajax({
                         url: `${getVideoReqUrl}`,
@@ -261,7 +314,7 @@
                     .done((updatedReqList) => {
 
                         // 지도를 다시 그림
-                        PageFunc.drawMap(updatedReqList);
+                        MapFunc.drawMap(updatedReqList);
                     })
                     .fail((xhr, textStatus, thrownError) => {
                         console.log('AJAX error while loading updated data:', textStatus, thrownError);
@@ -330,6 +383,10 @@
 
 
         <!-- 지도 -->
+        <div style="position:absolute; z-index : 10; background-color : white; margin : 10px; padding : 10px; border-radius : 10px; border : 3px solid black">
+            <input type="text" style="height : 100%" id="addressSearch" />
+            <button type="button" class="common-blue-btn" onclick=MapFunc.searchAddressToCoordinate() >주소 검색</button>
+        </div>
         <div id="map" style="width:100%;height:100%; border-radius: 10px;"></div>
     </body>
 </html>
