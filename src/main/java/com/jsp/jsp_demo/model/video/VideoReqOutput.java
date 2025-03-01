@@ -12,9 +12,13 @@ import lombok.Setter;
 @JsonInclude(JsonInclude.Include.ALWAYS)
 public class VideoReqOutput extends VideoReq {
 
-    private String stringCreDt; // 신청일 String 변환
+    private String stringCreDt = "";             // 신청일 String 변환
 
-    private String stringContractDt; // 계약일 String 변환
+    private String stringContractDt = "";        // 계약일 String 변환
 
-    private String progressNote; // 촬영담당자가 작성한 특이사항
+    private String stringShootReserveDtm = "";   // 촬영예정일 String 변환
+
+    private String stringShootCompleteDt = "";   // 촬영완료일 String 변환
+
+    private String stringUploadCompleteDt = "";  // 업로드완료일 String 변환
 }

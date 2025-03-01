@@ -14,11 +14,14 @@
     <decorator name="default" page="template/default/template.jsp">
         <!-- 메인 -->
         <pattern>/main</pattern>
+        <pattern>/main/*</pattern>
 
         <!-- 마이페이지 -->
         <pattern>/mypage</pattern>
+        <pattern>/mypage/*</pattern>
 
         <!-- 촬영 신청 -->
         <pattern>/videoReq</pattern>
+        <pattern>/videoReq/*</pattern>
     </decorator>
 </decorators>

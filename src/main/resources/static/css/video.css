@@ -16,3 +16,17 @@ tr:hover {
 select {
     font-size : 13px !important;
 }
+
+.reqTopBox {
+    display:flex;
+    justify-content: space-between;
+    padding-top: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-bottom : 10px;
+}
+
+.video-req-table-container {
+    margin-left:10px;
+    margin-right:10px;
+}

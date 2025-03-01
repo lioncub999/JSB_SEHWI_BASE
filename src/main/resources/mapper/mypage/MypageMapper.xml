@@ -9,28 +9,4 @@
         SET PASS_RESET = 'Y', USER_PW = '1111'
         WHERE USER_ID = #{userId}
     </update>
-
-    <select id="getMyChicken"
-            parameterType="com.jsp.jsp_demo.model.auth.UserInput"
-            resultType="com.jsp.jsp_demo.model.chicken.ChickenOutput">
-        SELECT CODE_ID AS TASTE_CD, TASTE AS TASTE_NM, EAT_AMT
-        FROM (SELECT *
-              FROM TB_CODE_M
-              WHERE CODE_TP = 'CHICKEN') CODE
-                 LEFT JOIN (SELECT TASTE_CD, count(*) AS EAT_AMT
-                            FROM TB_CHICKEN_CONSUME_HIS
-                            WHERE CONSUMER_ID = #{userId}
-                            GROUP BY TASTE_CD) CHICKEN_HIS ON CODE.CODE_ID = CHICKEN_HIS.TASTE_CD
-        ORDER BY TASTE_CD
-    </select>
-
-    <select id="getMyHis"
-            parameterType="com.jsp.jsp_demo.model.auth.UserInput"
-            resultType="com.jsp.jsp_demo.model.chicken.ChickenOutput">
-        SELECT HIS.TASTE_CD, CODE.TASTE AS TASTE_NM, DATE_FORMAT(HIS.CRE_DTM, '%Y-%m-%d %H:%i:%s') AS EAT_DTM
-        FROM TB_CHICKEN_CONSUME_HIS HIS
-                 LEFT JOIN TB_CODE_M CODE ON HIS.TASTE_CD = CODE.CODE_ID
-        WHERE CONSUMER_ID = #{userId}
-        ORDER BY HIS.CRE_DTM DESC
-    </select>
 </mapper>

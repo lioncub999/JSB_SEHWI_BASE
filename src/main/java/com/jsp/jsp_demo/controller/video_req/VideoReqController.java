@@ -74,7 +74,7 @@ public class VideoReqController {
         traceWriter.add("");
 
         // 1페이지당 글 개수
-        int pageSize = 20;
+        int pageSize = 10;
         // 한 화면에 보여줄 페이지 번호
         int pageBlock = 10;
 
@@ -199,6 +199,9 @@ public class VideoReqController {
         traceWriter.add("[userInput.getNote() : " + videoReqInput.getNote() + "]");
         traceWriter.add("[userInput.getProgressNote() : " + videoReqInput.getProgressNote() + "]");
         traceWriter.add("[userInput.getStatus() : " + videoReqInput.getStatus() + "]");
+        traceWriter.add("[userInput.getShootReserveDtm() : " + videoReqInput.getShootReserveDtm() + "]");
+        traceWriter.add("[userInput.getShootCompleteDt() : " + videoReqInput.getShootCompleteDt() + "]");
+        traceWriter.add("[userInput.getUploadCompleteDt() : " + videoReqInput.getUploadCompleteDt() + "]");
         traceWriter.add("[userInput.getUpdId() : " + videoReqInput.getUpdId() + "]");
         traceWriter.add("");
         traceWriter.log(0);
@@ -209,7 +212,6 @@ public class VideoReqController {
             videoReqService.updateVideoReq(videoReqInput);
 
             result = "success";
-
         } catch (Exception e) {
             result = "error";
             traceWriter.add("[Error] : " + e);

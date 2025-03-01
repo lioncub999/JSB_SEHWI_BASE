@@ -6,7 +6,6 @@
  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 --%>
 <%@ include file="/WEB-INF/views/cmm/include/taglibs.jsp" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 
 <c:set var="videoReqUrl" value="/videoReq"/>
@@ -16,13 +15,28 @@
 <head>
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"/>
-    <link type="text/css" rel="stylesheet" href="<c:url value='/css/main.css'/>">
 </head>
 <body>
     <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="<c:url value='/js/alert/SweetAlert2.js' />"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Datepicker 스타일시트 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/css/bootstrap-datepicker.min.css" rel="stylesheet">
+
+    <!-- datepicker JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/js/bootstrap-datepicker.min.js"></script>
+
+
+    <!-- dateTimePicker JS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.4/jquery.datetimepicker.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.4/build/jquery.datetimepicker.full.min.js"></script>
+
+    <!-- 한국어 로케일 파일 추가 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/locales/bootstrap-datepicker.kr.min.js"></script>
+
     <script>
         $(document).ready(function () {
             // 현재 URL에서 searchStoreNm 값 가져오기
@@ -30,6 +44,37 @@
             const searchStoreNm = url.searchParams.get('searchStoreNm');
             
             $("#searchStoreNm").val(searchStoreNm);
+
+            $('#shootReserveDtm').datetimepicker({
+                format: 'Y-m-d H:i',       // 날짜와 시간 형식
+                step : 30,
+            });
+             $.datetimepicker.setLocale('kr');
+
+            // 촬영 완료일
+            $('#shootCompleteDt').datepicker({
+                format: 'yyyy-mm-dd', // 날짜 형식
+                autoclose: true, // 날짜 선택 후 자동으로 닫기
+                todayHighlight: true, // 오늘 날짜 하이라이트
+                language: "kr",
+            });
+            // 업로드 일
+            $('#uploadCompleteDt').datepicker({
+                format: 'yyyy-mm-dd', // 날짜 형식
+                autoclose: true, // 날짜 선택 후 자동으로 닫기
+                todayHighlight: true, // 오늘 날짜 하이라이트
+                language: "kr",
+            });
+
+            // 엔터키 감지 및 버튼 클릭 트리거
+            const searchInput = document.getElementById('searchStoreNm');
+
+            searchInput.addEventListener('keypress', function (event) {
+                // 엔터키를 감지
+                if (event.key === 'Enter') {
+                    AjaxFunc.searchStoreNm();
+                }
+            });
         });
 
         let PageControlFunc = {
@@ -44,51 +89,54 @@
                 window.location.href = '/videoReq'
             },
 
-            updateModal : function(reqId, storeName, creId, stringContractDt, stringCreDt, address, phone, note, status, progressNote, shootCompleteDt, uploadCompleteDt) {
-                console.log(shootCompleteDt);
+            // 모달창 정보 업데이트
+            updateModal : function(reqId, storeName, creId, stringContractDt, stringCreDt, address, phone, note, status, progressNote, stringShootReserveDtm, stringShootCompleteDt, stringUploadCompleteDt) {
                 $('#reqId').val(reqId);
-                document.getElementById('exampleModalLabel').textContent = '['+storeName+']';
-                document.getElementById('modal-cre-id').textContent = creId;
-                document.getElementById('modal-contract-dt').textContent = stringContractDt;
-                document.getElementById('modal-cre-dt').textContent = stringCreDt;
-                document.getElementById('modal-address').textContent = address;
-                document.getElementById('modal-phone').textContent = phone;
-                document.getElementById('shootCompleteDt').value = shootCompleteDt;
-                document.getElementById('uploadCompleteDt').value = uploadCompleteDt;
+                $('#exampleModalLabel').text('[' + storeName + ']');
+                $('#modal-cre-id').text(creId);
+                $('#modal-contract-dt').text(stringContractDt);
+                $('#modal-cre-dt').text(stringCreDt);
+                $('#modal-address').text(address);
+                $('#modal-phone').text(phone);
+
+                $('#shootReserveDtm').val(stringShootReserveDtm);
+                $('#shootCompleteDt').val(stringShootCompleteDt);
+                $('#uploadCompleteDt').val(stringUploadCompleteDt);
 
 
                 // 특이사항 (전체 수정 가능)
-                const modalNoteCell = document.getElementById('modal-note');
-                modalNoteCell.innerHTML = '';
+                const modalNoteCell = $('#modal-note');
+                modalNoteCell.html('');
 
                 // 특이사항 <textarea> 생성
-                const textArea = document.createElement('textarea');
-
-                textArea.value = note;// note 값을 디폴트로 설정
-                textArea.style.resize = 'none'; // 크기 조절 불가
-                textArea.style.overflowY = 'auto'; // 세로 스크롤 활성화
-                textArea.rows = 4; // 최대 4줄 표시
-                textArea.style.width = '100%'; // 부모 요소 크기에 맞게 설정
-                textArea.style.boxSizing = 'border-box'; // 패딩 포함 크기 계산
-                textArea.name = "note";
+                const textArea = $('<textarea>', {
+                    name: 'note',
+                    text: note, // note 값을 디폴트로 설정
+                }).css({
+                    resize: 'none',          // 크기 조절 불가
+                    overflowY: 'auto',       // 세로 스크롤 활성화
+                    width: '100%',           // 부모 요소 크기에 맞게 설정
+                }).attr('rows', 4);          // 최대 4줄 표시
 
                 // 특이사항 <textarea>를 td에 추가
-                modalNoteCell.appendChild(textArea);
+                modalNoteCell.append(textArea);
 
                 // 진행 상태 수정
-                const modalStatusCell = document.getElementById('modal-status');
+                const modalStatusCell = $('#modal-status');
 
-                modalStatusCell.innerHTML = '';
+                modalStatusCell.html('');
 
                 // <div> 생성
-                const inputBoxDiv = document.createElement('div');
-                inputBoxDiv.className = 'input-box';
+                const inputBoxDiv = $('<div>', {
+                    class: 'input-box'
+                });
 
                 // <select> 생성
-                const selectElement = document.createElement('select');
-                selectElement.className = 'form-select';
-                selectElement.id = 'status';
-                selectElement.name = 'status';
+                const selectElement = $('<select>', {
+                    class: 'form-select',
+                    id: 'status',
+                    name: 'status'
+                });
 
                 var options;
                 // <option> 요소 추가
@@ -108,55 +156,54 @@
                 }
 
                 options.forEach(optionData => {
-                const option = document.createElement('option');
-                option.value = optionData.value;
-                option.textContent = optionData.text;
-                if (optionData.value === status) {
-                    option.selected = true; // status 값에 따라 기본 선택 설정
-                }
-                selectElement.appendChild(option);
+                    $('<option>', {
+                        value: optionData.value,
+                        text: optionData.text,
+                        selected: optionData.value === status // status 값에 따라 기본 선택 설정
+                    }).appendTo(selectElement); // <select>에 추가
                 });
 
+
                 // <select>를 <div> 안에 추가
-                inputBoxDiv.appendChild(selectElement);
+                inputBoxDiv.append(selectElement);
 
                 // <div>를 모달의 상태 셀에 추가
-                modalStatusCell.appendChild(inputBoxDiv);
+                modalStatusCell.append(inputBoxDiv);
 
                 if (${userGrade} === 0) {
                     // 촬영 담당자 작성 특이사항(촬영자만 수정가능)
-                    const modalProgressNoteCell = document.getElementById('modal-progress-note');
-                    modalProgressNoteCell.innerHTML = '';
+                    const modalProgressNoteCell = $('#modal-progress-note');
+                    modalProgressNoteCell.html('');
 
                     // 촬영 담당자 특이사항 <textarea> 생성
-                    const progressNoteTextArea = document.createElement('textarea');
-
-                    if (progressNote != 'null') {
-                        progressNoteTextArea.value = progressNote;// note 값을 디폴트로 설정
-                    }
-                    progressNoteTextArea.style.resize = 'none'; // 크기 조절 불가
-                    progressNoteTextArea.style.overflowY = 'auto'; // 세로 스크롤 활성화
-                    progressNoteTextArea.rows = 4; // 최대 4줄 표시
-                    progressNoteTextArea.style.width = '100%'; // 부모 요소 크기에 맞게 설정
-                    progressNoteTextArea.style.boxSizing = 'border-box'; // 패딩 포함 크기 계산
-                    progressNoteTextArea.name = "progressNote";
+                    const progressNoteTextArea = $('<textarea>', {
+                        name: 'progressNote',
+                        text: progressNote !== 'null' ? progressNote : '' // note 값을 디폴트로 설정
+                    }).css({
+                        resize: 'none',          // 크기 조절 불가
+                        overflowY: 'auto',       // 세로 스크롤 활성화
+                        width: '100%',           // 부모 요소 크기에 맞게 설정
+                        boxSizing: 'border-box'  // 패딩 포함 크기 계산
+                    }).attr('rows', 4); // 최대 4줄 표시
 
                     // 촬영 담당자 특이사항 <textarea>를 td에 추가
-                    modalProgressNoteCell.appendChild(progressNoteTextArea);
+                    $(modalProgressNoteCell).append(progressNoteTextArea);
                 } else {
-                    document.getElementById('modal-progress-note').textContent = progressNote;
+                    $('#modal-progress-note').text(progressNote);
                 }
-            },
+            }
         }
 
         let AjaxFunc = {
             <%-- 상호명 검색 --%>
             searchStoreNm: function() {
-                var searchStoreNm = document.getElementById('searchStoreNm').value;
+                var searchStoreNm = $('#searchStoreNm').val();
 
                 window.location.href = '/videoReq?curPage='+${1}+'&'+'searchStoreNm='+searchStoreNm;
 
             },
+
+            <%-- 비디오 신청 정보 업데이트 --%>
             updateVideoReq: function() {
                 var formData = $('#video-req-frm').serializeArray();
 
@@ -171,15 +218,20 @@
                 })
                 .done((response) => {
                     // 모달 닫기
-                    $('#staticBackdrop').modal('hide');
+                    if (response == "success") {
+                        $('#staticBackdrop').modal('hide');
                     
-                    Toast('top', 1000, 'success', '수정되었습니다!');
+                        Toast('top', 1000, 'success', '수정되었습니다!');
 
-                    setTimeout(() => {
-                        location.reload();
+                        setTimeout(() => {
+                            location.reload();
 
-                        LoadingOverlay.hide();
-                    }, 1100); 
+                            LoadingOverlay.hide();
+                        }, 1100); 
+                    } else {
+                        Toast('top', 1000, 'error', '오류가 발생했습니다!');
+                    }
+                    
                 })
                 .fail((xhr, textStatus, thrownError) => {
                     console.log('AJAX error:', textStatus, thrownError);
@@ -240,7 +292,7 @@
                                 <td class="text-center">촬영<br>예정일</td>
                                 <td>
                                     <div>
-                                        <input type="text" class="form-control" id="shootReserveDtm" name="shootReserveDtm" readonly>
+                                        <input type="text" class="form-control" id="shootReserveDtm" name="shootReserveDtm">
                                     </div>
                                 </td>
                             </tr>
@@ -272,79 +324,15 @@
     </div>
     
 
-    <div class="reqTopBox" style="display:flex;justify-content: space-between;">
-        <button onclick="PageControlFunc.moveToReqAddPage()" class="common-blue-btn" style="margin-top:15px;margin-left:15px; margin-bottom:15px">촬영 신청</button>
+    <div class="reqTopBox">
+        <button onclick="PageControlFunc.moveToReqAddPage()" class="common-blue-btn">촬영 신청</button>
 
-        <div style="margin-top:15px;margin-right:15px">
+        <div>
             <span>상호명 검색 : </span>
             <input type="text" id="searchStoreNm" placeholder="" style="width: 300px; font-size : 14px">
             <button onclick=AjaxFunc.searchStoreNm() class="common-blue-btn" >검색</button>
             <button onclick=PageFunc.resetSearch() class="common-blue-btn" >초기화</button>
         </div>
-    </div>
-
-    
-
-    <div style="margin-left:10px;margin-right:10px">
-        <%-- 요청 리스트 테이블 --%>
-        <table class="table table-striped table-bordered" >
-            <thead class="text-center" style="height:50px">
-                <tr>
-                    <th style="width: 5%; border-top-left-radius:10px;">신청ID</th>
-                    <th style="width: 7%;">신청일</th>
-                    <th style="width: 7%;">신청자</th>
-                    <th style="width: 10%;">연락처</th>
-                    <th style="width: 10%;">상호명</th>
-                    <th style="width: 15%;">주소</th>
-                    <th style="width: 10%;">특이사항</th>
-                    <th style="width: 10%;">촬영담당자<br>특이사항</th>
-                    <th style="width: 5%;">촬영완료<br>여부</th>
-                    <th style="width: 5%;">촬영<br>담당자</th>
-                    <th style="width: 5%; border-top-right-radius:10px;">진행상태</th>
-                </tr>
-            </thead>
-            <tbody>
-                <c:forEach var="videoReq" items="${videoReqList}">
-                    <tr onclick="PageFunc.updateModal('${videoReq.reqId}', '${videoReq.storeNm}', '${videoReq.creId}', '${videoReq.stringContractDt}', '${videoReq.stringCreDt}', '${videoReq.address}', '${videoReq.phone}', '${videoReq.note}', '${videoReq.status}', '${videoReq.progressNote}', '${videoReq.shootCompleteDt}', '${videoReq.uploadCompleteDt}')" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                        <td class="text-center t-cell">${videoReq.reqId}</td>
-                        <td class="text-center t-cell">${videoReq.stringCreDt}</td>
-                        <td class="text-center t-cell">${videoReq.creId}</td>
-                        <td class="text-center t-cell">
-                            ${videoReq.phone.substring(0,3)}-${videoReq.phone.substring(3,7)}-${videoReq.phone.substring(7)}
-                        </td>
-                        <td class="t-cell">${videoReq.storeNm}</td>
-                        <td class="t-cell">${videoReq.address}</td>
-                        <td class="t-cell">
-                            ${videoReq.note.replace('\\n', '<br>')}
-                        </td>
-                        <td class="t-cell">
-                            ${videoReq.progressNote.replace('\\n', '<br>')}
-                        </td>
-                        <td class="text-center t-cell"></td>
-                        <td class="text-center t-cell"></td>
-                        <td class="text-center t-cell">
-                            <c:choose>
-                                <c:when test="${videoReq.status == 'COORDINATION'}">
-                                    일정조율중
-                                </c:when>
-                                <c:when test="${videoReq.status == 'STANDBY'}">
-                                    촬영대기
-                                </c:when>
-                                <c:when test="${videoReq.status == 'COMPLETEUPLOAD'}">
-                                    촬영완료
-                                </c:when>
-                                <c:when test="${videoReq.status == 'COMPLETEUPLOAD'}">
-                                    촬영&업로드 완료
-                                </c:when>
-                                <c:otherwise>
-                                   촬영 불필요
-                                </c:otherwise>
-                            </c:choose>
-                        </td>
-                    </tr>
-                </c:forEach>
-            </tbody>
-        </table>
     </div>
 
     <%-- 페이지네이션 --%>
@@ -383,48 +371,66 @@
         </ul>
     </nav>
 
-     <!-- Datepicker 스타일시트 -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/css/bootstrap-datepicker.min.css" rel="stylesheet">
-    <!-- jQuery와 부트스트랩-datepicker JS -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/js/bootstrap-datepicker.min.js"></script>
-    <!-- 한국어 로케일 파일 추가 -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/locales/bootstrap-datepicker.kr.min.js"></script>
-
-    <script>
-        $(document).ready(function() {
-            // 촬영 예정일
-            $('#shootReserveDtm').datepicker({
-                format: 'yyyy-mm-dd', // 날짜 형식
-                autoclose: true, // 날짜 선택 후 자동으로 닫기
-                todayHighlight: true, // 오늘 날짜 하이라이트
-                language: "kr",
-            });
-            // 촬영 완료일
-            $('#shootCompleteDt').datepicker({
-                format: 'yyyy-mm-dd', // 날짜 형식
-                autoclose: true, // 날짜 선택 후 자동으로 닫기
-                todayHighlight: true, // 오늘 날짜 하이라이트
-                language: "kr",
-            });
-            // 업로드 일
-            $('#uploadCompleteDt').datepicker({
-                format: 'yyyy-mm-dd', // 날짜 형식
-                autoclose: true, // 날짜 선택 후 자동으로 닫기
-                todayHighlight: true, // 오늘 날짜 하이라이트
-                language: "kr",
-            });
-
-            // 엔터키 감지 및 버튼 클릭 트리거
-            const searchInput = document.getElementById('searchStoreNm');
-
-            searchInput.addEventListener('keypress', function (event) {
-                // 엔터키를 감지
-                if (event.key === 'Enter') {
-                    AjaxFunc.searchStoreNm();
-                }
-            });
-        });
-    </script>
+    <div class="video-req-table-container">
+        <%-- 요청 리스트 테이블 --%>
+        <table class="table table-striped table-bordered" >
+            <thead class="text-center">
+                <tr>
+                    <th style="width: 3%; border-top-left-radius:10px;">신청<br>ID</th>
+                    <th style="width: 8%;">신청일</th>
+                    <th style="width: 6%;">신청자</th>
+                    <th style="width: 8%;">연락처</th>
+                    <th style="width: 10%;">상호명</th>
+                    <th style="width: 15%;">주소</th>
+                    <th style="width: 16%;">특이사항</th>
+                    <th style="width: 16%;">촬영담당자<br>특이사항</th>
+                    <th style="width: 5%;">촬영완료<br>여부</th>
+                    <th style="width: 5%;">촬영<br>담당자</th>
+                    <th style="width: 8%; border-top-right-radius:10px;">진행상태</th>
+                </tr>
+            </thead>
+            <tbody>
+                <c:forEach var="videoReq" items="${videoReqList}">
+                    <tr onclick="PageFunc.updateModal('${videoReq.reqId}', '${videoReq.storeNm}', '${videoReq.creId}', '${videoReq.stringContractDt}', '${videoReq.stringCreDt}', '${videoReq.address}', '${videoReq.phone}', '${videoReq.note}', '${videoReq.status}', '${videoReq.progressNote}', '${videoReq.stringShootReserveDtm}', '${videoReq.stringShootCompleteDt}', '${videoReq.stringUploadCompleteDt}')" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                        <td class="text-center t-cell">${videoReq.reqId}</td>
+                        <td class="text-center t-cell">${videoReq.stringCreDt}</td>
+                        <td class="text-center t-cell">${videoReq.creId}</td>
+                        <td class="text-center t-cell">
+                            ${videoReq.phone.substring(0,3)}-${videoReq.phone.substring(3,7)}-${videoReq.phone.substring(7)}
+                        </td>
+                        <td class="t-cell">${videoReq.storeNm}</td>
+                        <td class="t-cell">${videoReq.address}</td>
+                        <td class="t-cell">
+                            ${videoReq.note.replace('\\n', '<br>')}
+                        </td>
+                        <td class="t-cell">
+                            ${videoReq.progressNote.replace('\\n', '<br>')}
+                        </td>
+                        <td class="text-center t-cell"></td>
+                        <td class="text-center t-cell"></td>
+                        <td class="text-center t-cell">
+                            <c:choose>
+                                <c:when test="${videoReq.status == 'COORDINATION'}">
+                                    일정조율중
+                                </c:when>
+                                <c:when test="${videoReq.status == 'STANDBY'}">
+                                    촬영대기
+                                </c:when>
+                                <c:when test="${videoReq.status == 'COMPLETEFILM'}">
+                                    촬영완료
+                                </c:when>
+                                <c:when test="${videoReq.status == 'COMPLETEUPLOAD'}">
+                                    촬영&업로드 완료
+                                </c:when>
+                                <c:otherwise>
+                                   촬영 불필요
+                                </c:otherwise>
+                            </c:choose>
+                        </td>
+                    </tr>
+                </c:forEach>
+            </tbody>
+        </table>
+    </div>
 </body>
 </html>

@@ -31,8 +31,9 @@
         PROGRESS_NOTE,
         MANAGER_ID,
         STATUS,
-        DATE_FORMAT(SHOOT_COMPLETE_DT,'%Y-%m-%d') AS SHOOT_COMPLETE_DT,
-        DATE_FORMAT(UPLOAD_COMPLETE_DT,'%Y-%m-%d') AS UPLOAD_COMPLETE_DT
+        DATE_FORMAT(SHOOT_RESERVE_DTM, '%Y-%m-%d %H:%i') AS STRING_SHOOT_RESERVE_DTM,
+        DATE_FORMAT(SHOOT_COMPLETE_DT,'%Y-%m-%d') AS STRING_SHOOT_COMPLETE_DT,
+        DATE_FORMAT(UPLOAD_COMPLETE_DT,'%Y-%m-%d') AS STRING_UPLOAD_COMPLETE_DT
         FROM TBV_VIDEO_REQ_M TVRM
         <where>
             <if test="searchStoreNm != null and searchStoreNm != ''">
@@ -45,9 +46,23 @@
 
     <select id="getUnStartedVideoReq"
             resultType="com.jsp.jsp_demo.model.video.VideoReqOutput">
-        SELECT REQ_ID, CRE_ID, STORE_NM, DATE_FORMAT(CONTRACT_DT,'%Y-%m-%d') AS STRING_CONTRACT_DT, PHONE, ADDRESS, DATE_FORMAT(CRE_DTM ,'%Y-%m-%d') AS STRING_CRE_DT,
-        LONGITUDE, LATITUDE, NOTE, PROGRESS_NOTE, STATUS FROM TBV_VIDEO_REQ_M TERM WHERE STATUS =
-        "COORDINATION" ORDER BY CRE_DTM DESC;
+        SELECT
+        REQ_ID,
+        CRE_ID,
+        STORE_NM,
+        DATE_FORMAT(CONTRACT_DT,'%Y-%m-%d') AS STRING_CONTRACT_DT,
+        PHONE,
+        ADDRESS,
+        DATE_FORMAT(CRE_DTM ,'%Y-%m-%d') AS STRING_CRE_DT,
+        LONGITUDE,
+        LATITUDE,
+        NOTE,
+        PROGRESS_NOTE,
+        STATUS,
+        DATE_FORMAT(SHOOT_RESERVE_DTM, '%Y-%m-%d %H:%i') AS STRING_SHOOT_RESERVE_DTM,
+        DATE_FORMAT(SHOOT_COMPLETE_DT,'%Y-%m-%d') AS STRING_SHOOT_COMPLETE_DT,
+        DATE_FORMAT(UPLOAD_COMPLETE_DT,'%Y-%m-%d') AS STRING_UPLOAD_COMPLETE_DT
+        FROM TBV_VIDEO_REQ_M TERM WHERE STATUS = "COORDINATION" ORDER BY CRE_DTM DESC;
     </select>
 
     <insert id="createVideoReq"
@@ -64,8 +79,15 @@
         SET NOTE = #{note},
         PROGRESS_NOTE = #{progressNote},
         STATUS = #{status},
-        SHOOT_COMPLETE_DT = #{shootCompleteDt},
-        UPLOAD_COMPLETE_DT = #{uploadCompleteDt},
+        <if test="shootReserveDtm != null and shootReserveDtm != ''">
+            SHOOT_RESERVE_DTM = #{shootReserveDtm},
+        </if>
+        <if test="shootCompleteDt != null and shootCompleteDt != ''">
+            SHOOT_COMPLETE_DT = #{shootCompleteDt},
+        </if>
+        <if test="uploadCompleteDt != null and uploadCompleteDt != ''">
+            UPLOAD_COMPLETE_DT = #{uploadCompleteDt},
+        </if>
         UPD_ID = #{updId},
         UPD_DTM = NOW()
         WHERE REQ_ID = #{reqId};

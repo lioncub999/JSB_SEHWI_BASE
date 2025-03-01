@@ -6,7 +6,6 @@
  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 --%>
 <%@ include file="/WEB-INF/views/cmm/include/taglibs.jsp" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 
 
@@ -25,16 +24,56 @@
         <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${naverMapsClientId}&submodules=geocoder"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 
+        <!-- Datepicker 스타일시트 -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/css/bootstrap-datepicker.min.css" rel="stylesheet">
+
+        <!-- datepicker JS -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/js/bootstrap-datepicker.min.js"></script>
+
+
+        <!-- dateTimePicker JS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.4/jquery.datetimepicker.min.css" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.4/build/jquery.datetimepicker.full.min.js"></script>
+
+        <!-- 한국어 로케일 파일 추가 -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/locales/bootstrap-datepicker.kr.min.js"></script>
+
         <script>
+            <%-- Document Ready! --%>
             $(document).ready(function() {
-                MapFunc.drawMap(${reqList}); // 초기 지도 생성 및 핀 그리기
+                // 초기 지도 생성 및 핀 그리기
+                MapFunc.drawMap(${reqList}); 
 
                 // 엔터키 감지 및 버튼 클릭 트리거
-                document.addEventListener('keydown', function(event) {
+                const searchInput = $('#addressSearch');
+
+                searchInput.on('keypress', function (event) {
+                    // 엔터키를 감지
                     if (event.key === 'Enter') {
-                        // 로그인 버튼 클릭
                         MapFunc.searchAddressToCoordinate();
                     }
+                });
+
+                $('#shootReserveDtm').datetimepicker({
+                    format: 'Y-m-d H:i',       // 날짜와 시간 형식
+                    step : 30,
+                });
+                $.datetimepicker.setLocale('kr');
+
+                // 촬영 완료일
+                $('#shootCompleteDt').datepicker({
+                    format: 'yyyy-mm-dd', // 날짜 형식
+                    autoclose: true, // 날짜 선택 후 자동으로 닫기
+                    todayHighlight: true, // 오늘 날짜 하이라이트
+                    language: "kr",
+                });
+                // 업로드 일
+                $('#uploadCompleteDt').datepicker({
+                    format: 'yyyy-mm-dd', // 날짜 형식
+                    autoclose: true, // 날짜 선택 후 자동으로 닫기
+                    todayHighlight: true, // 오늘 날짜 하이라이트
+                    language: "kr",
                 });
             });
 
@@ -43,7 +82,6 @@
                 map : null,
                 markers : [],
                 openInfoWindow: null, // 현재 열린 InfoWindow를 저장
-            
 
                 // 지도 초기화
                 initMap: function() {
@@ -109,6 +147,10 @@
                                             '<td class="text-center">특이사항</td>'+
                                             '<td class="text-center"><pre><span>'+videoReq.note.replace(/\\n/g, '\n')+'<span></pre></td>'+
                                         '</tr>'+
+                                        '<tr>'+
+                                            '<td class="text-center">촬영담당자<br>특이사항</td>'+
+                                            '<td class="text-center"><pre><span>'+ videoReq.progressNote.replace(/\\n/g, '\n') +'<span></pre></td>'+
+                                        '</tr>'+
                                     '</tbody>'+
                                 '</table>'+
                                 '<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop" ' +
@@ -122,8 +164,11 @@
                                     '\''+ videoReq.phone.substring(0,3)+'-'+videoReq.phone.substring(3,7)+'-'+videoReq.phone.substring(7) + '\'' +','+ 
                                     '\''+ videoReq.note.replace(/\n/g, '\n') + '\'' +','+ 
                                     '\''+ videoReq.status + '\'' +','+ 
-                                    '\''+ videoReq.progressNote + '\'' +')">'+
-                                    '매장상세' +
+                                    '\''+ videoReq.progressNote + '\'' + ',' +
+                                    '\''+ videoReq.stringShootReserveDtm + '\'' + ',' +
+                                    '\''+ videoReq.stringShootCompleteDt + '\'' + ',' +
+                                    '\''+ videoReq.stringUploadCompleteDt + '\'' + ',' +
+                                    ')">'+'매장상세' +
                                 '</button>'+
                             '</div>'
                         });
@@ -145,16 +190,18 @@
 
                 // 주소 검색하고 해당 주소로 이동
                 searchAddressToCoordinate: function() {
-                    const address = document.getElementById("addressSearch").value; // 사용자 입력 주소
+                    const address = $("#addressSearch").val(); // 사용자 입력 주소
                     naver.maps.Service.geocode({
                         query: address
                     }, (status, response) => { // 화살표 함수 사용
                         if (status === naver.maps.Service.Status.ERROR) {
-                            return alert('Something Wrong!');
+                            Toast('top', 1000, 'error', '네이버 지도 오류 발생!');
+                            return;
                         }
 
                         if (response.v2.meta.totalCount === 0) {
-                            return alert('주소를 찾을 수 없습니다.');
+                            Toast('top', 1000, 'warning', '검색된 주소가 없습니다!');
+                            return;
                         }
 
                         var item = response.v2.addresses[0],
@@ -169,48 +216,53 @@
 
             let PageFunc = {
                 // 모달창 정보 업데이트
-                updateModal : function(reqId, storeName, creId, stringContractDt, stringCreDt, address, phone, note, status, progressNote) {
-                    document.getElementById('reqId').value = reqId;
-                    document.getElementById('exampleModalLabel').textContent = '['+storeName+']';
-                    document.getElementById('modal-cre-id').textContent = creId;
-                    document.getElementById('modal-contract-dt').textContent = stringContractDt;
-                    document.getElementById('modal-cre-dt').textContent = stringCreDt;
-                    document.getElementById('modal-address').textContent = address;
-                    document.getElementById('modal-phone').textContent = phone;
+                updateModal : function(reqId, storeName, creId, stringContractDt, stringCreDt, address, phone, note, status, progressNote, stringShootReserveDtm, stringShootCompleteDt, stringUploadCompleteDt) {
+                    $('#reqId').val(reqId);
+                    $('#exampleModalLabel').text('[' + storeName + ']');
+                    $('#modal-cre-id').text(creId);
+                    $('#modal-contract-dt').text(stringContractDt);
+                    $('#modal-cre-dt').text(stringCreDt);
+                    $('#modal-address').text(address);
+                    $('#modal-phone').text(phone);
+
+                    $('#shootReserveDtm').val(stringShootReserveDtm);
+                    $('#shootCompleteDt').val(stringShootCompleteDt);
+                    $('#uploadCompleteDt').val(stringUploadCompleteDt);
 
 
                     // 특이사항 (전체 수정 가능)
-                    const modalNoteCell = document.getElementById('modal-note');
-                    modalNoteCell.innerHTML = '';
+                    const modalNoteCell = $('#modal-note');
+                    modalNoteCell.html('');
 
                     // 특이사항 <textarea> 생성
-                    const textArea = document.createElement('textarea');
-
-                    textArea.value = note;// note 값을 디폴트로 설정
-                    textArea.style.resize = 'none'; // 크기 조절 불가
-                    textArea.style.overflowY = 'auto'; // 세로 스크롤 활성화
-                    textArea.rows = 4; // 최대 4줄 표시
-                    textArea.style.width = '100%'; // 부모 요소 크기에 맞게 설정
-                    textArea.style.boxSizing = 'border-box'; // 패딩 포함 크기 계산
-                    textArea.name = "note";
+                    const textArea = $('<textarea>', {
+                        name: 'note',
+                        text: note, // note 값을 디폴트로 설정
+                    }).css({
+                        resize: 'none',          // 크기 조절 불가
+                        overflowY: 'auto',       // 세로 스크롤 활성화
+                        width: '100%',           // 부모 요소 크기에 맞게 설정
+                    }).attr('rows', 4);          // 최대 4줄 표시
 
                     // 특이사항 <textarea>를 td에 추가
-                    modalNoteCell.appendChild(textArea);
+                    modalNoteCell.append(textArea);
 
                     // 진행 상태 수정
-                    const modalStatusCell = document.getElementById('modal-status');
+                    const modalStatusCell = $('#modal-status');
 
-                    modalStatusCell.innerHTML = '';
+                    modalStatusCell.html('');
 
                     // <div> 생성
-                    const inputBoxDiv = document.createElement('div');
-                    inputBoxDiv.className = 'input-box';
+                    const inputBoxDiv = $('<div>', {
+                        class: 'input-box'
+                    });
 
                     // <select> 생성
-                    const selectElement = document.createElement('select');
-                    selectElement.className = 'form-select';
-                    selectElement.id = 'status';
-                    selectElement.name = 'status';
+                    const selectElement = $('<select>', {
+                        class: 'form-select',
+                        id: 'status',
+                        name: 'status'
+                    });
 
                     var options;
                     // <option> 요소 추가
@@ -230,43 +282,40 @@
                     }
 
                     options.forEach(optionData => {
-                    const option = document.createElement('option');
-                    option.value = optionData.value;
-                    option.textContent = optionData.text;
-                    if (optionData.value === status) {
-                        option.selected = true; // status 값에 따라 기본 선택 설정
-                    }
-                    selectElement.appendChild(option);
+                        $('<option>', {
+                            value: optionData.value,
+                            text: optionData.text,
+                            selected: optionData.value === status // status 값에 따라 기본 선택 설정
+                        }).appendTo(selectElement); // <select>에 추가
                     });
 
+
                     // <select>를 <div> 안에 추가
-                    inputBoxDiv.appendChild(selectElement);
+                    inputBoxDiv.append(selectElement);
 
                     // <div>를 모달의 상태 셀에 추가
-                    modalStatusCell.appendChild(inputBoxDiv);
+                    modalStatusCell.append(inputBoxDiv);
 
                     if (${userGrade} === 0) {
                         // 촬영 담당자 작성 특이사항(촬영자만 수정가능)
-                        const modalProgressNoteCell = document.getElementById('modal-progress-note');
-                        modalProgressNoteCell.innerHTML = '';
+                        const modalProgressNoteCell = $('#modal-progress-note');
+                        modalProgressNoteCell.html('');
 
                         // 촬영 담당자 특이사항 <textarea> 생성
-                        const progressNoteTextArea = document.createElement('textarea');
-
-                        if (progressNote != 'null') {
-                            progressNoteTextArea.value = progressNote;// note 값을 디폴트로 설정
-                        }
-                        progressNoteTextArea.style.resize = 'none'; // 크기 조절 불가
-                        progressNoteTextArea.style.overflowY = 'auto'; // 세로 스크롤 활성화
-                        progressNoteTextArea.rows = 4; // 최대 4줄 표시
-                        progressNoteTextArea.style.width = '100%'; // 부모 요소 크기에 맞게 설정
-                        progressNoteTextArea.style.boxSizing = 'border-box'; // 패딩 포함 크기 계산
-                        progressNoteTextArea.name = "progressNote";
+                        const progressNoteTextArea = $('<textarea>', {
+                            name: 'progressNote',
+                            text: progressNote !== 'null' ? progressNote : '' // note 값을 디폴트로 설정
+                        }).css({
+                            resize: 'none',          // 크기 조절 불가
+                            overflowY: 'auto',       // 세로 스크롤 활성화
+                            width: '100%',           // 부모 요소 크기에 맞게 설정
+                            boxSizing: 'border-box'  // 패딩 포함 크기 계산
+                        }).attr('rows', 4); // 최대 4줄 표시
 
                         // 촬영 담당자 특이사항 <textarea>를 td에 추가
-                        modalProgressNoteCell.appendChild(progressNoteTextArea);
+                        $(modalProgressNoteCell).append(progressNoteTextArea);
                     } else {
-                        document.getElementById('modal-progress-note').textContent = progressNote;
+                        $('#modal-progress-note').text(progressNote);
                     }
                 }
             };
@@ -370,6 +419,30 @@
                                     <td class="text-center">촬영담당자<br>특이사항</td>
                                     <td class="text-center" id ="modal-progress-note"></td>
                                 </tr>
+                                <tr>
+                                    <td class="text-center">촬영<br>예정일</td>
+                                    <td>
+                                        <div>
+                                            <input type="text" class="form-control" id="shootReserveDtm" name="shootReserveDtm" style="font-size:13px">
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center">촬영<br>완료일</td>
+                                    <td>
+                                        <div>
+                                            <input type="text" class="form-control" id="shootCompleteDt" name="shootCompleteDt" style="font-size:13px" readonly>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center">영상<br>업로드일</td>
+                                    <td>
+                                        <div >
+                                            <input type="text" class="form-control" id="uploadCompleteDt" name="uploadCompleteDt" style="font-size:13px" readonly>
+                                        </div>
+                                    </td>
+                                </tr>
                             </table>
                         </form>
                     </div>
@@ -383,10 +456,10 @@
 
 
         <!-- 지도 -->
-        <div style="position:absolute; z-index : 10; background-color : white; margin : 10px; padding : 10px; border-radius : 10px; border : 3px solid black">
-            <input type="text" style="height : 100%" id="addressSearch" />
+        <div class="map-search-container">
+            <input type="text" class="map-search-field" id="addressSearch" />
             <button type="button" class="common-blue-btn" onclick=MapFunc.searchAddressToCoordinate() >주소 검색</button>
         </div>
-        <div id="map" style="width:100%;height:100%; border-radius: 10px;"></div>
+        <div id="map" class="map"></div>
     </body>
 </html>
