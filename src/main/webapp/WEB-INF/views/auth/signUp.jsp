@@ -30,13 +30,7 @@
         <script src="<c:url value='/js/util/textUtils.js' />"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
-
-        <script>
-            function validateEnglishAndNumberInput(input) {
-                // 영어 알파벳과 숫자만 허용
-                input.value = input.value.replace(/[^a-zA-Z0-9]/g, '');
-            }
-        </script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
         <script>
             const LoadingOverlay = {
@@ -47,9 +41,15 @@
                     $('#loading-overlay').fadeOut();
                 }
             };
-        </script>
 
-        <script>
+            
+            let ValidCheckFunc = {
+                // 영어 알파벳과 숫자만 허용
+                validateEnglishAndNumberInput : function(input) {
+                    input.value = input.value.replace(/[^a-zA-Z0-9]/g, '');
+                }
+            }
+
             let PageControlFunc ={
                 // 로그인 화면으로 이동
                 moveToLoginPage : function() {
@@ -201,78 +201,82 @@
         </div>
 
         <main>
-            <div class="login-box">
-                <%-- 로그인 페이지로 이동 버튼 --%>
-                <div class="login-btn-box">
-                    <button class="login-btn" id="loginButton" type="button" onclick=PageControlFunc.moveToLoginPage()>로그인 페이지로 이동</button>
+            <%-- 로그인 페이지로 이동 버튼 --%>
+            <div class="login-btn-box">
+                <button class="login-btn" id="loginButton" type="button" onclick=PageControlFunc.moveToLoginPage()>
+                <i class="fa-solid fa-arrow-left"></i>
+                &nbsp;로그인 페이지로 이동
+                </button>
+            </div>
+
+            <img class="logo-img" src="<c:url value='/images/logo/modusol_logo.png'/>" alt=""/>
+            <%-- 회원가입 타이틀 --%>
+            <div class="login-title" id="login">
+                <h2>회원가입</h2>
+            </div>
+
+            <%-- 회원가입 폼 --%>
+            <form class="login-frm", id="login-frm">
+                <%-- 아이디 중복확인 완료여부 --%>
+                <input type="hidden" name="idDupcheck", value="N" id="idDupCheck">
+
+                <%-- 가입코드 --%>
+                <div class="input-container">
+                    <input type="text" class="input-field" placeholder="" name="signUpCode" id="signUpCode" />
+                    <label for="username" class="input-label">가입코드</label>
                 </div>
 
-                <%-- 회원가입 타이틀 --%>
-                <div class="login-title" id="login">
-                    <img class="logo-img" src="<c:url value='/images/logo/modusol_logo.png'/>" alt=""/>
-                    <h2>모두솔루션 영상촬영 관리 회원가입</h2>
+                <%-- 아이디 --%>
+                <div class="input-container" style="display : flex">
+                    <input type="text" class="input-field" placeholder="" name="userId" id="userId" oninput="ValidCheckFunc.validateEnglishAndNumberInput(this)" />
+                    <label for="username" class="input-label">아이디</label>
+                    <button class="common-blue-btn" type="button" onclick="SubmitFunc.dubCheckSubmit()" id="dubCheckBtn">중복확인</button>
+                </div>
+                
+                <%-- 비밀번호 --%>
+                <div class="input-container">
+                    <input type="password" class="input-field password" placeholder="" name="userPw" id="userPw" />
+                    <label for="username" class="input-label">비밀번호</label>
                 </div>
 
-                <%-- 회원가입 폼 --%>
-                <div>
-                    <form class="login-frm", id="login-frm">
-
-                        <%-- 아이디 중복확인 완료여부 --%>
-                        <input type="hidden" name="idDupcheck", value="N" id="idDupCheck">
-
-                        <%-- 가입코드 --%>
-                        <div class="input-box">
-                            <input type="text" class="input" placeholder="가입코드" name="signUpCode" id="signUpCode"/>
-                        </div>
-
-                        <%-- 아이디 --%>
-                        <div class="input-box" style="display:flex;">
-                            <input type="text" class="input" placeholder="아이디" name="userId" style="width:220px;" id="userId" oninput="validateEnglishAndNumberInput(this)" />
-                            <button class="common-blue-btn" type="button" onclick="SubmitFunc.dubCheckSubmit()" id="dubCheckBtn">중복확인</button>
-                        </div>
-
-                        <%-- 비밀번호 --%>
-                        <div class="input-box">
-                            <input type="password" class="input password" placeholder="비밀번호" name="userPw" id="userPw"/>
-                        </div>
-
-                        <%-- 비밀번호 확인 --%>
-                        <div class="input-box">
-                            <input type="password" class="input password" placeholder="비밀번호 확인" name="userPwCheck" id="userPwCheck"/>
-                        </div>
-
-                        <%-- 이름 --%>
-                        <div class="input-box">
-                            <input type="text" class="input" placeholder="이름" name="userNm" id="userNm"/>
-                        </div>
-
-                        <%-- 직급 --%>
-                        <div class="input-box">
-                            <select class="form-select" style="width:300px" id="jobGrade", name="jobGrade">
-                            <option selected>직급을 선택해주세요</option>
-                            <option value="JG1">이사</option>
-                            <option value="JG2">본부장</option>
-                            <option value="JG3">팀장</option>
-                            <option value="JG4">차장</option>
-                            <option value="JG5">과장</option>
-                            <option value="JG6">총무</option>
-                            <option value="JG7">대리</option>
-                            <option value="JG8">사원</option>
-                            </select>
-                        </div>
-
-
-                        <%-- 핸드폰번호 --%>
-                        <div class="input-box">
-                            <input type="text" class="input" placeholder="핸드폰 번호 ('-' 제외)" name="phone" id="phone"/>
-                        </div>
-                    </form>
+                <%-- 비밀번호 확인 --%>
+                <div class="input-container">
+                    <input type="password" class="input-field password" placeholder="" name="userPwCheck" id="userPwCheck" />
+                    <label for="username" class="input-label">비밀번호 확인</label>
                 </div>
 
-                <%-- 회원가입 버튼 --%>
-                <div class="login-btn-box">
-                    <button class="login-btn" type="button" onclick=SubmitFunc.signUpSubmit()>회원가입</button>
+                <%-- 이름 --%>
+                <div class="input-container">
+                    <input type="text" class="input-field" placeholder="" name="userNm" id="userNm" />
+                    <label for="username" class="input-label">이름</label>
                 </div>
+
+                <%-- 직급 --%>
+                <div class="input-container">
+                    <select class="form-select" style="width:300px" id="jobGrade", name="jobGrade">
+                    <option selected>직급을 선택해주세요</option>
+                    <option value="JG1">이사</option>
+                    <option value="JG2">본부장</option>
+                    <option value="JG3">팀장</option>
+                    <option value="JG4">차장</option>
+                    <option value="JG5">과장</option>
+                    <option value="JG6">총무</option>
+                    <option value="JG7">대리</option>
+                    <option value="JG8">사원</option>
+                    </select>
+                </div>
+
+
+                <%-- 핸드폰번호 --%>
+                <div class="input-container">
+                    <input type="text" class="input-field" placeholder="" name="phone" id="phone" required />
+                    <label for="username" class="input-label">핸드폰 번호 ('-' 제외)</label>
+                </div>
+            </form>
+
+            <%-- 회원가입 버튼 --%>
+            <div class="login-btn-box">
+                <button class="login-btn" type="button" onclick=SubmitFunc.signUpSubmit()>회원가입</button>
             </div>
         </main>
     </body>

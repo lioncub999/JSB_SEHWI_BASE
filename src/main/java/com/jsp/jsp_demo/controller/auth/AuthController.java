@@ -88,7 +88,6 @@ public class AuthController {
             traceWriter.log(0);
         }
 
-
         return result;
     }
 

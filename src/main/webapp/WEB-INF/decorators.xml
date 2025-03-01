@@ -2,21 +2,23 @@
 <decorators defaultdir="/WEB-INF/views/cmm">
 
     <!--    ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓-->
-    <!--    ┃  ◉ SiteMesh 제외 -->
+    <!--    ┃  ◉ SiteMesh 제외 URL -->
     <!--    ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛-->
     <excludes>
         <pattern>/login/*</pattern>
     </excludes>
 
     <!--    ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓-->
-    <!--    ┃  ◉ SiteMesh 포함 -->
+    <!--    ┃  ◉ SiteMesh 포함 URL -->
     <!--    ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛-->
     <decorator name="default" page="template/default/template.jsp">
+        <!-- 메인 -->
         <pattern>/main</pattern>
-        <pattern>/mypage</pattern>
-        <pattern>/rullet</pattern>
 
+        <!-- 마이페이지 -->
+        <pattern>/mypage</pattern>
+
+        <!-- 촬영 신청 -->
         <pattern>/videoReq</pattern>
-        <pattern>/videoReq/*</pattern>
     </decorator>
 </decorators>

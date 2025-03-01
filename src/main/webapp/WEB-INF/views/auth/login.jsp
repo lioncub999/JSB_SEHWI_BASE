@@ -25,8 +25,19 @@
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
         <script src="<c:url value='/js/alert/SweetAlert2.js' />"></script>
 
-        <%-- 로딩 오버레이 --%>
         <script>
+            <%-- Document Ready! --%>
+            $(document).ready(function() {
+            // 엔터키 감지 및 버튼 클릭 트리거
+                document.addEventListener('keydown', function(event) {
+                    if (event.key === 'Enter') {
+                        // 로그인 버튼 클릭
+                        document.getElementById('loginButton').click();
+                    }
+                });
+            });
+
+            <%-- 로딩 오버레이 --%>
             const LoadingOverlay = {
                 show: function () {
                     $('#loading-overlay').fadeIn();
@@ -35,16 +46,6 @@
                     $('#loading-overlay').fadeOut();
                 }
             };
-        </script>
-
-        <script>
-            // 엔터키 감지 및 버튼 클릭 트리거
-            document.addEventListener('keydown', function(event) {
-                if (event.key === 'Enter') {
-                    // 로그인 버튼 클릭
-                    document.getElementById('loginButton').click();
-                }
-            });
 
             let PageControlFunc ={
                 // 회원가입 화면으로 이동
@@ -80,7 +81,7 @@
             let AjaxFunc = {
                 // 로그인 ajax
                 login: function () {
-                    const formData = $('#login-frm').serialize();
+                    const formData = $('#login-frm').serializeArray();
                     
                     const messages = {
                         noExist: { type: 'error', message: '존재하지 않는 계정입니다', duration: 1000 },
@@ -100,6 +101,7 @@
 
                         if (toast) {
                             Toast('top', toast.duration, toast.type, toast.message);
+
                             if (response === 'success') {
                                 setTimeout(() => {
                                     window.location.href = '/main';
@@ -113,7 +115,7 @@
                     })
                     .fail((xhr, textStatus, thrownError) => {
                         console.error('AJAX error:', textStatus, thrownError);
-                        Toast('top', 1000, 'error', '로그인 중 문제가 발생했습니다.');
+                        Toast('top', 1000, 'error', `로그인 중 문제가 발생했습니다.\n${thrownError}`);
                         LoadingOverlay.hide();
                     });
                 },
@@ -124,36 +126,37 @@
         <div id="loading-overlay">
             <div id="loading-spinner"></div>
         </div>
+
         <main>
-            <div class="login-box">
-                <%-- 로그인 타이틀 --%>
-                <div class="login-title" id="login">
-                    <img class="logo-img" src="<c:url value='/images/logo/modusol_logo.png'/>" alt=""/>
-                    <h2>모두솔루션 영상촬영 관리 로그인</h2>
-                </div>
+            <%-- 로그인 타이틀 --%>
+            <img class="logo-img" src="<c:url value='/images/logo/modusol_logo.png'/>" alt=""/>
+            <div class="login-title" id="login">
+                모두솔루션 영상촬영 관리
+            </div>
 
-                <%-- 로그인 폼 --%>
-                <div>
-                    <form class="login-frm", id="login-frm">
-                        <div class="input-box">
-                            <input type="text" class="input" placeholder="아이디" name="userId" id="userId"/>
-                        </div>
-                        <div class="input-box">
-                            <input type="password" class="input password" placeholder="비밀번호" name="userPw" id="userPw"/>
-                        </div>
-                    </form>
-                </div>
+            <%-- 로그인 폼 --%>
+            <div style="position : relative">
+                <form class="login-frm", id="login-frm">
+                    <div class="input-container">
+                        <input type="text" class="input-field" placeholder="" name="userId" id="userId" />
+                        <label for="username" class="input-label">아이디</label>
+                    </div>
+                    <div class="input-container">
+                        <input type="password" class="input-field password" placeholder="" name="userPw" id="userPw" />
+                        <label for="username" class="input-label">비밀번호</label>
+                    </div>
+                </form>
+            </div>
 
 
-                <%-- 로그인 버튼 --%>
-                <div class="login-btn-box">
-                    <button class="login-btn" id="loginButton" type="button" onclick="SubmitFunc.loginSubmit()">로그인</button>
-                </div>
+            <%-- 로그인 버튼 --%>
+            <div class="login-btn-box">
+                <button class="login-btn" id="loginButton" type="button" onclick="SubmitFunc.loginSubmit()">로그인</button>
+            </div>
 
-                <%-- 회원가입 버튼 --%>
-                <div class="login-btn-box">
-                    <button class="login-btn" type="button" onclick=PageControlFunc.moveToSignUpPage()>회원가입</button>
-                </div>
+            <%-- 회원가입 버튼 --%>
+            <div class="login-btn-box">
+                <button class="login-btn" type="button" onclick=PageControlFunc.moveToSignUpPage()>회원가입</button>
             </div>
         </main>
     </body>

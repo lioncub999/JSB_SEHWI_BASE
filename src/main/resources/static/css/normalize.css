@@ -2,9 +2,9 @@
 
 /* 폰트 가져오기 */
 @font-face {
-    font-family: 'BMDOHYEON';
-    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/BMDOHYEON.woff') format('woff');
-    font-weight: normal;
+    font-family: 'MarinesBold';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2502-1@1.0/MarinesBold.woff2') format('woff2');
+    font-weight: 700;
     font-style: normal;
 }
 
@@ -25,7 +25,7 @@
 
 html {
     /* 폰트 적용 */
-    font-family: 'BMDOHYEON', sans-serif !important;
+    font-family: 'MarinesBold', sans-serif !important;
     /* `font` 속성 리셋 */
     font-size                  : 16px;
     /* 기본 글골 사이즈 정의            : 16x => 1rem */
@@ -39,15 +39,17 @@ html {
     -moz-osx-font-smoothing    : grayscale;
     /* 웹킷 마음대로 눌림 하이라이트 막음 */
     -webkit-tap-highlight-color: transparent;
+    overflow: hidden;
 }
 
 body {
     margin: 0;
+    box-sizing: border-box;
 }
 
 /* 기본 셋업 */
 header,section,article,aside,footer,main,a,button,input,textarea,img,nav,ul,ol,li,p,h1,h2,h3,h4,h5,h6,div,span{
-    font-family: 'BMDOHYEON', sans-serif;
+    font-family: 'MarinesBold', sans-serif;
     margin   : 0;
     padding  : 0;
     /* 폰트 크기 상속 */
