@@ -73,7 +73,7 @@
                     $('#modal-contract-dt').text(stringContractDt);
                     $('#modal-cre-dt').text(stringCreDt);
                     $('#modal-address').text(address);
-                    $('#modal-phone').text(phone);
+                    $('#modal-phone').text(phone.substring(0,3)+'-'+phone.substring(3,7)+'-'+phone.substring(7));
                     $('#modal-manager-nm').text(managerNm + ' ' + managerJgNm);
 
                     $('#shootReserveDtm').val(stringShootReserveDtm);
@@ -83,6 +83,22 @@
                     $('#stringShootReserveDtm').text(stringShootReserveDtm);
                     $('#stringShootCompleteDt').text(stringShootCompleteDt);
                     $('#stringUploadCompleteDt').text(stringUploadCompleteDt);
+
+                    <%-- 업로드 완료된 요청은 저장버튼 안보이게 처리 --%>
+                    const buttonCell = $("#save-btn-box");
+
+                    buttonCell.html('');
+
+                    if (status != "COMPLETEUPLOAD") {
+                        const saveBtn = $("<button>", {
+                            type: "button",
+                            class: "btn btn-primary",
+                            onclick: "AjaxFunc.updateVideoReq()", // 문자열로 전달
+                            text: "저장" // 버튼 텍스트
+                        });
+
+                        buttonCell.append(saveBtn);
+                    }
 
 
                     // 특이사항 (전체 수정 가능)
@@ -350,68 +366,105 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >닫기</button>
-                        <button type="button" class="btn btn-primary" onclick=AjaxFunc.updateVideoReq()>저장</button>
+                        <div class="save-btn-box" id="save-btn-box"></div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div style="margin-top:10px;margin-left:10px;margin-right :10px;">
-            ☉ 내 촬영 리스트
-        </div><%-- 요청 리스트 테이블 --%>
-        <table class="table table-striped table-bordered" >
-            <thead class="text-center">
-                <tr>
-                    <th style="width: 3%; border-top-left-radius:10px;">신청<br>ID</th>
-                    <th style="width: 8%;">연락처</th>
-                    <th style="width: 10%;">상호명</th>
-                    <th style="width: 15%;">주소</th>
-                    <th style="width: 16%;">특이사항</th>
-                    <th style="width: 16%;">촬영담당자<br>특이사항</th>
-                    <th style="width: 5%;">촬영<br>담당자</th>
-                    <th style="width: 10%;">촬영<br>예정일</th>
-                    <th style="width: 8%; border-top-right-radius:10px;">진행상태</th>
-                </tr>
-            </thead>
-            <tbody>
-                <c:forEach var="videoReq" items="${videoReqList}">
-                    <tr onclick="PageFunc.updateModal('${videoReq.isUrgentReq}', '${videoReq.reqId}', '${videoReq.storeNm}', '${videoReq.creId}', '${videoReq.stringContractDt}', '${videoReq.stringCreDt}', '${videoReq.address}', '${videoReq.phone}', '${videoReq.managerNm}', '${videoReq.managerJgNm}', '${videoReq.note}', '${videoReq.status}', '${videoReq.progressNote}', '${videoReq.stringShootReserveDtm}', '${videoReq.stringShootCompleteDt}', '${videoReq.stringUploadCompleteDt}')" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                        <td class="text-center t-cell">${videoReq.reqId}</td>
-                        <td class="text-center t-cell">
-                            ${videoReq.phone.substring(0,3)}-${videoReq.phone.substring(3,7)}-${videoReq.phone.substring(7)}
-                        </td>
-                        <td class="t-cell">${videoReq.isUrgentReq == "Y" ?"<div style='color:red'>(긴급건)</div>" : ""}${videoReq.storeNm}</td>
-                        <td class="t-cell">${videoReq.address}</td>
-                        <td class="t-cell" style="text-align:left">
-                            ${videoReq.note.replace('\\n', '<br>')}
-                        </td>
-                        <td class="t-cell" style="text-align:left">
-                            ${videoReq.progressNote.replace('\\n', '<br>')}
-                        </td>
-                        <td class="text-center t-cell">${videoReq.managerNm} ${videoReq.managerJgNm}</td>
-                        <td class="text-center t-cell">${videoReq.stringShootReserveDtm}</td>
-                        <td class="text-center t-cell">
-                            <c:choose>
-                                <c:when test="${videoReq.status == 'COORDINATION'}">
-                                    일정조율중
-                                </c:when>
-                                <c:when test="${videoReq.status == 'STANDBY'}">
-                                    촬영대기
-                                </c:when>
-                                <c:when test="${videoReq.status == 'COMPLETEFILM'}">
-                                    촬영완료
-                                </c:when>
-                                <c:when test="${videoReq.status == 'COMPLETEUPLOAD'}">
-                                    촬영&업로드 완료
-                                </c:when>
-                                <c:otherwise>
-                                   촬영 불필요
-                                </c:otherwise>
-                            </c:choose>
-                        </td>
+        <c:if test="${userGrade == 0}">
+            <div style="margin-top:10px;margin-left:10px;margin-right :10px;">
+                ☉ 내 촬영 리스트
+            </div><%-- 요청 리스트 테이블 --%>
+                <%-- 페이지네이션 --%>
+            <nav aria-label="Page navigation example" style="justify-items : center">
+                <ul class="pagination">
+                    <li class="page-item">
+                        <a class="page-link" href="/mypage?curPage=1" aria-label="Previous">
+                            <span aria-hidden="true">&lt;&lt;</span>
+                        </a>
+                    </li>
+
+                    <li class="page-item">
+                        <a class="page-link" href="/mypage?curPage=${curPage - 1 > 0 ? curPage- 1 : 1}" aria-label="">
+                            <span aria-hidden="true">&lt;</span>
+                        </a>
+                    </li>
+                        
+                    <!-- 현재 페이지 그룹에 맞는 페이지 버튼만 출력 -->
+                    <c:forEach begin="${startPage}" end="${endPage}" var="i">
+                        <li class="page-item ${i == curPage ? 'active' : ''}">
+                            <a class="page-link" href="/mypage?curPage=${i}" aria-label="">
+                                <span aria-hidden="true">${i}</span>
+                            </a>
+                        </li>
+                    </c:forEach>
+                    
+                    <li class="page-item">
+                        <a class="page-link" href="/mypage?curPage=${curPage + 1 <= maxPage ? curPage + 1 : maxPage}" aria-label="">
+                            <span aria-hidden="true">&gt;</span>
+                        </a>
+                    </li>
+                    <a class="page-link" href="/mypage?curPage=${maxPage}" aria-label="Next">
+                        <span aria-hidden="true">&gt;&gt;</span>
+                    </a>
+                    </li>
+                </ul>
+            </nav>
+            <table class="table table-striped table-bordered" >
+                <thead class="text-center">
+                    <tr>
+                        <th style="width: 3%; border-top-left-radius:10px;">신청<br>ID</th>
+                        <th style="width: 8%;">사장님<br>연락처</th>
+                        <th style="width: 10%;">상호명</th>
+                        <th style="width: 15%;">주소</th>
+                        <th style="width: 16%;">특이사항</th>
+                        <th style="width: 16%;">촬영담당자<br>특이사항</th>
+                        <th style="width: 5%;">촬영<br>담당자</th>
+                        <th style="width: 10%;">촬영<br>예정일</th>
+                        <th style="width: 8%; border-top-right-radius:10px;">진행상태</th>
                     </tr>
-                </c:forEach>
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    <c:forEach var="videoReq" items="${videoReqList}">
+                        <tr onclick="PageFunc.updateModal('${videoReq.isUrgentReq}', '${videoReq.reqId}', '${videoReq.storeNm}', '${videoReq.creId}', '${videoReq.stringContractDt}', '${videoReq.stringCreDt}', '${videoReq.address}', '${videoReq.phone}', '${videoReq.managerNm}', '${videoReq.managerJgNm}', '${videoReq.note}', '${videoReq.status}', '${videoReq.progressNote}', '${videoReq.stringShootReserveDtm}', '${videoReq.stringShootCompleteDt}', '${videoReq.stringUploadCompleteDt}')" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                            <td class="text-center t-cell">${videoReq.reqId}</td>
+                            <td class="text-center t-cell">
+                                ${videoReq.phone.substring(0,3)}-${videoReq.phone.substring(3,7)}-${videoReq.phone.substring(7)}
+                            </td>
+                            <td class="t-cell">${videoReq.isUrgentReq == "Y" ?"<div style='color:red'>(긴급건)</div>" : ""}${videoReq.storeNm}</td>
+                            <td class="t-cell">${videoReq.address}</td>
+                            <td class="t-cell" style="text-align:left">
+                                ${videoReq.note.replace('\\n', '<br>')}
+                            </td>
+                            <td class="t-cell" style="text-align:left">
+                                ${videoReq.progressNote.replace('\\n', '<br>')}
+                            </td>
+                            <td class="text-center t-cell">${videoReq.managerNm} ${videoReq.managerJgNm}</td>
+                            <td class="text-center t-cell">${videoReq.stringShootReserveDtm}</td>
+                            <td class="text-center t-cell">
+                                <c:choose>
+                                    <c:when test="${videoReq.status == 'COORDINATION'}">
+                                        일정조율중
+                                    </c:when>
+                                    <c:when test="${videoReq.status == 'STANDBY'}">
+                                        촬영대기
+                                    </c:when>
+                                    <c:when test="${videoReq.status == 'COMPLETEFILM'}">
+                                        촬영완료
+                                    </c:when>
+                                    <c:when test="${videoReq.status == 'COMPLETEUPLOAD'}">
+                                        촬영&업로드 완료
+                                    </c:when>
+                                    <c:otherwise>
+                                        촬영 불필요
+                                    </c:otherwise>
+                                </c:choose>
+                            </td>
+                        </tr>
+                    </c:forEach>
+                </tbody>
+            </table>
+        </c:if>
     </body>
 </html>

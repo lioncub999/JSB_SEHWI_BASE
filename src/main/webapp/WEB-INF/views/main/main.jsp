@@ -115,7 +115,7 @@
                             title: videoReq.storeNm,
                             animation: naver.maps.Animation.DROP,
                             icon: {
-                                url: videoReq.isUrgentReq == "N" ? '/images/common/blue_marker.png' : '/images/common/red_marker.png',
+                                url: videoReq.status == "STANDBY" ? '/images/common/green_marker.png' : videoReq.isUrgentReq == "N" ? '/images/common/blue_marker.png' : '/images/common/red_marker.png',
                                 size: new naver.maps.Size(15, 23),
                                 origin: new naver.maps.Point(0, 0),
                                 anchor: new naver.maps.Point(5, 23)
@@ -238,7 +238,21 @@
                     $('#stringShootCompleteDt').text(stringShootCompleteDt);
                     $('#stringUploadCompleteDt').text(stringUploadCompleteDt);
                     
+                    <%-- 업로드 완료된 요청은 저장버튼 안보이게 처리 --%>
+                    const buttonCell = $("#save-btn-box");
 
+                    buttonCell.html('');
+
+                    if (status != "COMPLETEUPLOAD") {
+                        const saveBtn = $("<button>", {
+                            type: "button",
+                            class: "btn btn-primary",
+                            onclick: "AjaxFunc.updateVideoReq()", // 문자열로 전달
+                            text: "저장" // 버튼 텍스트
+                        });
+
+                        buttonCell.append(saveBtn);
+                    }
 
                     // 특이사항 (전체 수정 가능)
                     const modalNoteCell = $('#modal-note');
@@ -493,7 +507,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >닫기</button>
-                        <button type="button" class="btn btn-primary" onclick=AjaxFunc.updateVideoReq()>저장</button>
+                        <div class="save-btn-box" id="save-btn-box"></div>
                     </div>
                 </div>
             </div>
@@ -504,6 +518,20 @@
         <div class="map-search-container">
             <input type="text" class="map-search-field" id="addressSearch" />
             <button type="button" class="common-blue-btn" onclick=MapFunc.searchAddressToCoordinate() >주소 검색</button>
+        </div>
+        <div class="map-pin-explain-box">
+            <div class="pin-box">
+                <img src="/images/common/blue_marker.png" alt="">
+                <div>: 일정조율필요</div>
+            </div>
+            <div class="pin-box">
+                <img src="/images/common/red_marker.png" alt="">
+                <div>: 긴급건</div>
+            </div>
+            <div class="pin-box">
+                <img src="/images/common/green_marker.png" alt="">
+                <div>: 촬영대기</div>
+            </div>
         </div>
         <div id="map" class="map"></div>
     </body>
