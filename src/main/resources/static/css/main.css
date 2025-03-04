@@ -24,6 +24,12 @@ select {
 
 textarea {
     font-size: 13px !important;
+    padding: 10px !important;
+    width : 95%;
+    border: 2px solid grey;
+    border-radius: 10px;
+    transition: border-color 0.3s ease; /* 부드러운 보더 색상 변경 */
+    resize: none !important;
 }
 
 .btn {

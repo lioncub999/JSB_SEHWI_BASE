@@ -23,3 +23,8 @@
 <c:if test="${fn:startsWith(pageContext.request.requestURI, '/videoReq')}">
     <link type="text/css" rel="stylesheet" href="<c:url value='/css/video.css'/>">
 </c:if>
+
+<%-- /mypage 시작하는 URL에서만 video.css 추가 --%>
+<c:if test="${fn:startsWith(pageContext.request.requestURI, '/mypage')}">
+    <link type="text/css" rel="stylesheet" href="<c:url value='/css/mypage.css'/>">
+</c:if>

@@ -2,14 +2,18 @@ package com.jsp.jsp_demo.controller.mypage;
 
 import com.jsp.jsp_demo.model.auth.UserInput;
 import com.jsp.jsp_demo.model.auth.UserOutput;
+import com.jsp.jsp_demo.model.paging.PagingModel;
+import com.jsp.jsp_demo.model.video.VideoReqOutput;
 import com.jsp.jsp_demo.service.auth.AuthService;
 import com.jsp.jsp_demo.service.mypage.MypageService;
+import com.jsp.jsp_demo.service.video.VideoReqService;
 import com.jsp.jsp_demo.util.log.TraceWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
@@ -33,6 +37,9 @@ public class MypageController {
     @Autowired
     MypageService mypageService;
 
+    @Autowired
+    VideoReqService videoReqService;
+
     /* TODO:
      *  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
      *  ┃    <GET>
@@ -41,24 +48,43 @@ public class MypageController {
     @GetMapping("/mypage")
     public String mypage(
             HttpServletRequest request,
+            @RequestParam(value = "curPage", defaultValue = "1") int curPage,
             Model model
     ) {
         TraceWriter traceWriter = new TraceWriter("", request.getMethod(), request.getServletPath());
         traceWriter.add("");
+
+        // 1페이지당 글 개수
+        int pageSize = 10;
+        // 한 화면에 보여줄 페이지 번호
+        int pageBlock = 10;
 
         try {
             // TODO: 세션에서 userId 가져오기
             HttpSession session = request.getSession(false);
             UserInput userInput = new UserInput();
 
+            PagingModel pagingModel = new PagingModel();
+            pagingModel.setSearchManagerId((String) session.getAttribute("userId"));
+
+            Integer totalMyReqCount = videoReqService.getMyReqCount(pagingModel);
+
+            // 전체 게시글 수 가져오기 (DB에서)
+            int maxPage = (totalMyReqCount / pageSize) + (totalMyReqCount % pageSize == 0 ? 0 : 1);
+            int startPage = ((curPage - 1) / pageBlock) * pageBlock + 1;
+            int endPage = Math.min(startPage + pageBlock - 1, maxPage);
+
+            pagingModel.setStartRow((curPage - 1) * pageSize);
+            pagingModel.setPageSize((pageSize));
+
+            List<VideoReqOutput> videoReqList = videoReqService.getMyReqList(pagingModel);
+
             userInput.setUserId((String) session.getAttribute("userId"));
 
             UserOutput currentUserInfo = authService.selectUserById(userInput);
 
-            System.out.println(currentUserInfo.getPhone());
-
             model.addAttribute("currentUserInfo", currentUserInfo);
-
+            model.addAttribute("videoReqList", videoReqList);
         } catch (Exception e) {
             traceWriter.add("[Error] : " + e);
             return "main/main";

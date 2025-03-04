@@ -20,4 +20,6 @@ public class PagingModel implements Serializable{
     private int pageSize;
 
     private String searchStoreNm;
+
+    private String searchManagerId;
 }

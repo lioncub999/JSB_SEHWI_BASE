@@ -21,4 +21,8 @@ public class VideoReqOutput extends VideoReq {
     private String stringShootCompleteDt = "";   // 촬영완료일 String 변환
 
     private String stringUploadCompleteDt = "";  // 업로드완료일 String 변환
+
+    private String managerNm = ""; // 촬영 담당자 이름
+
+    private String managerJgNm = ""; // 촬영 담당자 직급
 }

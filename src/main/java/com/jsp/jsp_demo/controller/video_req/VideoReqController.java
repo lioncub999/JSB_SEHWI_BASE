@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Objects;
 
 /* TODO:
  *  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -149,6 +150,7 @@ public class VideoReqController {
     ) {
         TraceWriter traceWriter = new TraceWriter("", request.getMethod(), request.getServletPath());
         traceWriter.add("< INPUT >");
+        traceWriter.add("[userInput.getIsUrgentReq() : " + videoReq.getIsUrgentReq() + "]");
         traceWriter.add("[userInput.getStoreNm() : " + videoReq.getStoreNm() + "]");
         traceWriter.add("[userInput.getContractDt() : " + videoReq.getContractDt() + "]");
         traceWriter.add("[userInput.getPhone() : " + videoReq.getPhone() + "]");
@@ -191,7 +193,11 @@ public class VideoReqController {
             VideoReqInput videoReqInput
     ) {
         String userId = (String) request.getSession().getAttribute("userId");
+        String userGrade = (String) request.getSession().getAttribute("userGrade");
         videoReqInput.setUpdId(userId);
+        if (Objects.equals(userGrade, "0")) {
+            videoReqInput.setManagerId(userId);
+        }
 
         TraceWriter traceWriter = new TraceWriter("", request.getMethod(), request.getServletPath());
         traceWriter.add("< INPUT >");
@@ -204,7 +210,6 @@ public class VideoReqController {
         traceWriter.add("[userInput.getUploadCompleteDt() : " + videoReqInput.getUploadCompleteDt() + "]");
         traceWriter.add("[userInput.getUpdId() : " + videoReqInput.getUpdId() + "]");
         traceWriter.add("");
-        traceWriter.log(0);
 
         String result = "";
 

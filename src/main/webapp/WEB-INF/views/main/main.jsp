@@ -115,7 +115,7 @@
                             title: videoReq.storeNm,
                             animation: naver.maps.Animation.DROP,
                             icon: {
-                                url: '/images/common/blue_marker.png',
+                                url: videoReq.isUrgentReq == "N" ? '/images/common/blue_marker.png' : '/images/common/red_marker.png',
                                 size: new naver.maps.Size(15, 23),
                                 origin: new naver.maps.Point(0, 0),
                                 anchor: new naver.maps.Point(5, 23)
@@ -155,6 +155,7 @@
                                 '</table>'+
                                 '<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop" ' +
                                     'onclick="PageFunc.updateModal('+ 
+                                    '\''+ videoReq.isUrgentReq + '\'' +','+ 
                                     '\''+ videoReq.reqId + '\'' +','+ 
                                     '\''+ videoReq.storeNm + '\'' +','+ 
                                     '\''+ videoReq.creId + '\'' +','+
@@ -162,6 +163,8 @@
                                     '\''+ videoReq.stringCreDt + '\'' +','+
                                     '\''+ videoReq.address + '\'' +','+
                                     '\''+ videoReq.phone.substring(0,3)+'-'+videoReq.phone.substring(3,7)+'-'+videoReq.phone.substring(7) + '\'' +','+ 
+                                    '\''+ videoReq.managerNm + '\'' +','+ 
+                                    '\''+ videoReq.managerJgNm + '\'' +','+ 
                                     '\''+ videoReq.note.replace(/\n/g, '\n') + '\'' +','+ 
                                     '\''+ videoReq.status + '\'' +','+ 
                                     '\''+ videoReq.progressNote + '\'' + ',' +
@@ -216,7 +219,8 @@
 
             let PageFunc = {
                 // 모달창 정보 업데이트
-                updateModal : function(reqId, storeName, creId, stringContractDt, stringCreDt, address, phone, note, status, progressNote, stringShootReserveDtm, stringShootCompleteDt, stringUploadCompleteDt) {
+                updateModal : function(isUrgentReq, reqId, storeName, creId, stringContractDt, stringCreDt, address, phone, managerNm, managerJgNm, note, status, progressNote, stringShootReserveDtm, stringShootCompleteDt, stringUploadCompleteDt) {
+                    $('#modal-is-urgent-req').text(isUrgentReq == "Y" ? "긴급건" : "");
                     $('#reqId').val(reqId);
                     $('#exampleModalLabel').text('[' + storeName + ']');
                     $('#modal-cre-id').text(creId);
@@ -224,10 +228,16 @@
                     $('#modal-cre-dt').text(stringCreDt);
                     $('#modal-address').text(address);
                     $('#modal-phone').text(phone);
+                    $('#modal-manager-nm').text(managerNm + ' ' + managerJgNm);
 
                     $('#shootReserveDtm').val(stringShootReserveDtm);
                     $('#shootCompleteDt').val(stringShootCompleteDt);
                     $('#uploadCompleteDt').val(stringUploadCompleteDt);
+
+                    $('#stringShootReserveDtm').text(stringShootReserveDtm);
+                    $('#stringShootCompleteDt').text(stringShootCompleteDt);
+                    $('#stringUploadCompleteDt').text(stringUploadCompleteDt);
+                    
 
 
                     // 특이사항 (전체 수정 가능)
@@ -326,7 +336,10 @@
                     var formData = $('#video-req-frm').serializeArray();
 
                     formData.find(field => field.name === "note").value = formData.find(field => field.name === "note").value.replace(/\r?\n/g, "\\n");
-                    formData.find(field => field.name === "progressNote").value = formData.find(field => field.name === "progressNote").value.replace(/\r?\n/g, "\\n");
+
+                    if (${userGrade} == 0) {
+                        formData.find(field => field.name === "progressNote").value = formData.find(field => field.name === "progressNote").value.replace(/\r?\n/g, "\\n");
+                    }
 
                     $.ajax({
                         url: `${updateVideoReqUrl}`,
@@ -386,6 +399,13 @@
                             <input type="hidden" id="reqId" name="reqId"/>
                             
                             <table class="table table-striped table-bordered" >
+                                <col>
+                                    <td style="width : 20%"></td>
+                                    <td style="width : 80%"></td>
+                                </col>
+                                <col>
+                                    <div style="color:red" id="modal-is-urgent-req">긴급건</div>
+                                </col>
                                 <tr>
                                     <td class="text-center">신청자</td>
                                     <td class="text-center" id ="modal-cre-id"></td>
@@ -416,31 +436,56 @@
                                     <td class="text-center" id ="modal-status"></td>
                                 </tr>
                                 <tr>
+                                    <td class="text-center">촬영담당자</td>
+                                    <td class="text-center" id ="modal-manager-nm"></td>
+                                </tr>
+                                <tr>
                                     <td class="text-center">촬영담당자<br>특이사항</td>
                                     <td class="text-center" id ="modal-progress-note"></td>
                                 </tr>
                                 <tr>
                                     <td class="text-center">촬영<br>예정일</td>
                                     <td>
-                                        <div>
-                                            <input type="text" class="form-control" id="shootReserveDtm" name="shootReserveDtm" style="font-size:13px">
-                                        </div>
+                                        <c:choose>
+                                            <c:when test="${userGrade == 0}">
+                                                <div>
+                                                    <input type="text" class="form-control" id="shootReserveDtm" name="shootReserveDtm" style="font-size:13px">
+                                                </div>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <div id="stringShootReserveDtm" style="font-size:13px"></div>
+                                            </c:otherwise>
+                                        </c:choose>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="text-center">촬영<br>완료일</td>
                                     <td>
-                                        <div>
-                                            <input type="text" class="form-control" id="shootCompleteDt" name="shootCompleteDt" style="font-size:13px" readonly>
-                                        </div>
+                                        <c:choose>
+                                            <c:when test="${userGrade == 0}">
+                                                <div>
+                                                    <input type="text" class="form-control" id="shootCompleteDt" name="shootCompleteDt" style="font-size:13px" readonly>
+                                                </div>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <div id="stringShootCompleteDt" style="font-size:13px"></div>
+                                            </c:otherwise>
+                                        </c:choose>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="text-center">영상<br>업로드일</td>
                                     <td>
-                                        <div >
-                                            <input type="text" class="form-control" id="uploadCompleteDt" name="uploadCompleteDt" style="font-size:13px" readonly>
-                                        </div>
+                                        <c:choose>
+                                            <c:when test="${userGrade == 0}">
+                                                <div>
+                                                    <input type="text" class="form-control" id="uploadCompleteDt" name="uploadCompleteDt" style="font-size:13px" readonly>
+                                                </div>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <div id="stringUploadCompleteDt" style="font-size:13px"></div>
+                                            </c:otherwise>
+                                        </c:choose>
                                     </td>
                                 </tr>
                             </table>

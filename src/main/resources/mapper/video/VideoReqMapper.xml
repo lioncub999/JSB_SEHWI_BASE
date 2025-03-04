@@ -15,62 +15,186 @@
         </where>
     </select>
 
+    <select id="getMyReqCount"
+            parameterType="com.jsp.jsp_demo.model.paging.PagingModel"
+            resultType="integer">
+        SELECT COUNT(*)
+        FROM TBV_VIDEO_REQ_M
+        WHERE MANAGER_ID = #{searchManagerId}
+    </select>
+
+
     <select id="getReqList"
             parameterType="com.jsp.jsp_demo.model.paging.PagingModel"
             resultType="com.jsp.jsp_demo.model.video.VideoReqOutput">
         SELECT
-        REQ_ID,
-        CRE_ID,
-        STORE_NM,
-        ADDRESS,
-        DATE_FORMAT(CRE_DTM, '%Y-%m-%d') AS STRING_CRE_DT,
-        DATE_FORMAT(CONTRACT_DT,'%Y-%m-%d') AS STRING_CONTRACT_DT,
-        SHOOT_SCHEDULE,
-        PHONE,
-        NOTE,
-        PROGRESS_NOTE,
-        MANAGER_ID,
-        STATUS,
-        DATE_FORMAT(SHOOT_RESERVE_DTM, '%Y-%m-%d %H:%i') AS STRING_SHOOT_RESERVE_DTM,
-        DATE_FORMAT(SHOOT_COMPLETE_DT,'%Y-%m-%d') AS STRING_SHOOT_COMPLETE_DT,
-        DATE_FORMAT(UPLOAD_COMPLETE_DT,'%Y-%m-%d') AS STRING_UPLOAD_COMPLETE_DT
-        FROM TBV_VIDEO_REQ_M TVRM
+            A.*,
+            B.JOB_GRADE_NM AS MANAGER_JG_NM
+        FROM (
+            SELECT
+                TVRM.*,
+                TUM.USER_NM AS MANAGER_NM,
+                TUM.JOB_GRADE
+            FROM
+                (
+                    SELECT
+                        REQ_ID,
+                        CRE_ID,
+                        STORE_NM,
+                        ADDRESS,
+                        DATE_FORMAT(CRE_DTM, '%Y-%m-%d') AS STRING_CRE_DT,
+                        DATE_FORMAT(CONTRACT_DT,'%Y-%m-%d') AS STRING_CONTRACT_DT,
+                        SHOOT_SCHEDULE,
+                        PHONE,
+                        IS_URGENT_REQ,
+                        NOTE,
+                        PROGRESS_NOTE,
+                        MANAGER_ID,
+                        STATUS,
+                        DATE_FORMAT(SHOOT_RESERVE_DTM, '%Y-%m-%d %H:%i') AS STRING_SHOOT_RESERVE_DTM,
+                        DATE_FORMAT(SHOOT_COMPLETE_DT,'%Y-%m-%d') AS STRING_SHOOT_COMPLETE_DT,
+                        DATE_FORMAT(UPLOAD_COMPLETE_DT,'%Y-%m-%d') AS STRING_UPLOAD_COMPLETE_DT
+                        FROM TBV_VIDEO_REQ_M) TVRM
+                LEFT JOIN
+                    TBU_USER_M TUM
+                ON TVRM.MANAGER_ID = TUM.USER_ID
+            ) A LEFT JOIN TBG_GRADE_C B ON A.JOB_GRADE = B.CODE
         <where>
             <if test="searchStoreNm != null and searchStoreNm != ''">
                 STORE_NM LIKE CONCAT('%', #{searchStoreNm}, '%')
             </if>
         </where>
-        ORDER BY REQ_ID DESC LIMIT #{startRow}, #{pageSize} ;
+        ORDER BY
+            CASE STATUS
+                WHEN 'COORDINATION' THEN 1
+                WHEN 'STANDBY' THEN 2
+                WHEN 'COMPLETEFILM' THEN 3
+                WHEN 'COMPLETEUPLOAD' THEN 4
+                ELSE 5
+            END,
+            CASE WHEN IS_URGENT_REQ = 'Y' THEN 1 ELSE 2 END,
+            REQ_ID DESC
+            LIMIT #{startRow}, #{pageSize};
     </select>
 
+    <select id="getMyReqList"
+            parameterType="com.jsp.jsp_demo.model.paging.PagingModel"
+            resultType="com.jsp.jsp_demo.model.video.VideoReqOutput">
+        SELECT
+            A.*,
+            B.JOB_GRADE_NM AS MANAGER_JG_NM
+        FROM (
+            SELECT
+                TVRM.*,
+                TUM.USER_NM AS MANAGER_NM,
+            TUM.JOB_GRADE
+            FROM (
+                SELECT
+                    REQ_ID,
+                    CRE_ID,
+                    STORE_NM,
+                    ADDRESS,
+                    DATE_FORMAT(CRE_DTM, '%Y-%m-%d') AS STRING_CRE_DT,
+                    DATE_FORMAT(CONTRACT_DT,'%Y-%m-%d') AS STRING_CONTRACT_DT,
+                    SHOOT_SCHEDULE,
+                    PHONE,
+                    IS_URGENT_REQ,
+                    NOTE,
+                    PROGRESS_NOTE,
+                    MANAGER_ID,
+                    STATUS,
+                    DATE_FORMAT(SHOOT_RESERVE_DTM, '%Y-%m-%d %H:%i') AS STRING_SHOOT_RESERVE_DTM,
+                    DATE_FORMAT(SHOOT_COMPLETE_DT,'%Y-%m-%d') AS STRING_SHOOT_COMPLETE_DT,
+                    DATE_FORMAT(UPLOAD_COMPLETE_DT,'%Y-%m-%d') AS STRING_UPLOAD_COMPLETE_DT
+                FROM TBV_VIDEO_REQ_M) TVRM
+                LEFT JOIN
+                TBU_USER_M TUM
+                ON TVRM.MANAGER_ID = TUM.USER_ID
+            ) A LEFT JOIN TBG_GRADE_C B ON A.JOB_GRADE = B.CODE
+        WHERE MANAGER_ID = #{searchManagerId}
+        ORDER BY
+            CASE STATUS
+                WHEN 'COORDINATION' THEN 1
+                WHEN 'STANDBY' THEN 2
+                WHEN 'COMPLETEFILM' THEN 3
+                WHEN 'COMPLETEUPLOAD' THEN 4
+                ELSE 5
+            END,
+            CASE WHEN IS_URGENT_REQ = 'Y' THEN 1 ELSE 2 END,
+            REQ_ID DESC
+        LIMIT #{startRow}, #{pageSize};
+    </select>
 
     <select id="getUnStartedVideoReq"
             resultType="com.jsp.jsp_demo.model.video.VideoReqOutput">
         SELECT
-        REQ_ID,
-        CRE_ID,
-        STORE_NM,
-        DATE_FORMAT(CONTRACT_DT,'%Y-%m-%d') AS STRING_CONTRACT_DT,
-        PHONE,
-        ADDRESS,
-        DATE_FORMAT(CRE_DTM ,'%Y-%m-%d') AS STRING_CRE_DT,
-        LONGITUDE,
-        LATITUDE,
-        NOTE,
-        PROGRESS_NOTE,
-        STATUS,
-        DATE_FORMAT(SHOOT_RESERVE_DTM, '%Y-%m-%d %H:%i') AS STRING_SHOOT_RESERVE_DTM,
-        DATE_FORMAT(SHOOT_COMPLETE_DT,'%Y-%m-%d') AS STRING_SHOOT_COMPLETE_DT,
-        DATE_FORMAT(UPLOAD_COMPLETE_DT,'%Y-%m-%d') AS STRING_UPLOAD_COMPLETE_DT
-        FROM TBV_VIDEO_REQ_M TERM WHERE STATUS = "COORDINATION" ORDER BY CRE_DTM DESC;
+        A.*,
+        B.JOB_GRADE_NM AS MANAGER_JG_NM
+        FROM (
+            SELECT
+                TERM.*,
+                TUM.USER_NM AS MANAGER_NM,
+                TUM.JOB_GRADE
+            FROM (
+                SELECT
+                    REQ_ID,
+                    CRE_ID,
+                    STORE_NM,
+                    DATE_FORMAT(CONTRACT_DT,'%Y-%m-%d') AS STRING_CONTRACT_DT,
+                    PHONE,
+                    ADDRESS,
+                    DATE_FORMAT(CRE_DTM ,'%Y-%m-%d') AS STRING_CRE_DT,
+                    LONGITUDE,
+                    LATITUDE,
+                    IS_URGENT_REQ,
+                    NOTE,
+                    PROGRESS_NOTE,
+                    STATUS,
+                    MANAGER_ID,
+                    DATE_FORMAT(SHOOT_RESERVE_DTM, '%Y-%m-%d %H:%i') AS STRING_SHOOT_RESERVE_DTM,
+                    DATE_FORMAT(SHOOT_COMPLETE_DT,'%Y-%m-%d') AS STRING_SHOOT_COMPLETE_DT,
+                    DATE_FORMAT(UPLOAD_COMPLETE_DT,'%Y-%m-%d') AS STRING_UPLOAD_COMPLETE_DT
+                FROM TBV_VIDEO_REQ_M TERM WHERE STATUS = "COORDINATION" ORDER BY CRE_DTM DESC
+            ) TERM LEFT JOIN TBU_USER_M TUM ON MANAGER_ID = TUM.USER_ID
+        ) A LEFT JOIN TBG_GRADE_C B ON A.JOB_GRADE = B.CODE;
     </select>
 
     <insert id="createVideoReq"
             parameterType="com.jsp.jsp_demo.model.video.VideoReq">
-        INSERT INTO TBV_VIDEO_REQ_M
-        (CRE_ID, STORE_NM, ADDRESS, CONTRACT_DT, CRE_DTM, PHONE, LONGITUDE, LATITUDE, NOTE, STATUS)
-        VALUES (#{creId} ,#{storeNm}, #{address}, #{contractDt}, NOW(), #{phone}, #{longitude}, #{latitude}, #{note},
-        'COORDINATION')
+        INSERT INTO
+        TBV_VIDEO_REQ_M
+            (
+                CRE_ID,
+                STORE_NM,
+                ADDRESS,
+                CONTRACT_DT,
+                CRE_DTM,
+                PHONE,
+                LONGITUDE,
+                LATITUDE,
+                NOTE,
+                STATUS,
+                IS_URGENT_REQ
+        )
+        VALUES
+            (
+                #{creId},
+                #{storeNm},
+                #{address},
+                #{contractDt},
+                NOW(),
+                #{phone},
+                #{longitude},
+                #{latitude},
+                #{note},
+                'COORDINATION',
+                <if test="isUrgentReq != null and isUrgentReq != ''">
+                    'Y'
+                </if>
+                <if test="isUrgentReq == null or isUrgentReq == ''">
+                    'N'
+                </if>
+        )
     </insert>
 
     <update id="updateVideoReq"
@@ -87,6 +211,9 @@
         </if>
         <if test="uploadCompleteDt != null and uploadCompleteDt != ''">
             UPLOAD_COMPLETE_DT = #{uploadCompleteDt},
+        </if>
+        <if test="managerId != null and managerId != ''">
+            MANAGER_ID = #{managerId},
         </if>
         UPD_ID = #{updId},
         UPD_DTM = NOW()

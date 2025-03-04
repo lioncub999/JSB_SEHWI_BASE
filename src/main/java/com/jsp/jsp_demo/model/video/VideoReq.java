@@ -33,6 +33,8 @@ public class VideoReq implements Serializable {
 
     private Double latitude;                // 매장위치 위도
 
+    private String isUrgentReq;             // 긴급건 여부 ("Y" : 긴급건, "N" : 긴급건 아님)
+
     private String shootReserveDtm;         // 촬영 예정일
 
     private String shootCompleteDt;         // 촬영 완료일

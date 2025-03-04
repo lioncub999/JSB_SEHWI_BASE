@@ -17,23 +17,6 @@ select {
     font-size : 13px !important;
 }
 
-.reqTopBox {
-    display:flex;
-    justify-content: space-between;
-    padding-top: 10px;
-    padding-left: 10px;
-    padding-right: 10px;
-    margin-bottom : 10px;
-}
-
-.video-req-table-container {
-    margin-left:10px;
-    margin-right:10px;
-}
-
-input {
-    width : 95% !important;
-}
 .main-search-input {
     width: 50% !important;
 }
@@ -52,27 +35,4 @@ textarea {
     border-radius: 10px;
     transition: border-color 0.3s ease; /* 부드러운 보더 색상 변경 */
     resize: none !important;
-}
-
-.address {
-    width : 75% !important;
-}
-
-.address-btn {
-    width : 100% !important;
-}
-
-.button-text {
-    font-size: .7vw;
-}
-
-.button-container {
-    width : 10% !important;
-    font-size: 10px;
-}
-
-.checkbox {
-    width : 30px !important;
-    height: 30px !important;
-    margin-left: 2.5%;
 }
