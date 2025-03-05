@@ -106,7 +106,8 @@
                     STATUS,
                     DATE_FORMAT(SHOOT_RESERVE_DTM, '%Y-%m-%d %H:%i') AS STRING_SHOOT_RESERVE_DTM,
                     DATE_FORMAT(SHOOT_COMPLETE_DT,'%Y-%m-%d') AS STRING_SHOOT_COMPLETE_DT,
-                    DATE_FORMAT(UPLOAD_COMPLETE_DT,'%Y-%m-%d') AS STRING_UPLOAD_COMPLETE_DT
+                    DATE_FORMAT(UPLOAD_COMPLETE_DT,'%Y-%m-%d') AS STRING_UPLOAD_COMPLETE_DT,
+                    SHOOT_RESERVE_DTM
                 FROM TBV_VIDEO_REQ_M) TVRM
                 LEFT JOIN
                 TBU_USER_M TUM
@@ -123,7 +124,7 @@
                 ELSE 5
             END,
             CASE WHEN IS_URGENT_REQ = 'Y' THEN 1 ELSE 2 END,
-            REQ_ID DESC
+            SHOOT_RESERVE_DTM
         LIMIT #{startRow}, #{pageSize};
     </select>
 

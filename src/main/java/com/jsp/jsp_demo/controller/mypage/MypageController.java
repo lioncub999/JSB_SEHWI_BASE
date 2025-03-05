@@ -67,29 +67,17 @@ public class MypageController {
             PagingModel pagingModel = new PagingModel();
             pagingModel.setSearchManagerId((String) session.getAttribute("userId"));
 
-            // userGrade == 0 일때 (촬영자일때)
-            if (session.getAttribute("userGrade") == "0") {
-                Integer totalMyReqCount = videoReqService.getMyReqCount(pagingModel);
+            Integer totalMyReqCount = videoReqService.getMyReqCount(pagingModel);
 
-                // 전체 게시글 수 가져오기 (DB에서)
-                int maxPage = (totalMyReqCount / pageSize) + (totalMyReqCount % pageSize == 0 ? 0 : 1);
-                int startPage = ((curPage - 1) / pageBlock) * pageBlock + 1;
-                int endPage = Math.min(startPage + pageBlock - 1, maxPage);
+            // 전체 게시글 수 가져오기 (DB에서)
+            int maxPage = (totalMyReqCount / pageSize) + (totalMyReqCount % pageSize == 0 ? 0 : 1);
+            int startPage = ((curPage - 1) / pageBlock) * pageBlock + 1;
+            int endPage = Math.min(startPage + pageBlock - 1, maxPage);
 
-                model.addAttribute("totalMyReqCount", totalMyReqCount);
-                model.addAttribute("maxPage", maxPage);
-                model.addAttribute("startPage", startPage);
-                model.addAttribute("endPage", endPage);
+            pagingModel.setStartRow((curPage - 1) * pageSize);
+            pagingModel.setPageSize((pageSize));
 
-                pagingModel.setStartRow((curPage - 1) * pageSize);
-                pagingModel.setPageSize((pageSize));
-
-                List<VideoReqOutput> videoReqList = videoReqService.getMyReqList(pagingModel);
-
-                model.addAttribute("videoReqList", videoReqList);
-            }
-            // 촬영자 아닐때
-            else {}
+            List<VideoReqOutput> videoReqList = videoReqService.getMyReqList(pagingModel);
 
             userInput.setUserId((String) session.getAttribute("userId"));
 
@@ -97,6 +85,11 @@ public class MypageController {
 
             model.addAttribute("currentUserInfo", currentUserInfo);
             model.addAttribute("curPage", curPage);
+            model.addAttribute("videoReqList", videoReqList);
+            model.addAttribute("totalMyReqCount", totalMyReqCount);
+            model.addAttribute("maxPage", maxPage);
+            model.addAttribute("startPage", startPage);
+            model.addAttribute("endPage", endPage);
 
 
         } catch (Exception e) {

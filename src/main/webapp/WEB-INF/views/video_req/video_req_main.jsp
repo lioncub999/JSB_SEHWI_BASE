@@ -52,6 +52,11 @@
             });
              $.datetimepicker.setLocale('kr');
 
+            // 최종적으로 input 값 초기화
+            $('#shootReserveDtm').on('input', function () {
+                $(this).val(''); // 값이 입력되더라도 초기화
+            });
+
             // 촬영 완료일
             $('#shootCompleteDt').datepicker({
                 format: 'yyyy-mm-dd', // 날짜 형식
@@ -142,6 +147,16 @@
                     width: '100%',           // 부모 요소 크기에 맞게 설정
                 }).attr('rows', 4);          // 최대 4줄 표시
 
+                // 작은따옴표와 큰따옴표 입력 제한
+                textArea.on('input', function () {
+                    const restrictedChars = /['"]/g; // 작은따옴표('), 큰따옴표(")
+                    const value = $(this).val();
+                    if (restrictedChars.test(value)) {
+                        $(this).val(value.replace(restrictedChars, ''));
+                        Toast('top', 1000, 'warning', '작은따옴표와 큰따옴표는 입력할 수 없습니다!');
+                    }
+                });
+
                 // 특이사항 <textarea>를 td에 추가
                 modalNoteCell.append(textArea);
 
@@ -209,6 +224,16 @@
                         width: '100%',           // 부모 요소 크기에 맞게 설정
                         boxSizing: 'border-box'  // 패딩 포함 크기 계산
                     }).attr('rows', 4); // 최대 4줄 표시
+
+                    // 작은따옴표와 큰따옴표 입력 제한
+                    progressNoteTextArea.on('input', function () {
+                        const restrictedChars = /['"]/g; // 작은따옴표('), 큰따옴표(")
+                        const value = $(this).val();
+                        if (restrictedChars.test(value)) {
+                            $(this).val(value.replace(restrictedChars, ''));
+                            Toast('top', 1000, 'warning', '작은따옴표와 큰따옴표는 입력할 수 없습니다!');
+                        }
+                    });
 
                     // 촬영 담당자 특이사항 <textarea>를 td에 추가
                     $(modalProgressNoteCell).append(progressNoteTextArea);
