@@ -257,8 +257,11 @@
                 var formData = $('#video-req-frm').serializeArray();
 
                 formData.find(field => field.name === "note").value = formData.find(field => field.name === "note").value.replace(/\r?\n/g, "\\n");
+                formData.find(field => field.name === "note").value = formData.find(field => field.name === "note").value.replace(/['"]/g, "");
+
                 if (${userGrade} == 0) {
                     formData.find(field => field.name === "progressNote").value = formData.find(field => field.name === "progressNote").value.replace(/\r?\n/g, "\\n");
+                    formData.find(field => field.name === "progressNote").value = formData.find(field => field.name === "progressNote").value.replace(/['"]/g, "");
                 }
 
                 $.ajax({
