@@ -195,6 +195,7 @@ public class VideoReqController {
         String userId = (String) request.getSession().getAttribute("userId");
         String userGrade = (String) request.getSession().getAttribute("userGrade");
         videoReqInput.setUpdId(userId);
+
         if (Objects.equals(userGrade, "0")) {
             videoReqInput.setManagerId(userId);
         }

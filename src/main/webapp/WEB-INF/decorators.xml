@@ -16,12 +16,16 @@
         <pattern>/main</pattern>
         <pattern>/main/*</pattern>
 
-        <!-- 마이페이지 -->
-        <pattern>/mypage</pattern>
-        <pattern>/mypage/*</pattern>
-
         <!-- 촬영 신청 -->
         <pattern>/videoReq</pattern>
         <pattern>/videoReq/*</pattern>
+
+        <!-- 촬영 통계 & 정산 -->
+        <pattern>/statistics</pattern>
+        <pattern>/statistics/*</pattern>
+
+        <!-- 마이페이지 -->
+        <pattern>/mypage</pattern>
+        <pattern>/mypage/*</pattern>
     </decorator>
 </decorators>

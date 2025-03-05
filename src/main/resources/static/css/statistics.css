@@ -1,0 +1,14 @@
+th {
+    font-size : 13px;
+    font-weight: bold;
+}
+td {
+    font-size : 13px;
+}
+
+tr:hover {
+    .t-cell {
+        cursor : pointer;
+        background-color: rgb(15,166,249) !important;
+    }
+}

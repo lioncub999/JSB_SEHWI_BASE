@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jsp.jsp_demo.mapper.statistics.StatisticsMapper">
+    <select id="getSearchedDurationCompleteReq"
+            parameterType="com.jsp.jsp_demo.model.search.SearchModel"
+            resultType="com.jsp.jsp_demo.model.statistics.Statistics">
+        SELECT
+            USER_ID,
+            USER_NM,
+            JOB_GRADE_NM,
+            UPLOAD_COMPLETE_CNT
+        FROM (
+            SELECT
+            *
+            FROM (
+                SELECT
+                    USER_ID,
+                    USER_NM,
+                    JOB_GRADE
+                FROM TBU_USER_M TUM
+                WHERE TUM.USER_GRADE = 0
+            ) A
+            LEFT JOIN TBG_GRADE_C TGC ON A.JOB_GRADE = TGC.CODE
+        ) B
+        LEFT JOIN (
+            SELECT
+                MANAGER_ID,
+                COUNT(*) AS UPLOAD_COMPLETE_CNT
+            FROM
+                TBV_VIDEO_REQ_M
+            WHERE STATUS = "COMPLETEUPLOAD"
+                AND UPLOAD_COMPLETE_DT &gt;= CONCAT(#{selectedYear}, '-', LPAD(#{selectedMonth}, 2, '0'), '-01')
+                AND UPLOAD_COMPLETE_DT &lt; DATE_ADD(DATE_FORMAT(CONCAT(#{selectedYear}, '-', LPAD(#{selectedMonth}, 2, '0'), '-01'), '%Y-%m-01'), INTERVAL 1 MONTH)
+        GROUP BY
+                MANAGER_ID
+            ORDER BY
+                UPLOAD_COMPLETE_CNT DESC) C
+        ON B.USER_ID = C.MANAGER_ID
+    </select>
+</mapper>

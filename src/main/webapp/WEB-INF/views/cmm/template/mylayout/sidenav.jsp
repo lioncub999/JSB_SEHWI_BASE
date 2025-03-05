@@ -68,6 +68,18 @@
             </a>
         </li>
 
+        <%-- 촬영 통계&정산 --%>
+        <c:if test='${userGrade == 0}'>
+            <li class="nav-item <c:if test="${fn:startsWith(url, '/statistics')}">active</c:if>">
+                <b></b>
+                <b></b>
+                <a href="/statistics">
+                    <i class="fa fa-chart-pie nav-icon"></i>
+                    <span class="nav-text">촬영 통계&정산</span>
+                </a>
+            </li>
+        </c:if>
+
         <%-- 마이페이지 --%>
         <li class="nav-item <c:if test="${fn:startsWith(url, '/mypage')}">active</c:if>">
             <b></b>
