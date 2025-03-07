@@ -50,10 +50,6 @@ body {
 /* 기본 셋업 */
 header,section,article,aside,footer,main,a,button,input,textarea,img,nav,ul,ol,li,p,h1,h2,h3,h4,h5,h6,div,span{
     font-family: 'MarinesBold', sans-serif;
-    margin   : 0;
-    padding  : 0;
-    /* 폰트 크기 상속 */
-    font-size: inherit;
 }
 
 a:active,
@@ -442,10 +438,6 @@ pre {
 
 pre {
     margin: 0px !important;
-}
-
-span {
-    font-size: 13px !important;
 }
 
 /* 브라우저는 렌더링 속도, 정밀도에 대한 가독성을 강조 */

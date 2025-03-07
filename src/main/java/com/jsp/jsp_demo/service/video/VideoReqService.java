@@ -42,11 +42,20 @@ public class VideoReqService {
 
     /* TODO:
      *  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-     *  ┃    ● 내 모든 요청 갯수
+     *  ┃    ● 내 모든 요청 갯수 (촬영담당자)
      *  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━*/
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public Integer getMyReqCount(PagingModel pagingModel) {
-        return videoReqMapper.getMyReqCount(pagingModel);
+    public Integer getMyReqCountForPhotographer(PagingModel pagingModel) {
+        return videoReqMapper.getMyReqCountForPhotographer(pagingModel);
+    }
+
+    /* TODO:
+     *  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     *  ┃    ● 내 모든 요청 갯수 (영업자)
+     *  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━*/
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public Integer getMyReqCountForSales(PagingModel pagingModel) {
+        return videoReqMapper.getMyReqCountForSales(pagingModel);
     }
 
     /* TODO:
@@ -60,11 +69,20 @@ public class VideoReqService {
 
     /* TODO:
      *  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-     *  ┃    ● 내 요청 페이징
+     *  ┃    ● 내 요청 페이징 (촬영 담당자)
      *  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━*/
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public List<VideoReqOutput> getMyReqList(PagingModel pagingModel) {
-        return videoReqMapper.getMyReqList(pagingModel);
+    public List<VideoReqOutput> getMyReqListForPhotographer(PagingModel pagingModel) {
+        return videoReqMapper.getMyReqListForPhotographer(pagingModel);
+    }
+
+    /* TODO:
+     *  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     *  ┃    ● 내 요청 페이징 (영업자)
+     *  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━*/
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public List<VideoReqOutput> getMyReqListForSales(PagingModel pagingModel) {
+        return videoReqMapper.getMyReqListForSales(pagingModel);
     }
 
     /* TODO:
@@ -97,5 +115,14 @@ public class VideoReqService {
             rollbackFor = IOException.class)
     public void updateVideoReq(VideoReqInput videoReqInput) {
         videoReqMapper.updateVideoReq(videoReqInput);
+    }
+
+    /* TODO:
+     *  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     *  ┃    ● 캘린더 데이터 가져오기
+     *  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━*/
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public List<VideoReqOutput> getCalendarData() {
+        return videoReqMapper.getCalendarData();
     }
 }

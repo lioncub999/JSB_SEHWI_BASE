@@ -1,0 +1,39 @@
+#calendar {
+    background-color : #d0d0d0 !important;
+}
+
+.who-color-container {
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    position : absolute;
+    left: 50%;
+
+    padding: 10px;
+    background-color: white;
+    border : 3px solid black;
+    border-radius: 10px;
+}
+
+/* 이벤트 제목을 왼쪽 정렬 */
+.fc-event-title {
+    text-align: left !important;
+    white-space: initial;
+    font-size: 12px !important;
+    color : black !important;
+}
+
+.fc-event-time {
+    text-align: left;
+    width: 63px !important;
+    font-size: 12px !important;
+    color : black !important;
+}
+
+.fc-daygrid-day-number {
+    color : black !important;
+}
+
+.fc-col-header-cell-cushion {
+    color : black !important;
+}

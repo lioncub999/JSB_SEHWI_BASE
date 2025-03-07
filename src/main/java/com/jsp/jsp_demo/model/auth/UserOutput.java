@@ -10,4 +10,5 @@ import lombok.Setter;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
 public class UserOutput extends User{
+    private String jobGradeNm; // // 직급
 }

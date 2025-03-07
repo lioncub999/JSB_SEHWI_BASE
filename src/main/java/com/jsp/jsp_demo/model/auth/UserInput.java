@@ -10,5 +10,12 @@ import lombok.Setter;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
 public class UserInput extends User {
-    private String signUpCode; // 가입 코드
+
+    private String signUpCode;      // 가입 코드
+
+    private String logType;         // 로그인 or 로그아웃
+
+    private String ip;              // 접속 아이피
+
+    private String userAgent;       // 접속 브라우저
 }

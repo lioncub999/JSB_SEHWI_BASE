@@ -5,16 +5,13 @@ import com.jsp.jsp_demo.model.auth.UserOutput;
 import com.jsp.jsp_demo.model.paging.PagingModel;
 import com.jsp.jsp_demo.model.video.VideoReqOutput;
 import com.jsp.jsp_demo.service.auth.AuthService;
-import com.jsp.jsp_demo.service.mypage.MypageService;
 import com.jsp.jsp_demo.service.video.VideoReqService;
 import com.jsp.jsp_demo.util.log.TraceWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -33,10 +30,7 @@ public class MypageController {
     @Autowired
     AuthService authService;
 
-    // TODO : MypageService
-    @Autowired
-    MypageService mypageService;
-
+    // TODO : VideoReqService
     @Autowired
     VideoReqService videoReqService;
 
@@ -65,9 +59,15 @@ public class MypageController {
             UserInput userInput = new UserInput();
 
             PagingModel pagingModel = new PagingModel();
-            pagingModel.setSearchManagerId((String) session.getAttribute("userId"));
+            pagingModel.setSearchUserId((String) session.getAttribute("userId"));
 
-            Integer totalMyReqCount = videoReqService.getMyReqCount(pagingModel);
+            Integer totalMyReqCount = 0;
+
+            if (session.getAttribute("userGrade").equals("0")) {
+                totalMyReqCount = videoReqService.getMyReqCountForPhotographer(pagingModel);
+            } else {
+                totalMyReqCount = videoReqService.getMyReqCountForSales(pagingModel);
+            }
 
             // 전체 게시글 수 가져오기 (DB에서)
             int maxPage = (totalMyReqCount / pageSize) + (totalMyReqCount % pageSize == 0 ? 0 : 1);
@@ -77,10 +77,16 @@ public class MypageController {
             pagingModel.setStartRow((curPage - 1) * pageSize);
             pagingModel.setPageSize((pageSize));
 
-            List<VideoReqOutput> videoReqList = videoReqService.getMyReqList(pagingModel);
+            List<VideoReqOutput> videoReqList;
+
+            if (session.getAttribute("userGrade").equals("0")) {
+                videoReqList = videoReqService.getMyReqListForPhotographer(pagingModel);
+            } else {
+                videoReqList = videoReqService.getMyReqListForSales(pagingModel);
+            }
+
 
             userInput.setUserId((String) session.getAttribute("userId"));
-
             UserOutput currentUserInfo = authService.selectUserById(userInput);
 
             model.addAttribute("currentUserInfo", currentUserInfo);
@@ -99,17 +105,5 @@ public class MypageController {
             traceWriter.log(0);
         }
         return "mypage/mypage";
-    }
-
-    @ResponseBody
-    @PostMapping("/mypage/resetPass")
-    public Boolean resetPassword(HttpServletRequest httpServletRequest,
-                                 UserInput userInput) {
-        try {
-            mypageService.resetPassword(userInput);
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-        return true;
     }
 }

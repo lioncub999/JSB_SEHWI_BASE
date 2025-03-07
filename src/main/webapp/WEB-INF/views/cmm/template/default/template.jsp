@@ -13,6 +13,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"/>
     <%@ include file="/WEB-INF/views/cmm/template/default/stylesheets.jsp"%>
 
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+    <title>모두솔루션 영상촬영 관리</title>
+    
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
     <style>
     /* 로딩 오버레이 스타일 */
     #loading-overlay {

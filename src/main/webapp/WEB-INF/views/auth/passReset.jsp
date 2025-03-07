@@ -12,6 +12,8 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script src="<c:url value='/js/alert/SweetAlert2.js' />"></script>
 
+<title>모두솔루션 영상촬영 관리</title>
+
 <c:if test="${passReset == 'N'}">
     <script>
         window.location.href = "/main"

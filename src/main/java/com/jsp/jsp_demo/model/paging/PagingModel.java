@@ -21,5 +21,5 @@ public class PagingModel implements Serializable{
 
     private String searchStoreNm;
 
-    private String searchManagerId;
+    private String searchUserId;
 }

@@ -13,9 +13,20 @@
     <select id="selectUserById"
             parameterType="com.jsp.jsp_demo.model.auth.UserInput"
             resultType="com.jsp.jsp_demo.model.auth.UserOutput">
-        SELECT *
-        FROM TBU_USER_M
-        WHERE USER_ID = #{userId}
+        SELECT
+            A.*, B.JOB_GRADE_NM
+        FROM (
+            SELECT
+                USER_ID,
+                USER_NM,
+                USER_PW,
+                PASS_RESET,
+                USER_GRADE,
+                PHONE,
+                JOB_GRADE
+            FROM TBU_USER_M
+            WHERE USER_ID = #{userId} ) A
+        LEFT JOIN TBG_GRADE_C B ON A.JOB_GRADE = B.CODE;
     </select>
 
     <select id="selectUserCount"
@@ -25,6 +36,13 @@
         FROM TBU_USER_M
         WHERE USER_ID = #{userId}
     </select>
+
+    <update id="resetPassword"
+            parameterType="com.jsp.jsp_demo.model.auth.UserInput">
+        UPDATE TBU_USER_M
+        SET USER_PW = "1111", PASS_RESET = 'Y'
+        WHERE USER_ID = #{userId}
+    </update>
     
     <update id="updatePassword"
             parameterType="com.jsp.jsp_demo.model.auth.UserInput">
@@ -32,4 +50,22 @@
         SET USER_PW = #{userPw}, PASS_RESET = 'N'
         WHERE USER_ID = #{userId}
     </update>
+
+    <insert id = "logAuthActive"
+            parameterType="com.jsp.jsp_demo.model.auth.UserInput">
+        INSERT INTO TBH_LOGIN_H (
+            USER_ID,
+            LOG_TYPE,
+            CRE_DTM,
+            IP,
+            USER_AGENT
+        )
+        VALUES (
+            #{userId},
+            #{logType},
+            NOW(),
+            #{ip},
+            #{userAgent}
+        )
+    </insert>
 </mapper>

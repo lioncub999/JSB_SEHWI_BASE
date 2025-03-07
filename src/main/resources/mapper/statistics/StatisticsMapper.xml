@@ -20,7 +20,10 @@
                     USER_NM,
                     JOB_GRADE
                 FROM TBU_USER_M TUM
-                WHERE TUM.USER_GRADE = 0
+                WHERE
+                    TUM.USER_GRADE = 0
+                    AND USER_NM != "이재희"
+
             ) A
             LEFT JOIN TBG_GRADE_C TGC ON A.JOB_GRADE = TGC.CODE
         ) B
@@ -30,7 +33,8 @@
                 COUNT(*) AS UPLOAD_COMPLETE_CNT
             FROM
                 TBV_VIDEO_REQ_M
-            WHERE STATUS = "COMPLETEUPLOAD"
+            WHERE
+                STATUS = "COMPLETEUPLOAD"
                 AND UPLOAD_COMPLETE_DT &gt;= CONCAT(#{selectedYear}, '-', LPAD(#{selectedMonth}, 2, '0'), '-01')
                 AND UPLOAD_COMPLETE_DT &lt; DATE_ADD(DATE_FORMAT(CONCAT(#{selectedYear}, '-', LPAD(#{selectedMonth}, 2, '0'), '-01'), '%Y-%m-01'), INTERVAL 1 MONTH)
         GROUP BY

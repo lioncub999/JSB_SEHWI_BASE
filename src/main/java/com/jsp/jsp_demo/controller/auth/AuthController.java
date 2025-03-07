@@ -66,8 +66,13 @@ public class AuthController {
                 UserOutput loginUserInfo = authService.signIn(userInput);
 
                 if (loginUserInfo != null) {
+                    userInput.setLogType("LOGIN");
+                    authService.logAuthActive(request, userInput);
+
                     request.getSession().invalidate();
+
                     HttpSession session = request.getSession(true);
+
                     session.setAttribute("userId", loginUserInfo.getUserId());
                     session.setAttribute("userNm", loginUserInfo.getUserNm());
                     session.setAttribute("userGrade", loginUserInfo.getUserGrade());
@@ -111,7 +116,6 @@ public class AuthController {
     @PostMapping("/auth/signUp")
     public String signup(HttpServletRequest request,
                          UserInput userInput) {
-
         TraceWriter traceWriter = new TraceWriter("", request.getMethod(), request.getServletPath());
         traceWriter.add("< INPUT >");
         traceWriter.add("[userInput.getSignUpCode() : " + userInput.getSignUpCode() + "]");
@@ -164,9 +168,17 @@ public class AuthController {
     @ResponseBody
     @PostMapping("/auth/logout")
     public Boolean logout(
-            HttpServletRequest httpServletRequest
+            HttpServletRequest request
     ) {
-        httpServletRequest.getSession().invalidate();
+        UserInput userInput = new UserInput();
+
+        userInput.setUserId((String) request.getSession(true).getAttribute("userId"));
+        userInput.setLogType("LOGOUT");
+
+        authService.logAuthActive(request, userInput);
+
+        request.getSession().invalidate();
+
         return true;
     }
 
@@ -177,7 +189,7 @@ public class AuthController {
      *  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━*/
     @GetMapping("/resetPass")
     public String resetPass() {
-        return "/login/passReset";
+        return "mypage/resetPass";
     }
 
     /* TODO:
@@ -187,23 +199,60 @@ public class AuthController {
      *  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━*/
     @ResponseBody
     @PostMapping("/auth/resetPass")
-    public Boolean resetPassFunc(
-            HttpServletRequest httpServletRequest,
-            UserInput userInput
+    public Boolean resetPassword(
+            HttpServletRequest request
     ) {
-        boolean result;
+        TraceWriter traceWriter = new TraceWriter("", request.getMethod(), request.getServletPath());
+        traceWriter.add("< PASSWORD RESET >");
 
-        String userId = (String) httpServletRequest.getSession().getAttribute("userId");
+        String userId = (String) request.getSession().getAttribute("userId");
+
+        UserInput userInput = new UserInput();
 
         userInput.setUserId(userId);
 
-        authService.updatePassword(userInput);
+        try {
+            authService.resetPassword(userInput);
 
-        HttpSession session = httpServletRequest.getSession(true);
-        session.setAttribute("passReset", "N");
+            return true;
+        } catch (Exception e) {
+            traceWriter.add("ERROR : "+e);
+            return false;
+        } finally {
+            traceWriter.log(0);
+        }
+    }
 
-        result = true;
+    /* TODO:
+     *  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     *  ┃    <GET>
+     *  ┃    ● 비밀번호 업데이트
+     *  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━*/
+    @ResponseBody
+    @PostMapping("/auth/updatePass")
+    public Boolean updatePassword(
+            UserInput userInput,
+            HttpServletRequest request
+    ) {
+        TraceWriter traceWriter = new TraceWriter("", request.getMethod(), request.getServletPath());
+        traceWriter.add("< PASSWORD RESET >");
 
-        return result;
+        String userId = (String) request.getSession().getAttribute("userId");
+
+        userInput.setUserId(userId);
+
+        try {
+
+            authService.updatePassword(userInput);
+            request.getSession(true).setAttribute("passReset", "N");
+
+            return true;
+        } catch (Exception e) {
+            traceWriter.add("ERROR : "+e);
+            return false;
+        } finally {
+            traceWriter.log(0);
+        }
+
     }
 }

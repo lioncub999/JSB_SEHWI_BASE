@@ -9,8 +9,6 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 
 
-<c:set var="getVideoReqUrl" value="/videoReq/getRecentReqList"/>
-<c:set var="updateVideoReqUrl" value="/videoReq/updateVideoReq"/>
 <html>
 <head>
     <meta name="viewport"
@@ -69,9 +67,7 @@
             };
 
             let AjaxFunc = {
-                viewSelectedDurationReqCnt : function() {
 
-                }
             }
         </script>
 

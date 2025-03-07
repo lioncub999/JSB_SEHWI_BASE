@@ -21,7 +21,7 @@
     </head>
     <body>
         <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script src="<c:url value='/js/alert/SweetAlert2.js' />"></script>
 
         <decorator:body>

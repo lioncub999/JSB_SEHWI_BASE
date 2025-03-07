@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Objects;
 
@@ -84,7 +85,18 @@ public class AuthService {
 
     /* TODO:
      *  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-     *  ┃    ● 비밀번호 초기화
+     *  ┃    ● 비밀번호 초기화 (1111)
+     *  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━*/
+    @Transactional(
+            propagation = Propagation.REQUIRED,
+            rollbackFor = IOException.class)
+    public void resetPassword(UserInput userInput) {
+        authMapper.resetPassword(userInput);
+    }
+
+    /* TODO:
+     *  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     *  ┃    ● 비밀번호 재설정
      *  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━*/
     @Transactional(
             propagation = Propagation.REQUIRED,
@@ -93,5 +105,55 @@ public class AuthService {
         userInput.setUserPw(passwordEncoder.encode(userInput.getUserPw()));
 
         authMapper.updatePassword(userInput);
+    }
+
+    /* TODO:
+     *  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     *  ┃    ● 로그인/로그아웃 로그남기기
+     *  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━*/
+    @Transactional(
+            propagation = Propagation.REQUIRED,
+            rollbackFor = IOException.class)
+    public void logAuthActive(HttpServletRequest request, UserInput userInput) {
+        String userAgent = "";
+        String userBrowser = request.getHeader("User-Agent");
+
+        if(userBrowser.contains("Trident")) {												// IE
+            userAgent = "ie";
+        } else if(userBrowser.contains("Edge")) {											// Edge
+            userAgent = "edge";
+        } else if(userBrowser.contains("Whale")) { 										// Naver Whale
+            userAgent = "whale";
+        } else if(userBrowser.contains("Opera") || userBrowser.contains("OPR")) { 		// Opera
+            userAgent = "opera";
+        } else if(userBrowser.contains("Firefox")) { 										 // Firefox
+            userAgent = "firefox";
+        } else if(userBrowser.contains("Safari") && !userBrowser.contains("Chrome")) {	 // Safari
+            userAgent = "safari";
+        } else if(userBrowser.contains("Chrome")) {										 // Chrome
+            userAgent = "chrome";
+        }
+
+        String ip = request.getHeader("X-Forwarded-For");
+        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("Proxy-Client-IP");
+        }
+        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("WL-Proxy-Client-IP");
+        }
+        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("HTTP_CLIENT_IP");
+        }
+        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("HTTP_X_FORWARDED_FOR");
+        }
+        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getRemoteAddr();
+        }
+
+        userInput.setUserAgent(userAgent);
+        userInput.setIp(ip);
+
+        authMapper.logAuthActive(userInput);
     }
 }

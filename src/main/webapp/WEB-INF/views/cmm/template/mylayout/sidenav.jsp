@@ -68,6 +68,16 @@
             </a>
         </li>
 
+        <%-- 촬영 일정 캘린더 --%>
+        <li class="nav-item <c:if test="${fn:startsWith(url, '/calendar')}">active</c:if>">
+            <b></b>
+            <b></b>
+            <a href="/calendar">
+                <i class="fa fa-calendar nav-icon"></i>
+                <span class="nav-text">촬영 일정 캘린더</span>
+            </a>
+        </li>
+
         <%-- 촬영 통계&정산 --%>
         <c:if test='${userGrade == 0}'>
             <li class="nav-item <c:if test="${fn:startsWith(url, '/statistics')}">active</c:if>">
@@ -99,6 +109,12 @@
                 <span class="nav-text">로그아웃</span>
             </a>
         </li>
+        <div style="font-size : 15px;">[촬영기획팀]</div>
+        <div style="font-size:14px">-  개발 및 촬영 -</div>
+        <div style="font-size:12px"> 이세휘 과장 (010-7705-4839)</div>
+        <div style="font-size:14px">- 촬영작가 --</div>
+        <div style="font-size:12px"> 한채근 대리 (010-8907-7210)</div>
+        <div style="font-size:12px"> 정성우 대리 010-4592-9145)</div>
     </ul>
 </nav>
 </body>

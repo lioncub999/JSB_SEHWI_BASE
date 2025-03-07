@@ -12,8 +12,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 
-<c:set var="passResetUrl" value="/mypage/resetPass"/>
+<c:set var="passResetUrl" value="/auth/resetPass"/>
 <c:set var="updateVideoReqUrl" value="/videoReq/updateVideoReq"/>
+<c:set var="logoutUrl" value="/auth/logout"/>
 
 <html>
     <head>
@@ -214,6 +215,24 @@
                     } else {
                         $('#modal-progress-note').text(progressNote);
                     }
+                },
+
+                passResetConfirmAlert : function() {
+
+                    Swal.fire({
+                        icon: 'warning',
+                        title: '비밀번호를 초기화하시겠습니까?',
+                        text : '초기화시 로그아웃되며 비밀번호가 "1111"로 초기화 됩니다. 재로그인시 비밀번호 설정이 가능합니다!',
+                        allowOutsideClick: false, // 팝업 외부 클릭 비활성화
+                        confirmButtonText : "초기화!",
+                        showCancelButton : true,
+                        cancelButtonColor: "#d33",
+                        cancelButtonText: "취소",
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            AjaxFunc.resetPassword();
+                        }
+                    });
                 }
             };
 
@@ -224,24 +243,29 @@
                         url: "${passResetUrl}",
                         type: "post",
                         cache: false,
-                        data: {"userId": "${userId}", "passReset": "${passReset}"},
+                        data: {},
                     }).done(function (response) {
                         if (response) {
-                            $.ajax({
-                                url: "${logoutUrl}",
-                                type: "post",
-                                cache: false,
-                            }).done(function (response) {
-                                if (response) {
-                                    Toast('top', 1000, 'success', '비밀번호가 초기화되었습니다.<br>다시 로그인해주세요. "1111"');
+                            AjaxFunc.logout();
+                        } else {
+                            alert('에러 발생')
+                        }
+                    })
+                },
 
-                                    setTimeout(function () {
-                                        window.location.href = "/login"
-                                    }, 1000)
-                                } else {
-                                    Toast('top', 1000, 'success', '레전드 에러 발생 관리자 문의');
-                                }
-                            })
+                <%-- 로그아웃 --%>
+                logout: function () {
+                    $.ajax({
+                        url: "${logoutUrl}",
+                        type: "post",
+                        cache: false,
+                    }).done(function (response) {
+                        if (response) {
+                            Toast('top', 2000, 'success', '비밀번호가 초기화되었습니다(1111)');
+
+                            setTimeout(function () {
+                                window.location.href = "/login"
+                            }, 1000)
                         } else {
                             alert('에러 발생')
                         }
@@ -401,99 +425,147 @@
             </div>
         </div>
 
-        <c:if test="${userGrade == 0}">
-            <div style="margin-top:10px;margin-left:10px;margin-right :10px;">
-                ☉ 내 촬영 리스트
-            </div><%-- 요청 리스트 테이블 --%>
-                <%-- 페이지네이션 --%>
-            <nav aria-label="Page navigation example" style="justify-items : center">
-                <ul class="pagination">
-                    <li class="page-item">
-                        <a class="page-link" href="/mypage?curPage=1" aria-label="Previous">
-                            <span aria-hidden="true">&lt;&lt;</span>
-                        </a>
-                    </li>
+        <div style="margin-top:10px;margin-left:10px;margin-right :10px;">
+            ☉ 내 촬영신청 리스트
+        </div>
+        <%-- 페이지네이션 --%>
+        <nav aria-label="Page navigation example" style="justify-items : center">
+            <ul class="pagination">
+                <li class="page-item">
+                    <a class="page-link" href="/mypage?curPage=1" aria-label="Previous">
+                        <span aria-hidden="true">&lt;&lt;</span>
+                    </a>
+                </li>
 
-                    <li class="page-item">
-                        <a class="page-link" href="/mypage?curPage=${curPage - 1 > 0 ? curPage- 1 : 1}" aria-label="">
-                            <span aria-hidden="true">&lt;</span>
-                        </a>
-                    </li>
-                        
-                    <!-- 현재 페이지 그룹에 맞는 페이지 버튼만 출력 -->
-                    <c:forEach begin="${startPage}" end="${endPage}" var="i">
-                        <li class="page-item ${i == curPage ? 'active' : ''}">
-                            <a class="page-link" href="/mypage?curPage=${i}" aria-label="">
-                                <span aria-hidden="true">${i}</span>
-                            </a>
-                        </li>
-                    </c:forEach>
+                <li class="page-item">
+                    <a class="page-link" href="/mypage?curPage=${curPage - 1 > 0 ? curPage- 1 : 1}" aria-label="">
+                        <span aria-hidden="true">&lt;</span>
+                    </a>
+                </li>
                     
-                    <li class="page-item">
-                        <a class="page-link" href="/mypage?curPage=${curPage + 1 <= maxPage ? curPage + 1 : maxPage}" aria-label="">
-                            <span aria-hidden="true">&gt;</span>
+                <!-- 현재 페이지 그룹에 맞는 페이지 버튼만 출력 -->
+                <c:forEach begin="${startPage}" end="${endPage}" var="i">
+                    <li class="page-item ${i == curPage ? 'active' : ''}">
+                        <a class="page-link" href="/mypage?curPage=${i}" aria-label="">
+                            <span aria-hidden="true">${i}</span>
                         </a>
                     </li>
+                </c:forEach>
+                
+                <li class="page-item">
+                    <a class="page-link" href="/mypage?curPage=${curPage + 1 <= maxPage ? curPage + 1 : maxPage}" aria-label="">
+                        <span aria-hidden="true">&gt;</span>
+                    </a>
+                </li>
+                <li>
                     <a class="page-link" href="/mypage?curPage=${maxPage}" aria-label="Next">
                         <span aria-hidden="true">&gt;&gt;</span>
                     </a>
-                    </li>
-                </ul>
-            </nav>
-            <table class="table table-striped table-bordered" >
-                <thead class="text-center">
-                    <tr>
-                        <th style="width: 3%; border-top-left-radius:10px;">신청<br>ID</th>
-                        <th style="width: 8%;">사장님<br>연락처</th>
-                        <th style="width: 10%;">상호명</th>
-                        <th style="width: 15%;">주소</th>
-                        <th style="width: 16%;">특이사항</th>
-                        <th style="width: 16%;">촬영담당자<br>특이사항</th>
-                        <th style="width: 5%;">촬영<br>담당자</th>
-                        <th style="width: 10%;">촬영<br>예정일</th>
-                        <th style="width: 8%; border-top-right-radius:10px;">진행상태</th>
+                </li>
+            </ul>
+        </nav>
+        <%-- 요청 리스트 테이블 --%>
+        <table class="table table-striped table-bordered" >
+            <thead class="text-center">
+                <tr>
+                    <th style="width: 3%; border-top-left-radius:10px;">신청<br>ID</th>
+                    <th style="width: 8%;">사장님<br>연락처</th>
+                    <th style="width: 10%;">상호명</th>
+                    <th style="width: 15%;">주소</th>
+                    <th style="width: 16%;">특이사항</th>
+                    <th style="width: 16%;">촬영담당자<br>특이사항</th>
+                    <th style="width: 5%;">촬영<br>담당자</th>
+                    <th style="width: 10%;">촬영<br>예정일</th>
+                    <th style="width: 8%; border-top-right-radius:10px;">진행상태</th>
+                </tr>
+            </thead>
+            <tbody>
+                <c:forEach var="videoReq" items="${videoReqList}">
+                    <tr onclick="PageFunc.updateModal('${videoReq.isUrgentReq}', '${videoReq.reqId}', '${videoReq.storeNm}', '${videoReq.creId}', '${videoReq.stringContractDt}', '${videoReq.stringCreDt}', '${videoReq.address}', '${videoReq.phone}', '${videoReq.managerNm}', '${videoReq.managerJgNm}', '${videoReq.note}', '${videoReq.status}', '${videoReq.progressNote}', '${videoReq.stringShootReserveDtm}', '${videoReq.stringShootCompleteDt}', '${videoReq.stringUploadCompleteDt}')" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                        <td class="text-center t-cell">${videoReq.reqId}</td>
+                        <td class="text-center t-cell">
+                            ${videoReq.phone.substring(0,3)}-${videoReq.phone.substring(3,7)}-${videoReq.phone.substring(7)}
+                        </td>
+                        <td class="t-cell">${videoReq.isUrgentReq == "Y" ?"<div style='color:red'>(긴급건)</div>" : ""}${videoReq.storeNm}</td>
+                        <td class="t-cell">${videoReq.address}</td>
+                        <td class="t-cell" style="text-align:left">
+                            ${videoReq.note.replace('\\n', '<br>')}
+                        </td>
+                        <td class="t-cell" style="text-align:left">
+                            ${videoReq.progressNote.replace('\\n', '<br>')}
+                        </td>
+                        <td class="text-center t-cell">${videoReq.managerNm} ${videoReq.managerJgNm}</td>
+                        <td class="text-center t-cell">${videoReq.stringShootReserveDtm}</td>
+                        <td class="text-center t-cell">
+                            <c:choose>
+                                <c:when test="${videoReq.status == 'COORDINATION'}">
+                                    일정조율중
+                                </c:when>
+                                <c:when test="${videoReq.status == 'STANDBY'}">
+                                    촬영대기
+                                </c:when>
+                                <c:when test="${videoReq.status == 'COMPLETEFILM'}">
+                                    촬영완료
+                                </c:when>
+                                <c:when test="${videoReq.status == 'COMPLETEUPLOAD'}">
+                                    촬영&업로드 완료
+                                </c:when>
+                                <c:otherwise>
+                                    촬영 불필요
+                                </c:otherwise>
+                            </c:choose>
+                        </td>
                     </tr>
-                </thead>
-                <tbody>
-                    <c:forEach var="videoReq" items="${videoReqList}">
-                        <tr onclick="PageFunc.updateModal('${videoReq.isUrgentReq}', '${videoReq.reqId}', '${videoReq.storeNm}', '${videoReq.creId}', '${videoReq.stringContractDt}', '${videoReq.stringCreDt}', '${videoReq.address}', '${videoReq.phone}', '${videoReq.managerNm}', '${videoReq.managerJgNm}', '${videoReq.note}', '${videoReq.status}', '${videoReq.progressNote}', '${videoReq.stringShootReserveDtm}', '${videoReq.stringShootCompleteDt}', '${videoReq.stringUploadCompleteDt}')" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                            <td class="text-center t-cell">${videoReq.reqId}</td>
-                            <td class="text-center t-cell">
-                                ${videoReq.phone.substring(0,3)}-${videoReq.phone.substring(3,7)}-${videoReq.phone.substring(7)}
-                            </td>
-                            <td class="t-cell">${videoReq.isUrgentReq == "Y" ?"<div style='color:red'>(긴급건)</div>" : ""}${videoReq.storeNm}</td>
-                            <td class="t-cell">${videoReq.address}</td>
-                            <td class="t-cell" style="text-align:left">
-                                ${videoReq.note.replace('\\n', '<br>')}
-                            </td>
-                            <td class="t-cell" style="text-align:left">
-                                ${videoReq.progressNote.replace('\\n', '<br>')}
-                            </td>
-                            <td class="text-center t-cell">${videoReq.managerNm} ${videoReq.managerJgNm}</td>
-                            <td class="text-center t-cell">${videoReq.stringShootReserveDtm}</td>
-                            <td class="text-center t-cell">
-                                <c:choose>
-                                    <c:when test="${videoReq.status == 'COORDINATION'}">
-                                        일정조율중
-                                    </c:when>
-                                    <c:when test="${videoReq.status == 'STANDBY'}">
-                                        촬영대기
-                                    </c:when>
-                                    <c:when test="${videoReq.status == 'COMPLETEFILM'}">
-                                        촬영완료
-                                    </c:when>
-                                    <c:when test="${videoReq.status == 'COMPLETEUPLOAD'}">
-                                        촬영&업로드 완료
-                                    </c:when>
-                                    <c:otherwise>
-                                        촬영 불필요
-                                    </c:otherwise>
-                                </c:choose>
-                            </td>
-                        </tr>
-                    </c:forEach>
-                </tbody>
-            </table>
-        </c:if>
+                </c:forEach>
+            </tbody>
+        </table>
+
+        <div style="margin-top:10px;margin-left:10px;margin-right :10px;">
+            ☉ 내 정보
+        </div>
+        <table class="table table-striped table-bordered" >
+            <tbody>
+                <tr>
+                    <th style="width: 50%;">
+                        아이디
+                    </th>
+                    <th style="width: 50%; border-top-right-radius:10px;">
+                        ${currentUserInfo.userId}
+                    </th>
+                </tr>
+                <tr>
+                    <th style="width: 50%;">
+                        이름
+                    </th>
+                    <th style="width: 50%; border-top-right-radius:10px;">
+                        ${currentUserInfo.userNm}
+                    </th>
+                </tr>
+                <tr>
+                    <th style="width: 50%;">
+                        직급
+                    </th>
+                    <th style="width: 50%; border-top-right-radius:10px;">
+                        ${currentUserInfo.jobGradeNm}
+                    </th>
+                </tr>
+                <tr>
+                    <th style="width: 50%;">
+                        전화번호
+                    </th>
+                    <th style="width: 50%; border-top-right-radius:10px;">
+                        ${currentUserInfo.phone.substring(0,3)}-${currentUserInfo.phone.substring(3,7)}-${currentUserInfo.phone.substring(7)}
+                    </th>
+                </tr>
+                <tr>
+                    <th style="width: 50%;">
+                        비밀번호 초기화
+                    </th>
+                    <th style="width: 50%; border-top-right-radius:10px;">
+                        <button class="common-blue-btn" onclick=PageFunc.passResetConfirmAlert()>비밀번호 초기화</button>
+                    </th>
+                </tr>
+            </tbody>
+        </table>
     </body>
 </html>

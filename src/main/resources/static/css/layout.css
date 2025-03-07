@@ -59,6 +59,10 @@ main {
     display: block;
 }
 
+.nav-text {
+    font-size : 13px;
+}
+
 .nav-item a {
     z-index: 1000;
     position: relative;

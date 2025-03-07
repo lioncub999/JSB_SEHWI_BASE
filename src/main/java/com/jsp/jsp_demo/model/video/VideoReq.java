@@ -25,8 +25,6 @@ public class VideoReq implements Serializable {
 
     private String contractDt;              // 계약일
 
-    private String shootSchedule;           // 촬영 예정일
-
     private String phone;                   // 대표 핸드폰 번호
 
     private Double longitude;               // 매장위치 경도

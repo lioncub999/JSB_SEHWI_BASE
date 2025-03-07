@@ -9,8 +9,7 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %> <%--한국어 깨짐 방지--%>
 
 
-<c:set var="loginUrl" value="/auth/login"/>
-<c:set var="signUpUrl" value="/auth/signUpUrl"/>
+<c:set var="updatePasswordUrl" value="/auth/updatePass"/>
 
 <html>
     <head>
@@ -18,8 +17,6 @@
             content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"/>
         <link type="text/css" rel="stylesheet" href="<c:url value='/css/normalize.css'/>">
         <link type="text/css" rel="stylesheet" href="<c:url value='/css/login.css'/>">
-
-        <title>모두솔루션 영상촬영 관리</title>
     </head>
 
     <body>
@@ -27,12 +24,29 @@
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
         <script src="<c:url value='/js/alert/SweetAlert2.js' />"></script>
 
+        <%--TODO: 로그인 세션 확인--%>
+        <c:if test="${userId == null || userId == ''}">
+        <script>
+            window.location.href = "/login"
+        </script>
+        </c:if>
 
         <script>
+            <%-- 로딩 오버레이 --%>
+            const LoadingOverlay = {
+                show: function () {
+                    $('#loading-overlay').fadeIn();
+                },
+                hide: function () {
+                    $('#loading-overlay').fadeOut();
+                }
+            };
+
+    
             <%-- Document Ready! --%>
             $(document).ready(function() {
                 // 로그인 세션 확인
-                if ("${userId}" != '') {
+                if ("${passReset}" == "N") {
                     window.location.href = "/main"
                 }
             
@@ -45,35 +59,23 @@
                 });
             });
 
-            <%-- 로딩 오버레이 --%>
-            const LoadingOverlay = {
-                show: function () {
-                    $('#loading-overlay').fadeIn();
-                },
-                hide: function () {
-                    $('#loading-overlay').fadeOut();
-                }
-            };
-
-            let PageControlFunc ={
-                // 회원가입 화면으로 이동
-                moveToSignUpPage : function() {
-                    window.location.href = '/auth/signUp';
-                }
-            };
-
             let SubmitFunc = {
                 // 로그인 값 valid 확인
-                loginSubmit: function() {
+                passwordCheck: function() {
                     var warningTxt = '';
 
-                    // 아이디 입력 확인
-                    if ($('#userId').val() == '') {
-                        warningTxt += "아이디를 입력해주세요!\n"
-                    }
                     // 비밀번호 입력 확인
-                    if ($('#userPw').val() == '') {
-                        warningTxt += "비밀번호 입력해주세요!\n"
+                    if ($('#password').val() == '') {
+                        warningTxt += "비밀번호를 입력해주세요!\n"
+                    }
+                    // 비밀번호확인 입력 확인
+                    if ($('#passwordCheck').val() == '') {
+                        warningTxt += "비밀번호 확인을 입력해주세요!\n"
+                    }
+
+                    // 비밀번호 일치확인
+                    if ($('#password').val() != $('#passwordCheck').val()) {
+                        warningTxt += "비밀번호가 일치하지 않습니다!\n"
                     }
 
                     // 워닝 표시
@@ -82,48 +84,40 @@
                         return;
                     }
 
-                    AjaxFunc.login();
+                    AjaxFunc.updatePassword();
                 }
             }
 
             let AjaxFunc = {
                 // 로그인 ajax
-                login: function () {
+                updatePassword: function () {
                     const formData = $('#login-frm').serializeArray();
-                    
-                    const messages = {
-                        noExist: { type: 'error', message: '존재하지 않는 계정입니다', duration: 1000 },
-                        passError: { type: 'warning', message: '비밀번호를 확인해주세요.', duration: 1000 },
-                        success: { type: 'success', message: '로그인 되었습니다.', duration: 1000 },
-                    };
 
+                    console.log(formData);
+                    
                     LoadingOverlay.show();
                     $.ajax({
-                        url: "${loginUrl}",
+                        url: `${updatePasswordUrl}`,
                         type: 'POST',
                         cache: false,
                         data: formData,
                     })
                     .done((response) => {
-                        const toast = messages[response];
+                        if (response) {
+                            Toast('top', 1000, 'success', '비밀번호가 저장되었습니다!');
 
-                        if (toast) {
-                            Toast('top', toast.duration, toast.type, toast.message);
-
-                            if (response === 'success') {
-                                setTimeout(() => {
-                                    window.location.href = '/main';
-                                }, toast.duration);
-                            }
+                            setTimeout(() => {
+                                window.location.href = '/main';
+                            }, 1000);
                         } else {
-                            console.error('Unhandled response:', response);
+                            Toast('top', 1000, 'error', '오류가 발생했습니다! 지속 현상 발생시 개발자에게 문의해주세요!');
                         }
 
                         LoadingOverlay.hide();
                     })
                     .fail((xhr, textStatus, thrownError) => {
                         console.error('AJAX error:', textStatus, thrownError);
-                        Toast('top', 1000, 'error', `로그인 중 문제가 발생했습니다.\n${thrownError}`);
+                        Toast('top', 1000, 'error', `오류가 발생했습니다! 지속 현상 발생시 개발자에게 문의해주세요!\n${thrownError}`);
                         LoadingOverlay.hide();
                     });
                 },
@@ -139,32 +133,27 @@
             <%-- 로그인 타이틀 --%>
             <img class="logo-img" src="<c:url value='/images/logo/modusol_logo.png'/>" alt=""/>
             <div class="login-title" id="login">
-                모두솔루션 영상촬영 관리
+                새 비밀번호 입력
             </div>
 
             <%-- 로그인 폼 --%>
             <div style="position : relative">
                 <form class="login-frm", id="login-frm">
                     <div class="input-container">
-                        <input type="text" class="input-field" placeholder="" name="userId" id="userId" />
-                        <label for="username" class="input-label">아이디</label>
+                        <input type="password" class="input-field" placeholder="" name="userPw" id="userPw" />
+                        <label for="userPw" class="input-label">비밀번호</label>
                     </div>
                     <div class="input-container">
-                        <input type="password" class="input-field password" placeholder="" name="userPw" id="userPw" />
-                        <label for="username" class="input-label">비밀번호</label>
+                        <input type="password" class="input-field password" placeholder="" name="userPwCheck" id="userPwCheck" />
+                        <label for="userPwCheck" class="input-label">비밀번호 확인</label>
                     </div>
                 </form>
             </div>
 
 
-            <%-- 로그인 버튼 --%>
+            <%-- 저장 버튼 --%>
             <div class="login-btn-box">
-                <button class="login-btn" id="loginButton" type="button" onclick="SubmitFunc.loginSubmit()">로그인</button>
-            </div>
-
-            <%-- 회원가입 버튼 --%>
-            <div class="login-btn-box">
-                <button class="login-btn" type="button" onclick=PageControlFunc.moveToSignUpPage()>회원가입</button>
+                <button id="loginButton" class="login-btn" type="button" onclick=SubmitFunc.passwordCheck()>저장</button>
             </div>
         </main>
     </body>

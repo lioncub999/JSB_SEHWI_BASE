@@ -20,6 +20,10 @@
         <pattern>/videoReq</pattern>
         <pattern>/videoReq/*</pattern>
 
+        <!-- 캘린더 -->
+        <pattern>/calendar</pattern>
+        <pattern>/calendar/*</pattern>
+
         <!-- 촬영 통계 & 정산 -->
         <pattern>/statistics</pattern>
         <pattern>/statistics/*</pattern>
