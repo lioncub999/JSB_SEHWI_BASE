@@ -75,6 +75,7 @@ public class AuthController {
 
                     session.setAttribute("userId", loginUserInfo.getUserId());
                     session.setAttribute("userNm", loginUserInfo.getUserNm());
+                    session.setAttribute("userJobGradeNm", loginUserInfo.getJobGradeNm());
                     session.setAttribute("userGrade", loginUserInfo.getUserGrade());
                     session.setAttribute("passReset", loginUserInfo.getPassReset());
                     session.setMaxInactiveInterval(1800);

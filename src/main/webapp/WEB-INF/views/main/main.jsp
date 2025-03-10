@@ -165,6 +165,8 @@
                                     '\''+ videoReq.reqId + '\'' +','+ 
                                     '\''+ videoReq.storeNm + '\'' +','+ 
                                     '\''+ videoReq.creId + '\'' +','+
+                                    '\''+ videoReq.creNm + '\'' +','+
+                                    '\''+ videoReq.creJgNm + '\'' +','+
                                     '\''+ videoReq.stringContractDt + '\'' +','+
                                     '\''+ videoReq.stringCreDt + '\'' +','+
                                     '\''+ videoReq.address + '\'' +','+
@@ -225,11 +227,17 @@
 
             let PageFunc = {
                 // 모달창 정보 업데이트
-                updateModal : function(isUrgentReq, reqId, storeName, creId, stringContractDt, stringCreDt, address, phone, managerNm, managerJgNm, note, status, progressNote, stringShootReserveDtm, stringShootCompleteDt, stringUploadCompleteDt) {
+                updateModal : function(isUrgentReq, reqId, storeName, creId, creNm, creJgNm, stringContractDt, stringCreDt, address, phone, managerNm, managerJgNm, note, status, progressNote, stringShootReserveDtm, stringShootCompleteDt, stringUploadCompleteDt) {
                     $('#modal-is-urgent-req').text(isUrgentReq == "Y" ? "긴급건" : "");
                     $('#reqId').val(reqId);
                     $('#exampleModalLabel').text('[' + storeName + ']');
-                    $('#modal-cre-id').text(creId);
+                    console.log(creNm);
+                    if (creNm == '' || creNm == null || creNm == "null") {
+                        $('#modal-cre-id').text(creId);
+                    } else {
+                        var creNm = creNm + ' ' + creJgNm;
+                        $('#modal-cre-id').text(creNm);
+                    }
                     $('#modal-contract-dt').text(stringContractDt);
                     $('#modal-cre-dt').text(stringCreDt);
                     $('#modal-address').text(address);

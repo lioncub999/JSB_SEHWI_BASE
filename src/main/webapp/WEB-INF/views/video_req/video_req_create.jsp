@@ -245,9 +245,9 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>신청자(임시)</td>
+                        <td>신청자</td>
                         <td>
-                            <input type="text" class="input" placeholder="신청자 (임시))" id="creId" name="creId"/>
+                            <div>${userNm} ${userJobGradeNm}</div>
                         </td>
                     </tr>
                     <tr>

@@ -27,4 +27,8 @@ public class VideoReqOutput extends VideoReq {
     private String managerJgNm = ""; // 촬영 담당자 직급
 
     private String color;       // 캘린더 칼러 (채근 : red, 성우 : blue, 세휘 : yellow)
+
+    private String creNm;       // 촬영 신청자 이름
+
+    private String creJgNm;     // 촬영 신청자 직급
 }

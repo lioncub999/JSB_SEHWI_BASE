@@ -37,37 +37,43 @@
     <select id="getReqList"
             parameterType="com.jsp.jsp_demo.model.paging.PagingModel"
             resultType="com.jsp.jsp_demo.model.video.VideoReqOutput">
-        SELECT
-            A.*,
-            B.JOB_GRADE_NM AS MANAGER_JG_NM
-        FROM (
-            SELECT
-                TVRM.*,
-                TUM.USER_NM AS MANAGER_NM,
-                TUM.JOB_GRADE
-            FROM
-                (
+            SELECT C.*, D.USER_NM AS CRE_NM, D.JOB_GRADE_NM AS CRE_JG_NM
+            FROM (
+                SELECT
+                    A.*,
+                    B.JOB_GRADE_NM AS MANAGER_JG_NM
+                FROM (
                     SELECT
-                        REQ_ID,
-                        CRE_ID,
-                        STORE_NM,
-                        ADDRESS,
-                        DATE_FORMAT(CRE_DTM, '%Y-%m-%d') AS STRING_CRE_DT,
-                        DATE_FORMAT(CONTRACT_DT,'%Y-%m-%d') AS STRING_CONTRACT_DT,
-                        PHONE,
-                        IS_URGENT_REQ,
-                        NOTE,
-                        PROGRESS_NOTE,
-                        MANAGER_ID,
-                        STATUS,
-                        DATE_FORMAT(SHOOT_RESERVE_DTM, '%Y-%m-%d %H:%i') AS STRING_SHOOT_RESERVE_DTM,
-                        DATE_FORMAT(SHOOT_COMPLETE_DT,'%Y-%m-%d') AS STRING_SHOOT_COMPLETE_DT,
-                        DATE_FORMAT(UPLOAD_COMPLETE_DT,'%Y-%m-%d') AS STRING_UPLOAD_COMPLETE_DT
-                        FROM TBV_VIDEO_REQ_M) TVRM
-                LEFT JOIN
-                    TBU_USER_M TUM
-                ON TVRM.MANAGER_ID = TUM.USER_ID
-            ) A LEFT JOIN TBG_GRADE_C B ON A.JOB_GRADE = B.CODE
+                        TVRM.*,
+                        TUM.USER_NM AS MANAGER_NM,
+                        TUM.JOB_GRADE
+                    FROM
+                        (
+                            SELECT
+                                REQ_ID,
+                                CRE_ID,
+                                STORE_NM,
+                                ADDRESS,
+                                DATE_FORMAT(CRE_DTM, '%Y-%m-%d') AS STRING_CRE_DT,
+                                DATE_FORMAT(CONTRACT_DT,'%Y-%m-%d') AS STRING_CONTRACT_DT,
+                                PHONE,
+                                IS_URGENT_REQ,
+                                NOTE,
+                                PROGRESS_NOTE,
+                                MANAGER_ID,
+                                STATUS,
+                                DATE_FORMAT(SHOOT_RESERVE_DTM, '%Y-%m-%d %H:%i') AS STRING_SHOOT_RESERVE_DTM,
+                                DATE_FORMAT(SHOOT_COMPLETE_DT,'%Y-%m-%d') AS STRING_SHOOT_COMPLETE_DT,
+                                DATE_FORMAT(UPLOAD_COMPLETE_DT,'%Y-%m-%d') AS STRING_UPLOAD_COMPLETE_DT
+                                FROM TBV_VIDEO_REQ_M) TVRM
+                        LEFT JOIN
+                            TBU_USER_M TUM
+                        ON TVRM.MANAGER_ID = TUM.USER_ID
+                    ) A LEFT JOIN TBG_GRADE_C B ON A.JOB_GRADE = B.CODE
+            ) C LEFT JOIN (
+            SELECT TUM.USER_ID, TUM.USER_NM, TUM.PHONE, TGC.JOB_GRADE_NM
+            FROM TBU_USER_M TUM LEFT JOIN TBG_GRADE_C TGC ON TUM.JOB_GRADE = TGC.CODE
+        ) D ON C.CRE_ID = D.USER_ID
         <where>
             <if test="searchStoreNm != null and searchStoreNm != ''">
                 STORE_NM LIKE CONCAT('%', #{searchStoreNm}, '%')
@@ -89,62 +95,15 @@
     <select id="getMyReqListForPhotographer"
             parameterType="com.jsp.jsp_demo.model.paging.PagingModel"
             resultType="com.jsp.jsp_demo.model.video.VideoReqOutput">
-        SELECT
-            A.*,
-            B.JOB_GRADE_NM AS MANAGER_JG_NM
+        SELECT C.*, D.USER_NM AS CRE_ID, D.JOB_GRADE_NM AS CRE_JG_NM
         FROM (
             SELECT
-                TVRM.*,
-                TUM.USER_NM AS MANAGER_NM,
-            TUM.JOB_GRADE
+                A.*,
+                B.JOB_GRADE_NM AS MANAGER_JG_NM
             FROM (
                 SELECT
-                    REQ_ID,
-                    CRE_ID,
-                    STORE_NM,
-                    ADDRESS,
-                    DATE_FORMAT(CRE_DTM, '%Y-%m-%d') AS STRING_CRE_DT,
-                    DATE_FORMAT(CONTRACT_DT,'%Y-%m-%d') AS STRING_CONTRACT_DT,
-                    PHONE,
-                    IS_URGENT_REQ,
-                    NOTE,
-                    PROGRESS_NOTE,
-                    MANAGER_ID,
-                    STATUS,
-                    DATE_FORMAT(SHOOT_RESERVE_DTM, '%Y-%m-%d %H:%i') AS STRING_SHOOT_RESERVE_DTM,
-                    DATE_FORMAT(SHOOT_COMPLETE_DT,'%Y-%m-%d') AS STRING_SHOOT_COMPLETE_DT,
-                    DATE_FORMAT(UPLOAD_COMPLETE_DT,'%Y-%m-%d') AS STRING_UPLOAD_COMPLETE_DT,
-                    SHOOT_RESERVE_DTM
-                FROM TBV_VIDEO_REQ_M) TVRM
-                LEFT JOIN
-                TBU_USER_M TUM
-                ON TVRM.MANAGER_ID = TUM.USER_ID
-            ) A LEFT JOIN TBG_GRADE_C B ON A.JOB_GRADE = B.CODE
-        WHERE MANAGER_ID = #{searchUserId}
-        AND STATUS != "COORDINATION"
-        ORDER BY
-            CASE STATUS
-                WHEN 'COORDINATION' THEN 1
-                WHEN 'STANDBY' THEN 2
-                WHEN 'COMPLETEFILM' THEN 3
-                WHEN 'COMPLETEUPLOAD' THEN 4
-                ELSE 5
-            END,
-            CASE WHEN IS_URGENT_REQ = 'Y' THEN 1 ELSE 2 END,
-            SHOOT_RESERVE_DTM
-        LIMIT #{startRow}, #{pageSize};
-    </select>
-
-    <select id="getMyReqListForSales"
-            parameterType="com.jsp.jsp_demo.model.paging.PagingModel"
-            resultType="com.jsp.jsp_demo.model.video.VideoReqOutput">
-        SELECT
-            A.*,
-            B.JOB_GRADE_NM AS MANAGER_JG_NM
-        FROM (
-            SELECT
-                TVRM.*,
-                TUM.USER_NM AS MANAGER_NM,
+                    TVRM.*,
+                    TUM.USER_NM AS MANAGER_NM,
                 TUM.JOB_GRADE
                 FROM (
                     SELECT
@@ -165,55 +124,120 @@
                         DATE_FORMAT(UPLOAD_COMPLETE_DT,'%Y-%m-%d') AS STRING_UPLOAD_COMPLETE_DT,
                         SHOOT_RESERVE_DTM
                     FROM TBV_VIDEO_REQ_M) TVRM
-                    LEFT JOIN TBU_USER_M TUM
+                    LEFT JOIN
+                    TBU_USER_M TUM
                     ON TVRM.MANAGER_ID = TUM.USER_ID
                 ) A LEFT JOIN TBG_GRADE_C B ON A.JOB_GRADE = B.CODE
-                WHERE CRE_ID = #{searchUserId}
-        ORDER BY
-            CASE STATUS
-                WHEN 'COORDINATION' THEN 1
-                WHEN 'STANDBY' THEN 2
-                WHEN 'COMPLETEFILM' THEN 3
-                WHEN 'COMPLETEUPLOAD' THEN 4
-                ELSE 5
-            END,
-        CASE WHEN IS_URGENT_REQ = 'Y' THEN 1 ELSE 2 END,
-        SHOOT_RESERVE_DTM
-            LIMIT #{startRow}, #{pageSize};
+            WHERE MANAGER_ID = #{searchUserId}
+            AND STATUS != "COORDINATION"
+            ORDER BY
+                CASE STATUS
+                    WHEN 'COORDINATION' THEN 1
+                    WHEN 'STANDBY' THEN 2
+                    WHEN 'COMPLETEFILM' THEN 3
+                    WHEN 'COMPLETEUPLOAD' THEN 4
+                    ELSE 5
+                END,
+                CASE WHEN IS_URGENT_REQ = 'Y' THEN 1 ELSE 2 END,
+                SHOOT_RESERVE_DTM
+            LIMIT #{startRow}, #{pageSize}
+        ) C LEFT JOIN (
+        SELECT TUM.USER_ID, TUM.USER_NM, TUM.PHONE, TGC.JOB_GRADE_NM
+        FROM TBU_USER_M TUM LEFT JOIN TBG_GRADE_C TGC ON TUM.JOB_GRADE = TGC.CODE
+        ) D ON C.CRE_ID = D.USER_ID
+    </select>
+
+    <select id="getMyReqListForSales"
+            parameterType="com.jsp.jsp_demo.model.paging.PagingModel"
+            resultType="com.jsp.jsp_demo.model.video.VideoReqOutput">
+        SELECT C.*, D.USER_NM AS CRE_NM, D.JOB_GRADE_NM AS CRE_JG_NM
+        FROM (
+            SELECT
+                A.*,
+                B.JOB_GRADE_NM AS MANAGER_JG_NM
+            FROM (
+                SELECT
+                    TVRM.*,
+                    TUM.USER_NM AS MANAGER_NM,
+                    TUM.JOB_GRADE
+                    FROM (
+                        SELECT
+                            REQ_ID,
+                            CRE_ID,
+                            STORE_NM,
+                            ADDRESS,
+                            DATE_FORMAT(CRE_DTM, '%Y-%m-%d') AS STRING_CRE_DT,
+                            DATE_FORMAT(CONTRACT_DT,'%Y-%m-%d') AS STRING_CONTRACT_DT,
+                            PHONE,
+                            IS_URGENT_REQ,
+                            NOTE,
+                            PROGRESS_NOTE,
+                            MANAGER_ID,
+                            STATUS,
+                            DATE_FORMAT(SHOOT_RESERVE_DTM, '%Y-%m-%d %H:%i') AS STRING_SHOOT_RESERVE_DTM,
+                            DATE_FORMAT(SHOOT_COMPLETE_DT,'%Y-%m-%d') AS STRING_SHOOT_COMPLETE_DT,
+                            DATE_FORMAT(UPLOAD_COMPLETE_DT,'%Y-%m-%d') AS STRING_UPLOAD_COMPLETE_DT,
+                            SHOOT_RESERVE_DTM
+                        FROM TBV_VIDEO_REQ_M) TVRM
+                        LEFT JOIN TBU_USER_M TUM
+                        ON TVRM.MANAGER_ID = TUM.USER_ID
+                    ) A LEFT JOIN TBG_GRADE_C B ON A.JOB_GRADE = B.CODE
+                    WHERE CRE_ID = #{searchUserId}
+            ORDER BY
+                CASE STATUS
+                    WHEN 'COORDINATION' THEN 1
+                    WHEN 'STANDBY' THEN 2
+                    WHEN 'COMPLETEFILM' THEN 3
+                    WHEN 'COMPLETEUPLOAD' THEN 4
+                    ELSE 5
+                END,
+            CASE WHEN IS_URGENT_REQ = 'Y' THEN 1 ELSE 2 END,
+            SHOOT_RESERVE_DTM
+                LIMIT #{startRow}, #{pageSize}
+        ) C LEFT JOIN (
+        SELECT TUM.USER_ID, TUM.USER_NM, TUM.PHONE, TGC.JOB_GRADE_NM
+        FROM TBU_USER_M TUM LEFT JOIN TBG_GRADE_C TGC ON TUM.JOB_GRADE = TGC.CODE
+        ) D ON C.CRE_ID = D.USER_ID
     </select>
 
     <select id="getUnStartedVideoReq"
             resultType="com.jsp.jsp_demo.model.video.VideoReqOutput">
-        SELECT
-        A.*,
-        B.JOB_GRADE_NM AS MANAGER_JG_NM
+        SELECT C.*, D.USER_NM AS CRE_NM, D.JOB_GRADE_NM AS CRE_JG_NM
         FROM (
             SELECT
-                TERM.*,
-                TUM.USER_NM AS MANAGER_NM,
-                TUM.JOB_GRADE
+            A.*,
+            B.JOB_GRADE_NM AS MANAGER_JG_NM
             FROM (
                 SELECT
-                    REQ_ID,
-                    CRE_ID,
-                    STORE_NM,
-                    DATE_FORMAT(CONTRACT_DT,'%Y-%m-%d') AS STRING_CONTRACT_DT,
-                    PHONE,
-                    ADDRESS,
-                    DATE_FORMAT(CRE_DTM ,'%Y-%m-%d') AS STRING_CRE_DT,
-                    LONGITUDE,
-                    LATITUDE,
-                    IS_URGENT_REQ,
-                    NOTE,
-                    PROGRESS_NOTE,
-                    STATUS,
-                    MANAGER_ID,
-                    DATE_FORMAT(SHOOT_RESERVE_DTM, '%Y-%m-%d %H:%i') AS STRING_SHOOT_RESERVE_DTM,
-                    DATE_FORMAT(SHOOT_COMPLETE_DT,'%Y-%m-%d') AS STRING_SHOOT_COMPLETE_DT,
-                    DATE_FORMAT(UPLOAD_COMPLETE_DT,'%Y-%m-%d') AS STRING_UPLOAD_COMPLETE_DT
-                FROM TBV_VIDEO_REQ_M TERM WHERE STATUS = "COORDINATION" OR STATUS = "STANDBY" ORDER BY CRE_DTM DESC
-            ) TERM LEFT JOIN TBU_USER_M TUM ON MANAGER_ID = TUM.USER_ID
-        ) A LEFT JOIN TBG_GRADE_C B ON A.JOB_GRADE = B.CODE;
+                    TERM.*,
+                    TUM.USER_NM AS MANAGER_NM,
+                    TUM.JOB_GRADE
+                FROM (
+                    SELECT
+                        REQ_ID,
+                        CRE_ID,
+                        STORE_NM,
+                        DATE_FORMAT(CONTRACT_DT,'%Y-%m-%d') AS STRING_CONTRACT_DT,
+                        PHONE,
+                        ADDRESS,
+                        DATE_FORMAT(CRE_DTM ,'%Y-%m-%d') AS STRING_CRE_DT,
+                        LONGITUDE,
+                        LATITUDE,
+                        IS_URGENT_REQ,
+                        NOTE,
+                        PROGRESS_NOTE,
+                        STATUS,
+                        MANAGER_ID,
+                        DATE_FORMAT(SHOOT_RESERVE_DTM, '%Y-%m-%d %H:%i') AS STRING_SHOOT_RESERVE_DTM,
+                        DATE_FORMAT(SHOOT_COMPLETE_DT,'%Y-%m-%d') AS STRING_SHOOT_COMPLETE_DT,
+                        DATE_FORMAT(UPLOAD_COMPLETE_DT,'%Y-%m-%d') AS STRING_UPLOAD_COMPLETE_DT
+                    FROM TBV_VIDEO_REQ_M TERM WHERE STATUS = "COORDINATION" OR STATUS = "STANDBY" ORDER BY CRE_DTM DESC
+                ) TERM LEFT JOIN TBU_USER_M TUM ON MANAGER_ID = TUM.USER_ID
+            ) A LEFT JOIN TBG_GRADE_C B ON A.JOB_GRADE = B.CODE
+        ) C LEFT JOIN (
+        SELECT TUM.USER_ID, TUM.USER_NM, TUM.PHONE, TGC.JOB_GRADE_NM
+        FROM TBU_USER_M TUM LEFT JOIN TBG_GRADE_C TGC ON TUM.JOB_GRADE = TGC.CODE
+        ) D ON C.CRE_ID = D.USER_ID
     </select>
 
     <insert id="createVideoReq"

@@ -113,8 +113,8 @@
         <div style="font-size:14px">-  개발 및 촬영 -</div>
         <div style="font-size:12px"> 이세휘 과장 (010-7705-4839)</div>
         <div style="font-size:14px">- 촬영작가 --</div>
-        <div style="font-size:12px"> 한채근 대리 (010-8907-7210)</div>
-        <div style="font-size:12px"> 정성우 대리 010-4592-9145)</div>
+        <div style="font-size:12px"> 정성우 대리 (010-8907-7210)</div>
+        <div style="font-size:12px"> 한채근 대리 010-4592-9145)</div>
     </ul>
 </nav>
 </body>

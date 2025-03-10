@@ -96,11 +96,17 @@
             },
 
             // 모달창 정보 업데이트
-            updateModal : function(isUrgentReq, reqId, storeName, creId, stringContractDt, stringCreDt, address, phone, managerNm, managerJgNm, note, status, progressNote, stringShootReserveDtm, stringShootCompleteDt, stringUploadCompleteDt) {
+            updateModal : function(isUrgentReq, reqId, storeName, creId, creNm, creJgNm, stringContractDt, stringCreDt, address, phone, managerNm, managerJgNm, note, status, progressNote, stringShootReserveDtm, stringShootCompleteDt, stringUploadCompleteDt) {
                 $('#modal-is-urgent-req').text(isUrgentReq == "Y" ? "긴급건" : "");
                 $('#reqId').val(reqId);
                 $('#exampleModalLabel').text('[' + storeName + ']');
-                $('#modal-cre-id').text(creId);
+                if (creNm == '' || creNm == null) {
+                    $('#modal-cre-id').text(creId);
+                } else {
+                    var creNm = creNm + ' ' + creJgNm;
+                    $('#modal-cre-id').text(creNm);
+                }
+                
                 $('#modal-contract-dt').text(stringContractDt);
                 $('#modal-cre-dt').text(stringCreDt);
                 $('#modal-address').text(address);
@@ -482,10 +488,10 @@
             </thead>
             <tbody>
                 <c:forEach var="videoReq" items="${videoReqList}">
-                    <tr onclick="PageFunc.updateModal('${videoReq.isUrgentReq}', '${videoReq.reqId}', '${videoReq.storeNm}', '${videoReq.creId}', '${videoReq.stringContractDt}', '${videoReq.stringCreDt}', '${videoReq.address}', '${videoReq.phone}', '${videoReq.managerNm}', '${videoReq.managerJgNm}', '${videoReq.note}', '${videoReq.status}', '${videoReq.progressNote}', '${videoReq.stringShootReserveDtm}', '${videoReq.stringShootCompleteDt}', '${videoReq.stringUploadCompleteDt}')" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                    <tr onclick="PageFunc.updateModal('${videoReq.isUrgentReq}', '${videoReq.reqId}', '${videoReq.storeNm}', '${videoReq.creId}', '${videoReq.creNm}', '${videoReq.creJgNm}', '${videoReq.stringContractDt}', '${videoReq.stringCreDt}', '${videoReq.address}', '${videoReq.phone}', '${videoReq.managerNm}', '${videoReq.managerJgNm}', '${videoReq.note}', '${videoReq.status}', '${videoReq.progressNote}', '${videoReq.stringShootReserveDtm}', '${videoReq.stringShootCompleteDt}', '${videoReq.stringUploadCompleteDt}')" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                         <td class="text-center t-cell">${videoReq.reqId}</td>
                         <td class="text-center t-cell">${videoReq.stringCreDt}</td>
-                        <td class="text-center t-cell">${videoReq.creId}</td>
+                        <td class="text-center t-cell">${videoReq.creNm == '' || videoReq.creNm == null  ? videoReq.creId : videoReq.creNm} ${videoReq.creJgNm}</td>
                         <td class="text-center t-cell">
                             ${videoReq.phone.substring(0,3)}-${videoReq.phone.substring(3,7)}-${videoReq.phone.substring(7)}
                         </td>
