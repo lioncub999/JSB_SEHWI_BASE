@@ -72,11 +72,17 @@
 
             let PageFunc = {
                 // 모달창 정보 업데이트
-                updateModal : function(isUrgentReq, reqId, storeName, creId, stringContractDt, stringCreDt, address, phone, managerNm, managerJgNm, note, status, progressNote, stringShootReserveDtm, stringShootCompleteDt, stringUploadCompleteDt) {
+                updateModal : function(isUrgentReq, reqId, storeName, creId, creNm, creJgNm, stringContractDt, stringCreDt, address, phone, managerNm, managerJgNm, note, status, progressNote, stringShootReserveDtm, stringShootCompleteDt, stringUploadCompleteDt) {
                     $('#modal-is-urgent-req').text(isUrgentReq == "Y" ? "긴급건" : "");
                     $('#reqId').val(reqId);
                     $('#exampleModalLabel').text('[' + storeName + ']');
-                    $('#modal-cre-id').text(creId);
+                    console.log(creNm);
+                    if (creNm == '' || creNm == null || creNm == "null") {
+                        $('#modal-cre-id').text(creId);
+                    } else {
+                        var creNm = creNm + ' ' + creJgNm;
+                        $('#modal-cre-id').text(creNm);
+                    }
                     $('#modal-contract-dt').text(stringContractDt);
                     $('#modal-cre-dt').text(stringCreDt);
                     $('#modal-address').text(address);
@@ -274,6 +280,45 @@
 
                 <%-- 비디오 신청 정보 업데이트 --%>
                 updateVideoReq: function() {
+                    if ($('#status').val() == 'STANDBY') {
+                        if ($('#shootReserveDtm').val() == '') {
+                            Toast('top', 1000, 'warning', '촬영 예정일을 선택해주세요!!');
+
+                            return;
+                        }
+                    }
+
+                    if ($('#status').val() == 'COMPLETEFILM') {
+                        if ($('#shootReserveDtm').val() == '') {
+                            Toast('top', 1000, 'warning', '촬영 예정일을 선택해주세요!!');
+
+                            return;
+                        }
+                        if ($('#shootCompleteDt').val() == '') {
+                            Toast('top', 1000, 'warning', '촬영 완료일을 선택해주세요!!');
+
+                            return;
+                        }
+                    }
+                    
+                    if ($('#status').val() == 'COMPLETEUPLOAD') {
+                        if ($('#shootReserveDtm').val() == '') {
+                            Toast('top', 1000, 'warning', '촬영 예정일을 선택해주세요!!');
+
+                            return;
+                        }
+                        if ($('#shootCompleteDt').val() == '') {
+                            Toast('top', 1000, 'warning', '촬영 완료일을 선택해주세요!!');
+
+                            return;
+                        }
+                        if ($('#uploadCompleteDt').val() == '') {
+                            Toast('top', 1000, 'warning', '업로드일을 선택해주세요!!');
+
+                            return;
+                        }
+                    }
+                    
                     var formData = $('#video-req-frm').serializeArray();
 
                     formData.find(field => field.name === "note").value = formData.find(field => field.name === "note").value.replace(/\r?\n/g, "\\n");
@@ -481,7 +526,7 @@
             </thead>
             <tbody>
                 <c:forEach var="videoReq" items="${videoReqList}">
-                    <tr onclick="PageFunc.updateModal('${videoReq.isUrgentReq}', '${videoReq.reqId}', '${videoReq.storeNm}', '${videoReq.creId}', '${videoReq.stringContractDt}', '${videoReq.stringCreDt}', '${videoReq.address}', '${videoReq.phone}', '${videoReq.managerNm}', '${videoReq.managerJgNm}', '${videoReq.note}', '${videoReq.status}', '${videoReq.progressNote}', '${videoReq.stringShootReserveDtm}', '${videoReq.stringShootCompleteDt}', '${videoReq.stringUploadCompleteDt}')" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                    <tr onclick="PageFunc.updateModal('${videoReq.isUrgentReq}', '${videoReq.reqId}', '${videoReq.storeNm}', '${videoReq.creId}', '${videoReq.creNm}', '${videoReq.creJgNm}', '${videoReq.stringContractDt}', '${videoReq.stringCreDt}', '${videoReq.address}', '${videoReq.phone}', '${videoReq.managerNm}', '${videoReq.managerJgNm}', '${videoReq.note}', '${videoReq.status}', '${videoReq.progressNote}', '${videoReq.stringShootReserveDtm}', '${videoReq.stringShootCompleteDt}', '${videoReq.stringUploadCompleteDt}')" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                         <td class="text-center t-cell">${videoReq.reqId}</td>
                         <td class="text-center t-cell">
                             ${videoReq.phone.substring(0,3)}-${videoReq.phone.substring(3,7)}-${videoReq.phone.substring(7)}

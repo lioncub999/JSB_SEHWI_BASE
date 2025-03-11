@@ -95,7 +95,7 @@
     <select id="getMyReqListForPhotographer"
             parameterType="com.jsp.jsp_demo.model.paging.PagingModel"
             resultType="com.jsp.jsp_demo.model.video.VideoReqOutput">
-        SELECT C.*, D.USER_NM AS CRE_ID, D.JOB_GRADE_NM AS CRE_JG_NM
+        SELECT C.*, D.USER_NM AS CRE_NM, D.JOB_GRADE_NM AS CRE_JG_NM
         FROM (
             SELECT
                 A.*,

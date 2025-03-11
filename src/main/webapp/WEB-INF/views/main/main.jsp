@@ -231,7 +231,6 @@
                     $('#modal-is-urgent-req').text(isUrgentReq == "Y" ? "긴급건" : "");
                     $('#reqId').val(reqId);
                     $('#exampleModalLabel').text('[' + storeName + ']');
-                    console.log(creNm);
                     if (creNm == '' || creNm == null || creNm == "null") {
                         $('#modal-cre-id').text(creId);
                     } else {
@@ -381,6 +380,45 @@
             let AjaxFunc = {
                 // 비디오 신청정보 업데이트
                 updateVideoReq: function() {
+                    if ($('#status').val() == 'STANDBY') {
+                        if ($('#shootReserveDtm').val() == '') {
+                            Toast('top', 1000, 'warning', '촬영 예정일을 선택해주세요!!');
+
+                            return;
+                        }
+                    }
+
+                    if ($('#status').val() == 'COMPLETEFILM') {
+                        if ($('#shootReserveDtm').val() == '') {
+                            Toast('top', 1000, 'warning', '촬영 예정일을 선택해주세요!!');
+
+                            return;
+                        }
+                        if ($('#shootCompleteDt').val() == '') {
+                            Toast('top', 1000, 'warning', '촬영 완료일을 선택해주세요!!');
+
+                            return;
+                        }
+                    }
+                    
+                    if ($('#status').val() == 'COMPLETEUPLOAD') {
+                        if ($('#shootReserveDtm').val() == '') {
+                            Toast('top', 1000, 'warning', '촬영 예정일을 선택해주세요!!');
+
+                            return;
+                        }
+                        if ($('#shootCompleteDt').val() == '') {
+                            Toast('top', 1000, 'warning', '촬영 완료일을 선택해주세요!!');
+
+                            return;
+                        }
+                        if ($('#uploadCompleteDt').val() == '') {
+                            Toast('top', 1000, 'warning', '업로드일을 선택해주세요!!');
+
+                            return;
+                        }
+                    }
+                    
                     var formData = $('#video-req-frm').serializeArray();
 
                     formData.find(field => field.name === "note").value = formData.find(field => field.name === "note").value.replace(/\r?\n/g, "\\n");
