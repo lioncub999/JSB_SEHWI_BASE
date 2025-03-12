@@ -1,6 +1,7 @@
 package com.jsp.jsp_demo.controller.main;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jsp.jsp_demo.model.video.VideoReq;
 import com.jsp.jsp_demo.model.video.VideoReqOutput;
 import com.jsp.jsp_demo.service.video.VideoReqService;
 import com.jsp.jsp_demo.util.log.TraceWriter;

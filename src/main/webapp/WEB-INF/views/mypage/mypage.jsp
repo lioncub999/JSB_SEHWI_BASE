@@ -428,49 +428,45 @@
                         <form class="video-req-frm", id="video-req-frm">
                             <input type="hidden" id="reqId" name="reqId"/>
                             
-                            <table class="table table-striped table-bordered" >
-                                <col>
-                                    <td style="width : 20%"></td>
-                                    <td style="width : 80%"></td>
-                                </col>
+                            <table class="table table-bordered" >
                                 <col>
                                     <div style="color:red" id="modal-is-urgent-req">긴급건</div>
                                 </col>
                                 <tr>
-                                    <td class="text-center">신청자</td>
-                                    <td class="text-center" id ="modal-cre-id"></td>
+                                    <th class="text-center" style="width:20%;border-top-left-radius:10px">신청자</th>
+                                    <td class="text-center" style="width:80%;" id ="modal-cre-id"></td>
                                 </tr>
                                 <tr>
-                                    <td class="text-center">계약일</td>
+                                    <th class="text-center">계약일</th>
                                     <td class="text-center" id ="modal-contract-dt"></td>
                                 </tr>
                                 <tr>
-                                    <td class="text-center">촬영 신청일</td>
+                                    <th class="text-center">촬영 신청일</th>
                                     <td class="text-center" id ="modal-cre-dt"></td>
                                 </tr>
                                 <tr>
-                                    <td class="text-center">휴대폰번호</td>
+                                    <th class="text-center">휴대폰번호</th>
                                     <td class="text-center" id ="modal-phone"></td>
                                 </tr>
                                 <tr>
-                                    <td class="text-center">주소</td>
+                                    <th class="text-center">주소</th>
                                     <td class="text-center" id ="modal-address"></td>
                                 </tr>
                                 
                                 <tr>
-                                    <td class="text-center">특이사항</td>
+                                    <th class="text-center">특이사항</th>
                                     <td id ="modal-note"></td>
                                 </tr>
                                 <tr>
-                                    <td class="text-center">진행상태</td>
+                                    <th class="text-center">진행상태</th>
                                     <td class="text-center" id ="modal-status"></td>
                                 </tr>
                                 <tr>
-                                    <td class="text-center">촬영담당자<br>특이사항</td>
+                                    <th class="text-center">촬영담당자<br>특이사항</th>
                                     <td class="text-center" id ="modal-progress-note"></td>
                                 </tr>
                                 <tr>
-                                    <td class="text-center">촬영<br>예정일</td>
+                                    <th class="text-center">촬영<br>예정일</th>
                                     <td>
                                         <c:choose>
                                             <c:when test="${userGrade == 0}">
@@ -485,7 +481,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="text-center">촬영<br>완료일</td>
+                                    <th class="text-center">촬영<br>완료일</th>
                                     <td>
                                         <c:choose>
                                             <c:when test="${userGrade == 0}">
@@ -500,7 +496,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="text-center">영상<br>업로드일</td>
+                                    <th class="text-center" style="border-bottom-left-radius:10px;">영상<br>업로드일</th>
                                     <td>
                                         <c:choose>
                                             <c:when test="${userGrade == 0}">

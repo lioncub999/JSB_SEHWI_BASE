@@ -76,7 +76,8 @@
             <table class="table table-bordered" style="margin-top : 10px;">
                 <tr>
                     <th style="width : 30%;border-top-left-radius:10px;">이름</td>
-                    <th style="width : 40%">업로드 갯수</td>
+                    <th style="width : 20%">업로드 갯수</td>
+                    <th style="width : 20%">지출 경비</td>
                     <th style="width : 30%;border-top-right-radius:10px;">급여</td>
                 </tr>
 
@@ -93,6 +94,8 @@
                         <td class = "t-cell">
                             ${statistics.uploadCompleteCnt == null ? "0" : statistics.uploadCompleteCnt}개
                         </td>
+                        <td class="t-cell">
+                        </td>
                         <td class = "t-cell">
                             ₩ <fmt:formatNumber value="${statistics.uploadCompleteCnt * 50000}" pattern="#,###" />
                         </td>
@@ -102,7 +105,41 @@
                 <tr>
                     <td>합계</td>
                     <td>${totalUploadCount}개</td>
+                    <td></td>
                     <td>₩ <fmt:formatNumber value="${totalPay}" pattern="#,###" /></td>
+                </tr>
+            </table>
+        </div>
+
+        <div style="margin-top:10px;margin-left:10px;margin-right :10px;">
+            ☉ 지출 경비 
+            <button onclick="" class="common-blue-btn main-search-btn" >
+                <div class="button-text">
+                    추가
+                </div>
+            </button>
+        </div>
+        <div class="statistics-container">
+            <table class="table table-bordered" style="margin-top : 10px;">
+                <tr>
+                    <th style="width : 10%; border-top-left-radius : 10px">
+                        날짜
+                    </th>
+                    <th style="width : 10%;">
+                        이름
+                    </th>
+                    <th style="width : 30%;">
+                        지출내용
+                    </th>
+                    <th style="width : 10%;">
+                        지출금액
+                    </th>
+                    <th style="width : 30%;">
+                        비고
+                    </th>
+                    <th style="width : 10%; border-top-right-radius : 10px">
+                        관리자확인
+                    </th>
                 </tr>
             </table>
         </div>

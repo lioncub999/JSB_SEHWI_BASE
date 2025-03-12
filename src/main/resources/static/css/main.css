@@ -51,3 +51,13 @@ textarea {
     font-size : 13px !important;
 }
 
+th {
+    font-size : 13px;
+    font-weight: bold;
+    background-color : rgb(107,146,164) !important;
+    color : white !important;
+}
+
+.modal {
+    
+}
