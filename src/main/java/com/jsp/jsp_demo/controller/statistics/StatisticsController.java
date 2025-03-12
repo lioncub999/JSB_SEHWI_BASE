@@ -2,14 +2,18 @@ package com.jsp.jsp_demo.controller.statistics;
 
 import com.jsp.jsp_demo.model.paging.PagingModel;
 import com.jsp.jsp_demo.model.search.SearchModel;
+import com.jsp.jsp_demo.model.statistics.Spend;
 import com.jsp.jsp_demo.model.statistics.Statistics;
+import com.jsp.jsp_demo.model.video.VideoReq;
 import com.jsp.jsp_demo.service.statistics.StatisticsService;
 import com.jsp.jsp_demo.util.log.TraceWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -68,5 +72,68 @@ public class StatisticsController {
         traceWriter.log(0);
 
         return "statistics/statistics";
+    }
+
+    /* TODO:
+     *  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     *  ┃    <POST>
+     *  ┃    ● 지출 경비 추가
+     *  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━*/
+    @ResponseBody
+    @PostMapping("/statistics/insertSpend")
+    public String insertSpend(
+            HttpServletRequest request,
+            Spend spend
+    ) {
+        TraceWriter traceWriter = new TraceWriter("", request.getMethod(), request.getServletPath());
+        traceWriter.add("< INPUT >");
+
+        String userId = (String) request.getSession().getAttribute("userId");
+        spend.setCreId(userId);
+
+        traceWriter.add("[userInput.getCreId() : " + spend.getCreId() + "]");
+        traceWriter.add("[userInput.getSpendDt() : " + spend.getSpendDt() + "]");
+        traceWriter.add("[userInput.getWhatFor() : " + spend.getWhatFor() + "]");
+        traceWriter.add("[userInput.getAmt() : " + spend.getAmt() + "]");
+        traceWriter.add("[userInput.getNote() : " + spend.getNote() + "]");
+        traceWriter.add("");
+
+        try {
+            statisticsService.insertSpend(spend);
+
+            return "success";
+        } catch (Exception e) {
+            traceWriter.add("Error : " + e);
+
+            return "error";
+        } finally {
+            traceWriter.log(0);
+        }
+    }
+
+    /* TODO:
+     *  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     *  ┃    <POST>
+     *  ┃    ● 지출 경비 가져오기
+     *  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━*/
+    @ResponseBody
+    @PostMapping("/statistics/getSpendHist")
+    public List<Spend> getSpendHist(
+            HttpServletRequest request,
+            Spend spend
+    ) {
+        TraceWriter traceWriter = new TraceWriter("", request.getMethod(), request.getServletPath());
+        traceWriter.add("[userInput.getSelectedYear() : " + spend.getSelectedYear() + "]");
+        traceWriter.add("[userInput.getSelectedMonth() : " + spend.getSelectedMonth() + "]");
+        traceWriter.add("");
+
+        try {
+            return statisticsService.getSpendHist(spend);
+        } catch (Exception e) {
+            traceWriter.add("Error : " + e);
+            return null;
+        } finally {
+            traceWriter.log(0);
+        }
     }
 }

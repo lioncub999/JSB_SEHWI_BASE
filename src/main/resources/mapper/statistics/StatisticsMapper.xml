@@ -43,4 +43,59 @@
                 UPLOAD_COMPLETE_CNT DESC) C
         ON B.USER_ID = C.MANAGER_ID
     </select>
+
+    <insert id="insertSpend"
+            parameterType="com.jsp.jsp_demo.model.statistics.Spend">
+        INSERT INTO TBS_SPEND_H (
+            CRE_ID,
+            SPEND_DT,
+            WHAT_FOR,
+            AMT,
+            NOTE,
+            MANAGER_CHECK
+        )
+        VALUES (
+            #{creId},
+            #{spendDt},
+            #{whatFor},
+            #{amt},
+            #{note},
+            "N"
+        )
+    </insert>
+
+    <select id="getSpendHist"
+            parameterType="com.jsp.jsp_demo.model.statistics.Spend"
+            resultType="com.jsp.jsp_demo.model.statistics.Spend">
+        SELECT
+            C.*,
+            D.JOB_GRADE_NM
+        FROM (
+            SELECT
+                A.*,
+                B.USER_NM AS CRE_NM,
+                B.JOB_GRADE
+            FROM (
+                SELECT
+                    CRE_ID,
+                    SPEND_DT,
+                    DATE_FORMAT(SPEND_DT, '%Y-%m-%d') AS STRING_SPEND_DT,
+                    WHAT_FOR,
+                    AMT,
+                    NOTE,
+                    MANAGER_CHECK
+                FROM TBS_SPEND_H
+                WHERE SPEND_DT &gt;= CONCAT(#{selectedYear}, '-', LPAD(#{selectedMonth}, 2, '0'), '-01')
+                AND SPEND_DT &lt; DATE_ADD(DATE_FORMAT(CONCAT(#{selectedYear}, '-', LPAD(#{selectedMonth}, 2, '0'), '-01'), '%Y-%m-01'), INTERVAL 1 MONTH)
+                ORDER BY SPEND_DT DESC
+            ) A
+            LEFT JOIN (
+            SELECT *
+            FROM TBU_USER_M
+            ) B ON A.CRE_ID = B.USER_ID
+            ) C LEFT JOIN (
+            SELECT *
+            FROM TBG_GRADE_C
+            ) D ON C.JOB_GRADE = D.CODE
+    </select>
 </mapper>

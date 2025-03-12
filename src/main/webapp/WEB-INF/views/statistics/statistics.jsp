@@ -8,6 +8,8 @@
 <%@ include file="/WEB-INF/views/cmm/include/taglibs.jsp" %>
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 
+<c:set var="insertSpendUrl" value="/statistics/insertSpend"/>
+<c:set var="getSpendHistUrl" value="/statistics/getSpendHist"/>
 
 <html>
 <head>
@@ -21,9 +23,29 @@
         <script src="https://jsuites.net/v4/jsuites.js"></script>
         <link rel="stylesheet" href="https://jsuites.net/v4/jsuites.css" type="text/css" />
 
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+
+        <!-- Datepicker 스타일시트 -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/css/bootstrap-datepicker.min.css" rel="stylesheet">
+
+        <!-- datepicker JS -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/js/bootstrap-datepicker.min.js"></script>
+
+        <!-- 한국어 로케일 파일 추가 -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/locales/bootstrap-datepicker.kr.min.js"></script>
+
         <script>
             <%-- Document Ready! --%>
             $(document).ready(function() {
+                // 지출일
+                $('#spendDt').datepicker({
+                    format: 'yyyy-mm-dd', // 날짜 형식
+                    autoclose: true, // 날짜 선택 후 자동으로 닫기
+                    todayHighlight: true, // 오늘 날짜 하이라이트
+                    language: "kr",
+                });
+                
                 // URL 파라미터에서 selectedYear, selectedMonth 값을 가져옴
                 const urlParams = new URLSearchParams(window.location.search);
                 let selectedYear = urlParams.get('selectedYear');
@@ -34,7 +56,7 @@
                     const now = new Date();
                     selectedYear = now.getFullYear();  // 현재 연도
                     selectedMonth = String(now.getMonth() + 1).padStart(2, '0');  // 현재 월, 1월부터 시작하므로 +1, 두 자릿수로 포맷
-                }
+                };
 
                 // Enable the year and month picker
                 jSuites.calendar(document.getElementById('calendar'), {
@@ -51,6 +73,8 @@
                     },
 
                 });
+
+                AjaxFunc.getSpendHist();
             });
 
 
@@ -61,13 +85,157 @@
                     const selectedMonth = $('#calendar').val().substring(6,8);
                     
                     window.location.href = '/statistics?selectedYear='+ selectedYear + '&selectedMonth=' + selectedMonth;
+                },
+
+                validateNumberInput : function() {
+                    const input = document.getElementById('amt');
+                    input.value = input.value.replace(/[^0-9]/g, ''); // 숫자가 아닌 값을 제거
+                },
+
+                updateModal : function() {
+                    $('#spendDt').val('');
+                    $('#whatFor').val('');
+                    $('#amt').val('');
+                    $('#note').val('');
+                },
+
+                checkSubmitValid : function() {
+                    var warningTxt = '';
+
+                    <%-- 날짜 --%>
+                    if ($("#spendDt").val() == '') {
+                        warningTxt += "지출일을 입력해주세요!\n"
+                    }
+                    <%-- 지출내용 입력 확인 --%>
+                    if ($('#spendWhatFor').val() == '') {
+                        warningTxt += "지출 내용을 입력해주세요!\n"
+                    }
+                    <%-- 지출금액 입력 확인 --%>
+                    if ($('#spendAmount').val() == '') {
+                        warningTxt += "지출 금액을 입력해주세요!\n"
+                    }
+                    <%-- 워닝 표시 --%>
+                    if (warningTxt != '') {
+                        Toast('top', 1500, 'warning', warningTxt);
+                        LoadingOverlay.hide();
+                        return;
+                    }
+
+                    AjaxFunc.insertSpend();
                 }
             };
 
             let AjaxFunc = {
+                insertSpend : function() {
+                    var formData = $('#spend-frm').serializeArray();
 
+                    LoadingOverlay.show();
+                    $.ajax({
+                        url: "${insertSpendUrl}",
+                        type: "post",
+                        cache: false,
+                        data: formData,
+                    }).done(function (response) {
+                        if (response == "success") {
+                            Toast('top', 1000, 'success', '지출 내역이 추가되었습니다!');
+
+                            LoadingOverlay.hide();
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: '오류가 발생했습니다. 지속 현상 발생시 관리자에게 문의해주세요.',
+                                allowOutsideClick: false, // 팝업 외부 클릭 비활성화
+                            });
+                            LoadingOverlay.hide();
+                        }
+                    }).fail((xhr, textStatus, thrownError) => {
+                        Toast('top', 1000, 'error', '데이터를 가져오는 중 문제가 발생했습니다.');
+                        LoadingOverlay.hide();
+                    });
+                },
+
+                getSpendHist : function() {
+                    const selectedYear = $('#calendar').val().substring(0,4);
+                    const selectedMonth = $('#calendar').val().substring(6,8);
+
+                    $.ajax({
+                        url: "${getSpendHistUrl}",
+                        type: "post",
+                        cache: false,
+                        data: {'selectedYear' : selectedYear, 'selectedMonth' : selectedMonth},
+                    }).done(function (response) {
+                        if (response.length > 0) {
+                            response.forEach(item => {
+                                const tableBody = $('.spendHist');
+                                tableBody.empty(); // 기존 데이터를 초기화
+
+                                const row = '<tr>' +
+                                        '<td>' + item.stringSpendDt + '</td>' +
+                                        '<td>' + item.creNm + ' ' + item.jobGradeNm + '</td>' +
+                                        '<td>' + item.whatFor + '</td>' +
+                                        '<td>' + item.amt + '</td>' +
+                                        '<td>' + item.note + '</td>' +
+                                        '<td>' + item.managerCheck + '</td>' +
+                                    '</tr>';
+                                tableBody.append(row);
+                            });
+                        }
+                    }).fail((xhr, textStatus, thrownError) => { 
+                        Toast('top', 1000, 'error', '데이터를 가져오는 중 문제가 발생했습니다.');
+                        LoadingOverlay.hide();
+                    });
+                }
             }
         </script>
+
+        <!-- 지출 내역 추가 모달 -->
+        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="1" aria-labelledby="staticBackdropLabel" aria-hidden="false" >
+            <div class="modal-dialog modal-md">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h6 class="modal-title fs-5" id="exampleModalLabel">[지출 경비 추가]</h6>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form class="spend-frm", id="spend-frm">
+                            <table class="table table-bordered" >
+                                <tr>
+                                    <th class="text-center" style="width : 20%; border-top-left-radius:10px">날짜</th>
+                                    <td class="text-center"  style="width : 80%;" id ="modal-spend-dt">
+                                        <div>
+                                            <input type="text" class="form-control" id="spendDt" name="spendDt" style="font-size:13px" readonly placeholder="지출 날짜를 입력하세요">
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="text-center" style="width : 20%;">지출 내용</th>
+                                    <td class="text-center"  style="width : 80%;" id ="modal-spend-what-for">
+                                        <input type="text" name="whatFor" id="whatFor" placeholder="지출 내용을 입력하세요" style="width:95%" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="text-center" style="width : 20%;">지출 금액</th>
+                                    <td class="text-center"  style="width : 80%;" id ="modal-spend-amount">
+                                        <input type="text" id="amt" name="amt" oninput="PageFunc.validateNumberInput()" placeholder="숫자만 입력하세요" style="width : 95%">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="text-center" style="width : 20%; border-bottom-left-radius:10px">비고</th>
+                                    <td class="text-center"  style="width : 80%;" id ="modal-spend-note">
+                                        <input type="text" name="note" id="note" placeholder="비고" style="width:95%" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >닫기</button>
+                        <button type="button" class="btn btn-primary" onclick="PageFunc.checkSubmitValid()" >저장</button>
+                        <div class="save-btn-box" id="save-btn-box"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <div style="margin-top : 10px; margin-left : 10px;">
             <input id='calendar' /> 업로드 완료 갯수
@@ -113,7 +281,7 @@
 
         <div style="margin-top:10px;margin-left:10px;margin-right :10px;">
             ☉ 지출 경비 
-            <button onclick="" class="common-blue-btn main-search-btn" >
+            <button onclick=PageFunc.updateModal() class="common-blue-btn main-search-btn" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                 <div class="button-text">
                     추가
                 </div>
@@ -141,6 +309,7 @@
                         관리자확인
                     </th>
                 </tr>
+                <tbody class="spendHist" id="spendHist"></tbody>
             </table>
         </div>
     </body>
