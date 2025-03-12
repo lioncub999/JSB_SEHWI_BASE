@@ -51,6 +51,13 @@
         WHERE USER_ID = #{userId}
     </update>
 
+    <update id="updateJobGrade"
+            parameterType="com.jsp.jsp_demo.model.auth.UserInput">
+        UPDATE TBU_USER_M
+        SET JOB_GRADE = #{jobGrade}
+        WHERE USER_ID = #{userId}
+    </update>
+
     <insert id = "logAuthActive"
             parameterType="com.jsp.jsp_demo.model.auth.UserInput">
         INSERT INTO TBH_LOGIN_H (

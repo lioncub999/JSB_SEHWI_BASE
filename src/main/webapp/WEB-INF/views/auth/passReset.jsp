@@ -23,7 +23,7 @@
     let AjaxFunc = {
         passResetSubmit : function () {
             var formData = $('#passReset-frm').serialize()
-            console.log(formData)
+
             $.ajax({
                 url: "${passResetUrl}",
                 type: "post",
@@ -43,7 +43,6 @@
         },
         test : function() {
             var formData = $('#testForm').serialize();
-            console.log(formData);
         }
     }
 </script>

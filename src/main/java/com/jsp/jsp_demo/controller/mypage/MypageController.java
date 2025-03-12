@@ -8,10 +8,13 @@ import com.jsp.jsp_demo.service.auth.AuthService;
 import com.jsp.jsp_demo.service.video.VideoReqService;
 import com.jsp.jsp_demo.util.log.TraceWriter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -105,5 +108,38 @@ public class MypageController {
             traceWriter.log(0);
         }
         return "mypage/mypage";
+    }
+
+    /* TODO:
+     *  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     *  ┃    <POST>
+     *  ┃    ● 직급 업데이트
+     *  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━*/
+    @ResponseBody
+    @PostMapping("/mypage/changeJobGrade")
+    public Boolean changeJobGrade(
+            UserInput userInput,
+            HttpServletRequest request
+    ) {
+        HttpSession session = request.getSession(false);
+
+        TraceWriter traceWriter = new TraceWriter("", request.getMethod(), request.getServletPath());
+        traceWriter.add("[jobGrade] : " + userInput.getJobGrade());
+
+        userInput.setUserId((String) session.getAttribute("userId"));
+        traceWriter.add("[userId] : " + userInput.getUserId());
+
+        try {
+            authService.updateJobGrade(userInput);
+
+            return true;
+        } catch (Exception e) {
+            traceWriter.add("ERROR : " + e);
+
+            return false;
+
+        } finally {
+            traceWriter.log(0);
+        }
     }
 }

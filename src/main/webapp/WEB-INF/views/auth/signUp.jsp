@@ -176,7 +176,6 @@
                         cache: false,
                         data: formData,
                     }).done(function (response) {
-                        console.log(response);  
                         if (response == "codeError") {
                             Toast('top', 2000, 'warning', "가입 코드가 일치하지 않습니다!");
                             return;

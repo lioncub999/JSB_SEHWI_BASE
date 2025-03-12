@@ -50,8 +50,7 @@
                     initialView: 'dayGridMonth',
                     events : events,
                     eventClick : function(info) {
-                        console.log(info.event);
-                    }
+                    },
                 });
                 calendar.render();
             });

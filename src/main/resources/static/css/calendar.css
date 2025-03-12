@@ -1,5 +1,10 @@
 #calendar {
-    background-color : #d0d0d0 !important;
+    background-color : #e3e3e3 !important;
+
+    .fc-toolbar-title {
+        margin-top : 10px;
+        margin-left : 10px
+    }
 }
 
 .who-color-container {

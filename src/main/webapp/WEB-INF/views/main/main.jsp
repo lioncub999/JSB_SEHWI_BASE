@@ -449,7 +449,6 @@
                         LoadingOverlay.hide();
                     })
                     .fail((xhr, textStatus, thrownError) => {
-                        console.log('AJAX error:', textStatus, thrownError);
                         Toast('top', 1000, 'error', '업데이트 중 문제가 발생했습니다.');
                         LoadingOverlay.hide();
                     });
@@ -468,7 +467,6 @@
                         MapFunc.drawMap(updatedReqList);
                     })
                     .fail((xhr, textStatus, thrownError) => {
-                        console.log('AJAX error while loading updated data:', textStatus, thrownError);
                         Toast('top', 1000, 'error', '데이터를 가져오는 중 문제가 발생했습니다.');
                     });
                 }

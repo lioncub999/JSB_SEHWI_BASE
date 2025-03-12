@@ -12,6 +12,9 @@
             <if test="searchStoreNm != null and searchStoreNm != ''">
                 STORE_NM LIKE CONCAT('%', #{searchStoreNm}, '%')
             </if>
+            <if test="searchPhone != null and searchPhone != ''">
+                PHONE LIKE CONCAT('%', #{searchPhone}, '%')
+            </if>
         </where>
     </select>
 
@@ -77,6 +80,9 @@
         <where>
             <if test="searchStoreNm != null and searchStoreNm != ''">
                 STORE_NM LIKE CONCAT('%', #{searchStoreNm}, '%')
+            </if>
+            <if test="searchPhone != null and searchPhone != ''">
+                C.PHONE LIKE CONCAT('%', #{searchPhone}, '%')
             </if>
         </where>
         ORDER BY

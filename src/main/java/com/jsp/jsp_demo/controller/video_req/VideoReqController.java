@@ -68,6 +68,7 @@ public class VideoReqController {
     public String getVideoReqPage(
             @RequestParam(value = "curPage", defaultValue = "1") int curPage,
             @RequestParam(value = "searchStoreNm", defaultValue = "") String searchStoreNm,
+            @RequestParam(value = "searchPhone", defaultValue = "") String searchPhone,
             HttpServletRequest request,
             Model model
     ) {
@@ -82,6 +83,7 @@ public class VideoReqController {
         try {
             PagingModel pagingModel = new PagingModel();
             pagingModel.setSearchStoreNm(searchStoreNm);
+            pagingModel.setSearchPhone(searchPhone);
 
             Integer totalReqCount = videoReqService.getAllReqCount(pagingModel);
 

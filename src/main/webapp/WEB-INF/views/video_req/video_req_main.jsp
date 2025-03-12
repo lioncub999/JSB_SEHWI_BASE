@@ -41,10 +41,19 @@
         $(document).ready(function () {
             // 현재 URL에서 searchStoreNm 값 가져오기
             const url = new URL(window.location.href);
-            const searchStoreNm = url.searchParams.get('searchStoreNm');
-            
-            $("#searchStoreNm").val(searchStoreNm);
+            var searchStoreNm = url.searchParams.get('searchStoreNm');
+            var searchPhone = url.searchParams.get('searchPhone');
 
+            if (searchStoreNm == null || searchStoreNm == '') {
+                $('#searchText').val(searchPhone);
+                $('#searchOption').val('phone')
+            }
+
+            if (searchPhone == null || searchPhone == '') {
+                $('#searchText').val(searchStoreNm);
+                $('#searchOption').val('storeNm');
+            }
+            
             // 촬영예정일
             $('#shootReserveDtm').datetimepicker({
                 format: 'Y-m-d H:i',       // 날짜와 시간 형식
@@ -73,12 +82,12 @@
             });
 
             // 엔터키 감지 및 버튼 클릭 트리거
-            const searchInput = document.getElementById('searchStoreNm');
+            const searchInput = document.getElementById('searchText');
 
             searchInput.addEventListener('keypress', function (event) {
                 // 엔터키를 감지
                 if (event.key === 'Enter') {
-                    AjaxFunc.searchStoreNm();
+                    AjaxFunc.search();
                 }
             });
         });
@@ -251,11 +260,23 @@
 
         let AjaxFunc = {
             <%-- 상호명 검색 --%>
-            searchStoreNm: function() {
-                var searchStoreNm = $('#searchStoreNm').val();
+            search: function() {
+                var searchOption = $('#searchOption').val();
 
-                window.location.href = '/videoReq?curPage='+${1}+'&'+'searchStoreNm='+searchStoreNm;
+                if (searchOption == 'storeNm') {
+                    var searchStoreNm = $('#searchText').val();
 
+                    window.location.href = '/videoReq?curPage='+${1}+'&'+'searchStoreNm='+searchStoreNm;
+
+                    return;
+                }
+                if (searchOption == 'phone') {
+                    var searchPhone = $('#searchText').val();
+
+                    window.location.href = '/videoReq?curPage='+${1}+'&'+'searchPhone='+searchPhone;
+
+                    return;
+                }
             },
 
             <%-- 비디오 신청 정보 업데이트 --%>
@@ -334,7 +355,6 @@
                     
                 })
                 .fail((xhr, textStatus, thrownError) => {
-                    console.log('AJAX error:', textStatus, thrownError);
                     Toast('top', 1000, 'error', '업데이트 중 문제가 발생했습니다.');
                     LoadingOverlay.hide();
                 });
@@ -460,8 +480,15 @@
         <button onclick="PageControlFunc.moveToReqAddPage()" class="common-blue-btn">촬영 신청</button>
 
         <div style="display:flex">
-            <input class="main-search-input" type="text" id="searchStoreNm" placeholder="상호명 검색" >
-            <button onclick=AjaxFunc.searchStoreNm() class="common-blue-btn main-search-btn" >
+            <%-- 검색옵션 --%>
+            <div class="input-container">
+                <select class="form-select" style="width:150px; height : 50px" id="searchOption", name="searchOption">
+                    <option value="storeNm">상호명</option>
+                    <option value="phone">사장님연락처</option>
+                </select>
+            </div>
+            <input class="main-search-input" type="text" id="searchText" placeholder="검색" >
+            <button onclick=AjaxFunc.search() class="common-blue-btn main-search-btn" >
                 <div class="button-text">
                     검색
                 </div>
@@ -474,16 +501,16 @@
     </div>
 
     <%-- 페이지네이션 --%>
-    <nav aria-label="Page navigation example" style="justify-items : center">
+    <nav class="paging" aria-label="Page navigation example" style="justify-items : center">
         <ul class="pagination">
             <li class="page-item">
-                <a class="page-link" href="/videoReq?curPage=1" aria-label="Previous">
+                <a class="page-link" href="/videoReq?curPage=1&searchStoreNm=${param.searchStoreNm}&searchPhone=${param.searchPhone}" aria-label="Previous">
                     <span aria-hidden="true">&lt;&lt;</span>
                 </a>
             </li>
 
             <li class="page-item">
-                <a class="page-link" href="/videoReq?curPage=${curPage - 1 > 0 ? curPage- 1 : 1}" aria-label="">
+                <a class="page-link" href="/videoReq?curPage=${curPage - 1 > 0 ? curPage- 1 : 1}&searchStoreNm=${param.searchStoreNm}&searchPhone=${param.searchPhone}" aria-label="">
                     <span aria-hidden="true">&lt;</span>
                 </a>
             </li>
@@ -491,27 +518,28 @@
             <!-- 현재 페이지 그룹에 맞는 페이지 버튼만 출력 -->
             <c:forEach begin="${startPage}" end="${endPage}" var="i">
                 <li class="page-item ${i == curPage ? 'active' : ''}">
-                    <a class="page-link" href="/videoReq?curPage=${i}" aria-label="">
+                    <a class="page-link" href="/videoReq?curPage=${i}&searchStoreNm=${param.searchStoreNm}&searchPhone=${param.searchPhone}" aria-label="">
                         <span aria-hidden="true">${i}</span>
                     </a>
                 </li>
             </c:forEach>
             
             <li class="page-item">
-                <a class="page-link" href="/videoReq?curPage=${curPage + 1 <= maxPage ? curPage + 1 : maxPage}" aria-label="">
+                <a class="page-link" href="/videoReq?curPage=${curPage + 1 <= maxPage ? curPage + 1 : maxPage}&searchStoreNm=${param.searchStoreNm}&searchPhone=${param.searchPhone}" aria-label="">
                     <span aria-hidden="true">&gt;</span>
                 </a>
             </li>
-            <a class="page-link" href="/videoReq?curPage=${maxPage}" aria-label="Next">
-                <span aria-hidden="true">&gt;&gt;</span>
-            </a>
+            <li class="page-item">
+                <a class="page-link" href="/videoReq?curPage=${maxPage}&searchStoreNm=${param.searchStoreNm}&searchPhone=${param.searchPhone}" aria-label="Next">
+                    <span aria-hidden="true">&gt;&gt;</span>
+                </a>
             </li>
         </ul>
     </nav>
 
     <div class="video-req-table-container">
         <%-- 요청 리스트 테이블 --%>
-        <table class="table table-striped table-bordered" >
+        <table class="table table-bordered" >
             <thead class="text-center">
                 <tr>
                     <th style="width: 3%; border-top-left-radius:10px;">신청<br>ID</th>

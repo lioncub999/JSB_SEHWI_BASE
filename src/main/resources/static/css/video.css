@@ -1,6 +1,8 @@
 th {
     font-size : 13px;
     font-weight: bold;
+    background-color : rgb(107,146,164) !important;
+    color : white !important;
 }
 td {
     font-size : 13px;
@@ -11,6 +13,14 @@ tr:hover {
         cursor : pointer;
         background-color: rgb(15,166,249) !important;
     }
+}
+
+table tr:last-child td:first-child {
+    border-bottom-left-radius: 10px; /* 왼쪽 하단 모서리 둥글게 */
+}
+
+table tr:last-child td:last-child {
+    border-bottom-right-radius: 10px; /* 오른쪽 하단 모서리 둥글게 */
 }
 
 select {
@@ -75,4 +85,21 @@ textarea {
     width : 30px !important;
     height: 30px !important;
     margin-left: 2.5%;
+}
+
+.paging {
+    a {
+        background-color : rgb(107,146,164) !important;
+    }
+    span {
+        color : white;
+    }
+
+    .active {
+        a {
+            background-color : rgb(0, 160, 253) !important;
+            border: 1px solid rgb(0, 160, 253) !important;
+        }
+        
+    }
 }

@@ -93,8 +93,6 @@
                 updatePassword: function () {
                     const formData = $('#login-frm').serializeArray();
 
-                    console.log(formData);
-                    
                     LoadingOverlay.show();
                     $.ajax({
                         url: `${updatePasswordUrl}`,

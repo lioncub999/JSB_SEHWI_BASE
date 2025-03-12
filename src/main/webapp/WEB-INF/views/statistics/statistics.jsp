@@ -29,8 +29,6 @@
                 let selectedYear = urlParams.get('selectedYear');
                 let selectedMonth = urlParams.get('selectedMonth');
 
-                console.log(selectedMonth);
-
                 // selectedYear와 selectedMonth가 없으면 현재 연도와 월로 설정
                 if (!selectedYear || !selectedMonth) {
                     const now = new Date();
@@ -74,37 +72,39 @@
         <div style="margin-top : 10px; margin-left : 10px;">
             <input id='calendar' /> 업로드 완료 갯수
         </div>
-        <table class="table table-striped table-bordered" style="margin-top : 10px;">
-            <tr>
-                <td style="width : 30%">이름</td>
-                <td style="width : 40%">업로드 갯수</td>
-                <td style="width : 30%">급여</td>
-            </tr>
+        <div class="statistics-container">
+            <table class="table table-bordered" style="margin-top : 10px;">
+                <tr>
+                    <th style="width : 30%;border-top-left-radius:10px;">이름</td>
+                    <th style="width : 40%">업로드 갯수</td>
+                    <th style="width : 30%;border-top-right-radius:10px;">급여</td>
+                </tr>
 
-            <!-- 합계를 계산하기 위한 변수 선언 -->
-            <c:set var="totalUploadCount" value="0" />
-            <c:set var="totalPay" value="0" />
+                <!-- 합계를 계산하기 위한 변수 선언 -->
+                <c:set var="totalUploadCount" value="0" />
+                <c:set var="totalPay" value="0" />
 
-            <c:forEach var="statistics" items="${statisticsList}">
-                <c:set var="totalUploadCount" value="${totalUploadCount + statistics.uploadCompleteCnt}" />
-                <c:set var="totalPay" value="${totalPay + statistics.uploadCompleteCnt*50000}" />
+                <c:forEach var="statistics" items="${statisticsList}">
+                    <c:set var="totalUploadCount" value="${totalUploadCount + statistics.uploadCompleteCnt}" />
+                    <c:set var="totalPay" value="${totalPay + statistics.uploadCompleteCnt*50000}" />
+
+                    <tr>
+                        <td class = "t-cell">${statistics.userNm}</td>
+                        <td class = "t-cell">
+                            ${statistics.uploadCompleteCnt == null ? "0" : statistics.uploadCompleteCnt}개
+                        </td>
+                        <td class = "t-cell">
+                            ₩ <fmt:formatNumber value="${statistics.uploadCompleteCnt * 50000}" pattern="#,###" />
+                        </td>
+                    </tr>
+                </c:forEach>
 
                 <tr>
-                    <td class = "t-cell">${statistics.userNm}</td>
-                    <td class = "t-cell">
-                        ${statistics.uploadCompleteCnt == null ? "0" : statistics.uploadCompleteCnt}개
-                    </td>
-                    <td class = "t-cell">
-                        ₩ <fmt:formatNumber value="${statistics.uploadCompleteCnt * 50000}" pattern="#,###" />
-                    </td>
+                    <td>합계</td>
+                    <td>${totalUploadCount}개</td>
+                    <td>₩ <fmt:formatNumber value="${totalPay}" pattern="#,###" /></td>
                 </tr>
-            </c:forEach>
-
-            <tr>
-                <td>합계</td>
-                <td>${totalUploadCount}개</td>
-                <td>₩ <fmt:formatNumber value="${totalPay}" pattern="#,###" /></td>
-            </tr>
-        </table>
+            </table>
+        </div>
     </body>
 </html>

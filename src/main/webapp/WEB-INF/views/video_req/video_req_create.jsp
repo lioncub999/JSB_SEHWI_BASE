@@ -162,8 +162,6 @@
                     LoadingOverlay.show();
                     var formData = $('#video-req-frm').serializeArray();
 
-                    console.log(formData);
-
                     formData.find(field => field.name === "note").value = formData.find(field => field.name === "note").value.replace(/\r?\n/g, "\\n");
 
                     var warningTxt = '';
