@@ -87,7 +87,6 @@
                 FROM TBS_SPEND_H
                 WHERE SPEND_DT &gt;= CONCAT(#{selectedYear}, '-', LPAD(#{selectedMonth}, 2, '0'), '-01')
                 AND SPEND_DT &lt; DATE_ADD(DATE_FORMAT(CONCAT(#{selectedYear}, '-', LPAD(#{selectedMonth}, 2, '0'), '-01'), '%Y-%m-01'), INTERVAL 1 MONTH)
-                ORDER BY SPEND_DT DESC
             ) A
             LEFT JOIN (
             SELECT *
@@ -97,5 +96,37 @@
             SELECT *
             FROM TBG_GRADE_C
             ) D ON C.JOB_GRADE = D.CODE
+        ORDER BY SPEND_DT
     </select>
+
+    <select id="getGroupedSpendAmt"
+            parameterType="com.jsp.jsp_demo.model.statistics.Spend"
+            resultType="com.jsp.jsp_demo.model.statistics.Spend">
+        SELECT
+            A.CRE_ID,
+            A.TOTAL_AMT,
+            B.USER_NM,
+            B.JOB_GRADE_NM
+        FROM (
+            SELECT
+                CRE_ID,
+                SUM(AMT) AS TOTAL_AMT
+            FROM
+                TBS_SPEND_H
+            WHERE
+                SPEND_DT &gt;= CONCAT(#{selectedYear}, '-', LPAD(#{selectedMonth}, 2, '0'), '-01')
+                AND SPEND_DT &lt; DATE_ADD(DATE_FORMAT(CONCAT(#{selectedYear}, '-', LPAD(#{selectedMonth}, 2, '0'), '-01'), '%Y-%m-01'), INTERVAL 1 MONTH)
+            GROUP BY
+                CRE_ID) A
+        LEFT JOIN (
+            SELECT
+                tum.*,
+                tgc.JOB_GRADE_NM
+            FROM
+                TBU_USER_M tum
+            LEFT JOIN TBG_GRADE_C tgc
+            ON tum.JOB_GRADE = tgc.CODE
+        ) B ON A.CRE_ID = B.USER_ID
+    </select>
+
 </mapper>

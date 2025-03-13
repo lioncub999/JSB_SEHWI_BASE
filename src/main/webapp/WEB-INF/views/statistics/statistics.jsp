@@ -10,6 +10,8 @@
 
 <c:set var="insertSpendUrl" value="/statistics/insertSpend"/>
 <c:set var="getSpendHistUrl" value="/statistics/getSpendHist"/>
+<c:set var="getGroupedSpendAmtUrl" value="/statistics/getGroupedSpendAmt"/>
+
 
 <html>
 <head>
@@ -75,6 +77,7 @@
                 });
 
                 AjaxFunc.getSpendHist();
+                AjaxFunc.getGroupedSpendAmt();
             });
 
 
@@ -107,11 +110,11 @@
                         warningTxt += "지출일을 입력해주세요!\n"
                     }
                     <%-- 지출내용 입력 확인 --%>
-                    if ($('#spendWhatFor').val() == '') {
+                    if ($('#whatFor').val() == '') {
                         warningTxt += "지출 내용을 입력해주세요!\n"
                     }
                     <%-- 지출금액 입력 확인 --%>
-                    if ($('#spendAmount').val() == '') {
+                    if ($('#amt').val() == '') {
                         warningTxt += "지출 금액을 입력해주세요!\n"
                     }
                     <%-- 워닝 표시 --%>
@@ -139,6 +142,11 @@
                         if (response == "success") {
                             Toast('top', 1000, 'success', '지출 내역이 추가되었습니다!');
 
+                            $('#staticBackdrop').modal('hide');
+
+                            AjaxFunc.getSpendHist();
+                            AjaxFunc.getGroupedSpendAmt();
+
                             LoadingOverlay.hide();
                         } else {
                             Swal.fire({
@@ -165,16 +173,20 @@
                         data: {'selectedYear' : selectedYear, 'selectedMonth' : selectedMonth},
                     }).done(function (response) {
                         if (response.length > 0) {
+                            const tableBody = $('.spendHist');
+
+                            tableBody.empty(); // 기존 데이터를 초기화
                             response.forEach(item => {
-                                const tableBody = $('.spendHist');
-                                tableBody.empty(); // 기존 데이터를 초기화
+                                const formattedAmt = item.amt.toLocaleString(); // 세 자리마다 콤마 추가
+
+                                const note = item.note || '';
 
                                 const row = '<tr>' +
                                         '<td>' + item.stringSpendDt + '</td>' +
                                         '<td>' + item.creNm + ' ' + item.jobGradeNm + '</td>' +
                                         '<td>' + item.whatFor + '</td>' +
-                                        '<td>' + item.amt + '</td>' +
-                                        '<td>' + item.note + '</td>' +
+                                        '<td>' + formattedAmt + '</td>' +
+                                        '<td>' + note + '</td>' +
                                         '<td>' + item.managerCheck + '</td>' +
                                     '</tr>';
                                 tableBody.append(row);
@@ -184,7 +196,40 @@
                         Toast('top', 1000, 'error', '데이터를 가져오는 중 문제가 발생했습니다.');
                         LoadingOverlay.hide();
                     });
+                },
+
+                getGroupedSpendAmt : function() {
+                    const selectedYear = $('#calendar').val().substring(0,4);
+                    const selectedMonth = $('#calendar').val().substring(6,8);
+
+                    $.ajax({
+                        url: "${getGroupedSpendAmtUrl}",
+                        type: "post",
+                        cache: false,
+                        data: {'selectedYear' : selectedYear, 'selectedMonth' : selectedMonth},
+                    }).done(function (response) {
+                        if (response.length > 0) {
+                            const tableBody = $('.totalAmt');
+
+                            tableBody.empty(); // 기존 데이터를 초기화
+
+                            response.forEach(item => {
+
+                                 const formattedTotalAmt = item.totalAmt.toLocaleString(); // 세 자리마다 콤마 추가
+
+                                const row = '<tr>' +
+                                        '<td>' + item.userNm + ' ' + item.jobGradeNm+ '</td>' +
+                                        '<td>₩&nbsp;' + formattedTotalAmt +'</td>' +
+                                    '</tr>';
+                                tableBody.append(row);
+                            });
+                        }
+                    }).fail((xhr, textStatus, thrownError) => { 
+                        Toast('top', 1000, 'error', '데이터를 가져오는 중 문제가 발생했습니다.');
+                        LoadingOverlay.hide();
+                    });
                 }
+                
             }
         </script>
 
@@ -245,7 +290,6 @@
                 <tr>
                     <th style="width : 30%;border-top-left-radius:10px;">이름</td>
                     <th style="width : 20%">업로드 갯수</td>
-                    <th style="width : 20%">지출 경비</td>
                     <th style="width : 30%;border-top-right-radius:10px;">급여</td>
                 </tr>
 
@@ -262,8 +306,6 @@
                         <td class = "t-cell">
                             ${statistics.uploadCompleteCnt == null ? "0" : statistics.uploadCompleteCnt}개
                         </td>
-                        <td class="t-cell">
-                        </td>
                         <td class = "t-cell">
                             ₩ <fmt:formatNumber value="${statistics.uploadCompleteCnt * 50000}" pattern="#,###" />
                         </td>
@@ -273,7 +315,6 @@
                 <tr>
                     <td>합계</td>
                     <td>${totalUploadCount}개</td>
-                    <td></td>
                     <td>₩ <fmt:formatNumber value="${totalPay}" pattern="#,###" /></td>
                 </tr>
             </table>
@@ -287,6 +328,22 @@
                 </div>
             </button>
         </div>
+
+        <div class="statistics-container">
+            <table class="table table-bordered" style="margin-top : 10px;">
+                <tr>
+                    <th style="width : 10%; border-top-left-radius : 10px">
+                        이름
+                    </th>
+                    <th style="width : 10%; border-top-right-radius : 10px">
+                        총 지출액
+                    </th>
+                </tr>
+                <tbody class="totalAmt" id="totalAmt"></tbody>
+            </table>
+        </div>
+
+
         <div class="statistics-container">
             <table class="table table-bordered" style="margin-top : 10px;">
                 <tr>

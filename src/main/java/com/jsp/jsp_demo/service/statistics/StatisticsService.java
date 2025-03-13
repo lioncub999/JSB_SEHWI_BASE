@@ -32,4 +32,8 @@ public class StatisticsService {
     public List<Spend> getSpendHist(Spend spend) {
         return statisticsMapper.getSpendHist(spend);
     }
+
+    public List<Spend> getGroupedSpendAmt(Spend spend) {
+        return statisticsMapper.getGroupedSpendAmt(spend);
+    }
 }

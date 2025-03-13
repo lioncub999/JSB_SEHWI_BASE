@@ -22,6 +22,8 @@ public class Spend implements Serializable {
 
     private String creNm;
 
+    private String userNm;
+
     private String jobGradeNm;
 
     private String spendDt;
@@ -31,6 +33,8 @@ public class Spend implements Serializable {
     private String whatFor;
 
     private Integer amt;
+
+    private Integer totalAmt;
 
     private String note;
 

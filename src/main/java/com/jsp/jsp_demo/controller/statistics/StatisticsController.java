@@ -136,4 +136,30 @@ public class StatisticsController {
             traceWriter.log(0);
         }
     }
+
+    /* TODO:
+     *  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     *  ┃    <POST>
+     *  ┃    ● 촬영자 별 토탈 달 지출 금액
+     *  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━*/
+    @ResponseBody
+    @PostMapping("/statistics/getGroupedSpendAmt")
+    public List<Spend> getGroupedSpendAmt(
+            HttpServletRequest request,
+            Spend spend
+    ) {
+        TraceWriter traceWriter = new TraceWriter("", request.getMethod(), request.getServletPath());
+        traceWriter.add("[userInput.getSelectedYear() : " + spend.getSelectedYear() + "]");
+        traceWriter.add("[userInput.getSelectedMonth() : " + spend.getSelectedMonth() + "]");
+        traceWriter.add("");
+
+        try {
+            return statisticsService.getGroupedSpendAmt(spend);
+        } catch (Exception e) {
+            traceWriter.add("Error : " + e);
+            return null;
+        } finally {
+            traceWriter.log(0);
+        }
+    }
 }

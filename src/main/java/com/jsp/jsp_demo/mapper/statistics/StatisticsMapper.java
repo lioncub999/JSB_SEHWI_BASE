@@ -15,4 +15,6 @@ public interface StatisticsMapper {
     void insertSpend(Spend spend);
 
     List<Spend> getSpendHist(Spend spend);
+
+    List<Spend> getGroupedSpendAmt(Spend spend);
 }
