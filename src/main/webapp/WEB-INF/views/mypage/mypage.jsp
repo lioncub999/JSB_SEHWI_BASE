@@ -521,6 +521,71 @@
             </div>
         </div>
 
+                
+        <div style="margin-top:10px;margin-left:10px;margin-right :10px;">
+            ☉ 내 정보
+        </div>
+        <form class="mypage-frm", id="mypage-frm">
+            <div class="my-info-container">
+                <table class="table table-bordered" >
+                    <tbody>
+                        <tr>
+                            <th style="width: 20%;border-top-left-radius:10px;">
+                                아이디
+                            </th>
+                            <td style="border-top-right-radius:10px;">
+                                ${currentUserInfo.userId}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                이름
+                            </th>
+                            <td>
+                                ${currentUserInfo.userNm}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                직급
+                            </th>
+                            <td>
+                                <%-- 직급 --%>
+                                <div class="input-container">
+                                    <select class="form-select" style="text-align : center" id="jobGrade", name="jobGrade"  onchange=PageFunc.changeJobGradeConfirm()>
+                                        <option value="JG1">이사</option>
+                                        <option value="JG2">본부장</option>
+                                        <option value="JG3">팀장</option>
+                                        <option value="JG4">차장</option>
+                                        <option value="JG5">과장</option>
+                                        <option value="JG6">총무</option>
+                                        <option value="JG7">대리</option>
+                                        <option value="JG8">사원</option>
+                                    </select>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                전화번호
+                            </th>
+                            <td>
+                                ${currentUserInfo.phone.substring(0,3)}-${currentUserInfo.phone.substring(3,7)}-${currentUserInfo.phone.substring(7)}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th style="border-bottom-left-radius:10px;">
+                                비밀번호 초기화
+                            </th>
+                            <td style="border-bottom-right-radius:10px;">
+                                <button type="button" class="common-blue-btn pass-reset-btn" onclick=PageFunc.passResetConfirmAlert()>비밀번호 초기화</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </form>
+
         <div style="margin-top:10px;margin-left:10px;margin-right :10px;">
             ☉ 내 촬영신청 리스트
         </div>
@@ -541,7 +606,7 @@
                     
                 <!-- 현재 페이지 그룹에 맞는 페이지 버튼만 출력 -->
                 <c:forEach begin="${startPage}" end="${endPage}" var="i">
-                    <li class="page-item ${i == curPage ? 'active' : ''}">
+                    <li class="page-item page-num ${i == curPage ? 'active' : ''}">
                         <a class="page-link" href="/mypage?curPage=${i}" aria-label="">
                             <span aria-hidden="true">${i}</span>
                         </a>
@@ -565,34 +630,34 @@
             <table class="table table-bordered" >
                 <thead class="text-center">
                     <tr>
-                        <th style="width: 3%; border-top-left-radius:10px;">신청<br>ID</th>
-                        <th style="width: 8%;">사장님<br>연락처</th>
-                        <th style="width: 10%;">상호명</th>
-                        <th style="width: 15%;">주소</th>
-                        <th style="width: 16%;">특이사항</th>
-                        <th style="width: 16%;">촬영담당자<br>특이사항</th>
-                        <th style="width: 5%;">촬영<br>담당자</th>
-                        <th style="width: 10%;">촬영<br>예정일</th>
+                        <th style="width: 3%; border-top-left-radius:10px;" class="cell-req-id">신청<br>ID</th>
+                        <th style="width: 8%;" class="cell-phone">사장님<br>연락처</th>
+                        <th style="width: 10%;" class="cell-store-nm head">상호명</th>
+                        <th style="width: 15%;" class="cell-address">주소</th>
+                        <th style="width: 16%;" class="cell-note">특이사항</th>
+                        <th style="width: 16%;" class="cell-progress-note">촬영담당자<br>특이사항</th>
+                        <th style="width: 5%;" class="cell-manager-nm">촬영<br>담당자</th>
+                        <th style="width: 10%;" class="cell-shoot-reserve-dtm">촬영<br>예정일</th>
                         <th style="width: 8%; border-top-right-radius:10px;">진행상태</th>
                     </tr>
                 </thead>
                 <tbody>
                     <c:forEach var="videoReq" items="${videoReqList}">
                         <tr onclick="PageFunc.updateModal('${videoReq.isUrgentReq}', '${videoReq.reqId}', '${videoReq.storeNm}', '${videoReq.creId}', '${videoReq.creNm}', '${videoReq.creJgNm}', '${videoReq.stringContractDt}', '${videoReq.stringCreDt}', '${videoReq.address}', '${videoReq.phone}', '${videoReq.managerNm}', '${videoReq.managerJgNm}', '${videoReq.note}', '${videoReq.status}', '${videoReq.progressNote}', '${videoReq.stringShootReserveDtm}', '${videoReq.stringShootCompleteDt}', '${videoReq.stringUploadCompleteDt}')" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                            <td class="text-center t-cell">${videoReq.reqId}</td>
-                            <td class="text-center t-cell">
+                            <td class="text-center t-cell cell-req-id">${videoReq.reqId}</td>
+                            <td class="text-center t-cell cell-phone">
                                 ${videoReq.phone.substring(0,3)}-${videoReq.phone.substring(3,7)}-${videoReq.phone.substring(7)}
                             </td>
-                            <td class="t-cell">${videoReq.isUrgentReq == "Y" ?"<div style='color:red'>(긴급건)</div>" : ""}${videoReq.storeNm}</td>
-                            <td class="t-cell">${videoReq.address}</td>
-                            <td class="t-cell" style="text-align:left">
+                            <td class="t-cell cell-store-nm">${videoReq.isUrgentReq == "Y" ?"<div style='color:red'>(긴급건)</div>" : ""}${videoReq.storeNm}</td>
+                            <td class="t-cell cell-address">${videoReq.address}</td>
+                            <td class="t-cell cell-note" style="text-align:left">
                                 ${videoReq.note.replace('\\n', '<br>')}
                             </td>
-                            <td class="t-cell" style="text-align:left">
+                            <td class="t-cell cell-progress-note" style="text-align:left">
                                 ${videoReq.progressNote.replace('\\n', '<br>')}
                             </td>
-                            <td class="text-center t-cell">${videoReq.managerNm} ${videoReq.managerJgNm}</td>
-                            <td class="text-center t-cell">${videoReq.stringShootReserveDtm}</td>
+                            <td class="text-center t-cell cell-manager-nm">${videoReq.managerNm} ${videoReq.managerJgNm}</td>
+                            <td class="text-center t-cell cell-shoot-reserve-dtm">${videoReq.stringShootReserveDtm}</td>
                             <td class="text-center t-cell">
                                 <c:choose>
                                     <c:when test="${videoReq.status == 'COORDINATION'}">
@@ -617,69 +682,5 @@
                 </tbody>
             </table>
         </div>
-        
-        <div style="margin-top:10px;margin-left:10px;margin-right :10px;">
-            ☉ 내 정보
-        </div>
-        <form class="mypage-frm", id="mypage-frm">
-            <div class="my-info-container">
-                <table class="table table-bordered" >
-                    <tbody>
-                        <tr>
-                            <th style="width: 50%;border-top-left-radius:10px;">
-                                아이디
-                            </th>
-                            <td style="width: 50%; border-top-right-radius:10px;">
-                                ${currentUserInfo.userId}
-                            </td>
-                        </tr>
-                        <tr>
-                            <th style="width: 50%;">
-                                이름
-                            </th>
-                            <td style="width: 50%;">
-                                ${currentUserInfo.userNm}
-                            </td>
-                        </tr>
-                        <tr>
-                            <th style="width: 50%;">
-                                직급
-                            </th>
-                            <td style="width: 50%;">
-                                <%-- 직급 --%>
-                                <div class="input-container">
-                                    <select class="form-select" style="text-align : center" id="jobGrade", name="jobGrade"  onchange=PageFunc.changeJobGradeConfirm()>
-                                        <option value="JG1">이사</option>
-                                        <option value="JG2">본부장</option>
-                                        <option value="JG3">팀장</option>
-                                        <option value="JG4">차장</option>
-                                        <option value="JG5">과장</option>
-                                        <option value="JG6">총무</option>
-                                        <option value="JG7">대리</option>
-                                        <option value="JG8">사원</option>
-                                    </select>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th style="width: 50%;">
-                                전화번호
-                            </th>
-                            <td style="width: 50%;">
-                                ${currentUserInfo.phone.substring(0,3)}-${currentUserInfo.phone.substring(3,7)}-${currentUserInfo.phone.substring(7)}
-                            </td>
-                        </tr>
-                        <tr>
-                            <th style="width: 50%; border-bottom-left-radius : 10px;">
-                                비밀번호 초기화
-                            </th>
-                            <td style="width: 50%;">
-                                <button type="button" class="common-blue-btn" onclick=PageFunc.passResetConfirmAlert()>비밀번호 초기화</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </form>
     </body>
 </html>

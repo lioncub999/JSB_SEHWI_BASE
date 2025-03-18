@@ -3,16 +3,13 @@ th {
     font-weight: bold;
     background-color : rgb(107,146,164) !important;
     color : white !important;
+    text-align: center !important;   /* 수평 가운데 */
+    vertical-align: middle; /* 수직 가운데 */
 }
 td {
     font-size : 13px;
-}
-
-tr:hover {
-    .t-cell {
-        cursor : pointer;
-        background-color: rgb(15,166,249) !important;
-    }
+    text-align: center !important;   /* 수평 가운데 */
+    vertical-align: middle; /* 수직 가운데 */
 }
 
 table tr:last-child td:first-child {
@@ -23,27 +20,22 @@ table tr:last-child td:last-child {
     border-bottom-right-radius: 10px; /* 오른쪽 하단 모서리 둥글게 */
 }
 
+tr:hover {
+    .t-cell {
+        cursor : pointer;
+        background-color: rgb(15,166,249) !important;
+    }
+}
+
+.my-req-list-container {
+    margin-left : 10px;
+    margin-right : 10px;
+}
+
 select {
     font-size : 13px !important;
 }
 
-.reqTopBox {
-    display:flex;
-    justify-content: space-between;
-    padding-top: 10px;
-    padding-left: 10px;
-    padding-right: 10px;
-    margin-bottom : 10px;
-}
-
-.video-req-table-container {
-    margin-left:10px;
-    margin-right:10px;
-}
-
-input {
-    width : 95% !important;
-}
 .main-search-input {
     width: 50% !important;
 }
@@ -55,6 +47,15 @@ input {
     }
 }
 
+.pass-reset-btn {
+    width : 150px;
+}
+
+.my-info-container {
+    margin-left : 10px;
+    margin-right : 10px;
+}
+
 textarea {
     padding: 10px !important;
     width : 95%;
@@ -62,29 +63,6 @@ textarea {
     border-radius: 10px;
     transition: border-color 0.3s ease; /* 부드러운 보더 색상 변경 */
     resize: none !important;
-}
-
-.address {
-    width : 75% !important;
-}
-
-.address-btn {
-    width : 100% !important;
-}
-
-.button-text {
-    font-size: .7vw;
-}
-
-.button-container {
-    width : 10% !important;
-    font-size: 10px;
-}
-
-.checkbox {
-    width : 30px !important;
-    height: 30px !important;
-    margin-left: 2.5%;
 }
 
 .paging {
@@ -102,4 +80,33 @@ textarea {
         }
         
     }
+}
+
+@media (max-width : 1024px) {
+    .page-num {
+        display: none;
+    }
+    
+    .page-num.active {
+        display: block;
+    }
+    
+    .cell-req-id,
+    .cell-phone,
+    .cell-address,
+    .cell-note,
+    .cell-progress-note,
+    .cell-shoot-reserve-dtm
+    {
+        display: none;
+    }
+
+    .cell-store-nm.head{
+        border-top-left-radius: 10px;
+    }
+
+    table tr:last-child .cell-store-nm {
+        border-bottom-left-radius: 10px; /* 왼쪽 하단 모서리 둥글게 */
+    }
+    
 }

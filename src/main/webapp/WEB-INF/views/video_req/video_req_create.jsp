@@ -223,60 +223,60 @@
         </script>
         
         <div style="display : flex; justify-content: space-between">
-            <button class="common-blue-btn" type="button" onclick="PageControlFunc.moveToReqListPage()" style="margin-top:10px;margin-left:10px;">목록으로 이동</button>
-            <button class="common-blue-btn" type="button" onclick="AjaxFunc.reqCreate()" style="margin-top:10px;margin-right:10px;">촬영 신청!!</button>
+            <button class="common-blue-btn" type="button" onclick="PageControlFunc.moveToReqListPage()" style="margin-top:10px;margin-left:10px;">뒤로 이동</button>
+            <button class="common-blue-btn" type="button" onclick="AjaxFunc.reqCreate()" style="margin-top:10px;margin-right:10px;">촬영 신청</button>
         </div>
 
         <%-- 신청 폼 --%>
-        <div style="margin-left:10px;margin-top:15px">
+        <div style="margin-left:10px;margin-top:15px;margin-right:10px">
             <form class="video-req-frm", id="video-req-frm">
                 <input type="hidden" id="longitude" name="longitude"/>
                 <input type="hidden" id="latitude" name="latitude"/>
                 <input type="hidden" id="address" name="address"/>
 
-                <table class="table table-striped table-bordered">
+                <table class="table table-bordered">
                     <tr>
-                        <td>긴급건 여부</td>
-                        <td style="text-align:left; display:flex; align-items:center">
+                        <th style="border-top-left-radius:10px; width:20%">긴급건 여부</th>
+                        <td style="text-align:left; display:flex; align-items:center; border-top-right-radius:10px;">
                             <input type="checkbox" id="checkbox" class="checkbox" value="Y" name="isUrgentReq">
                             <div style="margin-left:10px;">긴급건</div>
                         </td>
                     </tr>
                     <tr>
-                        <td>신청자</td>
+                        <th>신청자</th>
                         <td>
                             <div>${userNm} ${userJobGradeNm}</div>
                         </td>
                     </tr>
                     <tr>
-                        <td>매장(상호)명</td>
+                        <th>매장(상호)명</th>
                         <td>
-                            <input type="text" class="input" placeholder="매장명" id="storeNm" name="storeNm"/>
+                            <input type="text" class="main-search-field create-frm" placeholder="매장명" id="storeNm" name="storeNm"/>
                         </td>
                     </tr>
                     <tr>
-                        <td>대표님 연락처 ('-' 제외)</td>
+                        <th>대표님 연락처 ('-' 제외)</th>
                         <td>
-                            <input type="text" class="input" placeholder="대표님 연락처 ('-' 제외)" id="phone" name="phone"/>
+                            <input type="text" class="main-search-field create-frm" placeholder="대표님 연락처 ('-' 제외)" id="phone" name="phone"/>
                         </td>
                     </tr>
                     <tr>
-                        <td>특이사항</td>
+                        <th>특이사항</th>
                         <td>
-                            <textarea class="input" placeholder="특이사항" name="note" id="note" rows=4></textarea>
+                            <textarea class="main-search-field create-frm" placeholder="특이사항" name="note" id="note" rows=4></textarea>
                         </td>
                     </tr>
                     <tr>
-                        <td>계약일</td>
+                        <th>계약일</th>
                         <td>
-                            <input class="input" type="text" class="form-control" id="datepicker" name="contractDt" readonly>
+                            <input class="main-search-field create-frm" type="text" class="form-control" id="datepicker" name="contractDt" readonly>
                         </td>
                     </tr>
                     <tr>
-                        <td>매장 주소</td>
-                        <td>
-                            <div style="display:flex; justify-content:center">
-                                <input class="input address" type="text" id="addressSearch" placeholder="주소 입력" />
+                        <th style="border-bottom-left-radius:10px">매장 주소</th>
+                        <td style="border-bottom-right-radius:10px">
+                            <div style="display:flex; justify-content:left">
+                                <input class="main-search-field address" type="text" id="addressSearch" placeholder="주소 입력" />
                                 <div class="button-container">
                                     <button class="common-blue-btn address-btn" type="button" id="addressSearchBtn" onclick="MapFunc.searchAddressToCoordinate()">
                                         <div class="button-text">검색</div>
@@ -284,11 +284,11 @@
                                 </div>
                                 <div class="button-container">
                                     <button class="common-blue-btn address-btn" type="button" id="confirmAddressBtn" onclick="ActiveFunc.confirmAddress()" style="display : none;">
-                                        <div class="button-text">주소확인!</div>
+                                        <div class="button-text">확인</div>
                                     </button>
                                 </div>
                             </div>
-                            <div id="map" style="width: 95%;height: 350px; margin-left:2.5%;border-radius:10px"></div>
+                            <div id="map" style="width: 100%;height: 350px;border-radius:10px"></div>
                         </td>
                     </tr>
                 </table>

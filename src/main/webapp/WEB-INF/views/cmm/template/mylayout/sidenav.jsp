@@ -40,11 +40,17 @@
 <nav class="side-nav-main">
     <%-- 타이틀 --%>
     <div style="height : 10px"></div>
-    <h1>모두솔루션</h1>
-    <h1>영상 편집 관리</h1>
+    <div class="nav-title-container">
+        <span class="nav-title">
+            모두솔루션<br>
+            통합 관리 플랫폼
+        </span>
+    </div>
 
     <%-- 로고 이미지 --%>
     <img class="logo" src="<c:url value='/images/logo/modusol_logo.png'/>" alt=""/>
+
+    <div style="height:10px"></div>
 
     <%-- 메뉴 리스트 --%>
     <ul>
@@ -53,8 +59,8 @@
             <b></b>
             <b></b>
             <a href="/main">
-                <i class="fa fa-house nav-icon"></i>
-                <span class="nav-text">홈</span>
+                <span class="material-icons">videocam</span>
+                <span class="nav-text">&nbsp;영상 촬영 지도</span>
             </a>
         </li>
 
@@ -63,29 +69,29 @@
             <b></b>
             <b></b>
             <a href="/videoReq">
-                <i class="fa fa-list nav-icon"></i>
-                <span class="nav-text">촬영 신청 리스트</span>
+                <span class="material-icons">list</span>
+                <span class="nav-text">&nbsp;촬영 신청 리스트</span>
             </a>
         </li>
 
         <%-- 촬영 일정 캘린더 --%>
-        <li class="nav-item <c:if test="${fn:startsWith(url, '/calendar')}">active</c:if>">
+        <li class="nav-item calendar <c:if test="${fn:startsWith(url, '/calendar')}">active</c:if>">
             <b></b>
             <b></b>
             <a href="/calendar">
-                <i class="fa fa-calendar nav-icon"></i>
-                <span class="nav-text">촬영 일정 캘린더</span>
+                <span class="material-icons">calendar_month</span>
+                <span class="nav-text">&nbsp;촬영 일정 캘린더</span>
             </a>
         </li>
 
         <%-- 촬영 통계&정산 --%>
         <c:if test='${userGrade == 0}'>
-            <li class="nav-item <c:if test="${fn:startsWith(url, '/statistics')}">active</c:if>">
+            <li class="nav-item statistics <c:if test="${fn:startsWith(url, '/statistics')}">active</c:if>">
                 <b></b>
                 <b></b>
                 <a href="/statistics">
-                    <i class="fa fa-chart-pie nav-icon"></i>
-                    <span class="nav-text">촬영 통계&정산</span>
+                    <span class="material-icons">analytics</span>
+                    <span class="nav-text">&nbsp;촬영 통계&정산</span>
                 </a>
             </li>
         </c:if>
@@ -95,8 +101,8 @@
             <b></b>
             <b></b>
             <a href="/mypage">
-                <i class="fa fa-user nav-icon"></i>
-                <span class="nav-text">마이페이지</span>
+                <span class="material-icons">person</span>
+                <span class="nav-text">&nbsp;마이페이지</span>
             </a>
         </li>
 
@@ -105,11 +111,11 @@
             <b></b>
             <b></b>
             <a onclick="SidebarFunc.logout()" style="color : white;">
-                <i class="fa fa-arrow-right-from-bracket nav-icon"></i>
-                <span class="nav-text">로그아웃</span>
+                <span class="material-icons">logout</span>
+                <span class="nav-text">&nbsp;로그아웃</span>
             </a>
         </li>
-        <div style="margin-left : 15px">
+        <div class="manager-phone-container">
             <div style="font-size : 15px;">[촬영기획팀]</div>
             <div style="font-size:14px">-  개발 및 촬영 -</div>
             <div style="font-size:12px"> 이세휘 과장 (010-7705-4839)</div>

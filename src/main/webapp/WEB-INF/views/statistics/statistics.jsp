@@ -213,9 +213,13 @@
 
                             tableBody.empty(); // 기존 데이터를 초기화
 
+                            let totalSpend = 0;
+
                             response.forEach(item => {
 
                                  const formattedTotalAmt = item.totalAmt.toLocaleString(); // 세 자리마다 콤마 추가
+
+                                 totalSpend += item.totalAmt;
 
                                 const row = '<tr>' +
                                         '<td>' + item.userNm + ' ' + item.jobGradeNm+ '</td>' +
@@ -223,6 +227,16 @@
                                     '</tr>';
                                 tableBody.append(row);
                             });
+
+                            const formattedTotalSpend = totalSpend.toLocaleString();
+
+                            const sumRow = '<tr>' +
+                                        '<th style="border-bottom-left-radius:10px;">' + "합계" + '</th>' +
+                                        '<td>₩&nbsp;' + formattedTotalSpend + '</td>' +
+                                    '</tr>';
+
+                            tableBody.append(sumRow);
+                                        
                         }
                     }).fail((xhr, textStatus, thrownError) => { 
                         Toast('top', 1000, 'error', '데이터를 가져오는 중 문제가 발생했습니다.');
@@ -283,7 +297,8 @@
         </div>
 
         <div style="margin-top : 10px; margin-left : 10px;">
-            <input id='calendar' /> 업로드 완료 갯수
+            <input id='calendar' /> 
+            <div>☉ 업로드 완료 갯수</div>
         </div>
         <div class="statistics-container">
             <table class="table table-bordered" style="margin-top : 10px;">
@@ -344,7 +359,7 @@
         </div>
 
 
-        <div class="statistics-container">
+        <div class="statistics-container expense-details">
             <table class="table table-bordered" style="margin-top : 10px;">
                 <tr>
                     <th style="width : 10%; border-top-left-radius : 10px">

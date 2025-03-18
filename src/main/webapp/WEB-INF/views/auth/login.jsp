@@ -9,17 +9,18 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %> <%--한국어 깨짐 방지--%>
 
 
+<c:set var="mainUrl" value="/main"/>
 <c:set var="loginUrl" value="/auth/login"/>
-<c:set var="signUpUrl" value="/auth/signUpUrl"/>
+<c:set var="signUpUrl" value="/auth/signUp"/>
 
 <html>
     <head>
-        <meta name="viewport"z
-            content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"/>
-        <link type="text/css" rel="stylesheet" href="<c:url value='/css/normalize.css'/>">
-        <link type="text/css" rel="stylesheet" href="<c:url value='/css/login.css'/>">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <link type="text/css" rel="stylesheet" href="<c:url value='/css/common/normalize.css'/>">
+        <link type="text/css" rel="stylesheet" href="<c:url value='/css/view/login.css'/>">
+        <link type="text/css" rel="stylesheet" href="<c:url value='/css/common/button.css'/>">
 
-        <title>모두솔루션 영상촬영 관리</title>
+        <title>모두솔루션 통합 관리 플랫폼</title>
     </head>
 
     <body>
@@ -33,7 +34,7 @@
             $(document).ready(function() {
                 // 로그인 세션 확인
                 if ("${userId}" != '') {
-                    window.location.href = "/main"
+                    window.location.href = "${mainUrl}";
                 }
             
             // 엔터키 감지 및 버튼 클릭 트리거
@@ -58,7 +59,7 @@
             let PageControlFunc ={
                 // 회원가입 화면으로 이동
                 moveToSignUpPage : function() {
-                    window.location.href = '/auth/signUp';
+                    window.location.href = "${signUpUrl}";
                 }
             };
 
@@ -112,7 +113,7 @@
 
                             if (response === 'success') {
                                 setTimeout(() => {
-                                    window.location.href = '/main';
+                                    window.location.href = "${mainUrl}";
                                 }, toast.duration);
                             }
                         } else {
@@ -137,9 +138,9 @@
 
         <main>
             <%-- 로그인 타이틀 --%>
-            <img class="logo-img" src="<c:url value='/images/logo/modusol_logo.png'/>" alt=""/>
+            <img class="logo-img" src="<c:url value='/images/logo/modusol_logo.png'/>" alt="" style="margin-top : 100px;"/>
             <div class="login-title" id="login">
-                모두솔루션 영상촬영 관리
+                모두솔루션 통합 관리 플랫폼
             </div>
 
             <%-- 로그인 폼 --%>
@@ -154,17 +155,16 @@
                         <label for="username" class="input-label">비밀번호</label>
                     </div>
                 </form>
-            </div>
 
+                <%-- 로그인 버튼 --%>
+                <div class="login-btn-box">
+                    <button class="login-btn" id="loginButton" type="button" onclick="SubmitFunc.loginSubmit()">로그인</button>
+                </div>
 
-            <%-- 로그인 버튼 --%>
-            <div class="login-btn-box">
-                <button class="login-btn" id="loginButton" type="button" onclick="SubmitFunc.loginSubmit()">로그인</button>
-            </div>
-
-            <%-- 회원가입 버튼 --%>
-            <div class="login-btn-box">
-                <button class="login-btn" type="button" onclick=PageControlFunc.moveToSignUpPage()>회원가입</button>
+                <%-- 회원가입 버튼 --%>
+                <div class="login-btn-box">
+                    <button class="login-btn" type="button" onclick=PageControlFunc.moveToSignUpPage()>회원가입</button>
+                </div>
             </div>
         </main>
     </body>

@@ -15,8 +15,8 @@
     <head>
         <meta name="viewport"z
             content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"/>
-        <link type="text/css" rel="stylesheet" href="<c:url value='/css/normalize.css'/>">
-        <link type="text/css" rel="stylesheet" href="<c:url value='/css/login.css'/>">
+        <link type="text/css" rel="stylesheet" href="<c:url value='/css/common/normalize.css'/>">
+        <link type="text/css" rel="stylesheet" href="<c:url value='/css/view/login.css'/>">
     </head>
 
     <body>

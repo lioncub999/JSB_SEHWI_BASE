@@ -1,7 +1,7 @@
 <%--
  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
  ┃
- ┃     ● 로그인 페이지
+ ┃     ● 회원가입 페이지
  ┃
  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 --%>
@@ -9,6 +9,7 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %> <%--한국어 깨짐 방지--%>
 
 
+<c:set var="mainUrl" value="/main"/>
 <c:set var="loginUrl" value="/login"/>
 <c:set var="idDubCheckUrl" value="/auth/dupCheck"/>
 <c:set var="signUpUrl" value="/auth/signUp"/>
@@ -18,10 +19,13 @@
         <meta name="viewport"z
             content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"/>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-        <link type="text/css" rel="stylesheet" href="<c:url value='/css/normalize.css'/>">
-        <link type="text/css" rel="stylesheet" href="<c:url value='/css/login.css'/>">
+        <link type="text/css" rel="stylesheet" href="<c:url value='/css/common/normalize.css'/>">
+        <link type="text/css" rel="stylesheet" href="<c:url value='/css/view/login.css'/>">
+        <link type="text/css" rel="stylesheet" href="<c:url value='/css/common/button.css'/>">
 
-        <title>모두솔루션 영상촬영 관리</title>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+        <title>모두솔루션 통합 관리 플랫폼</title>
         
     </head>
 
@@ -30,15 +34,12 @@
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
         <script src="<c:url value='/js/alert/SweetAlert2.js' />"></script>
         <script src="<c:url value='/js/util/textUtils.js' />"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
         <script>
             $(document).ready(function() {
                 // 로그인 세션 확인
                 if ("${userId}" != '') {
-                    window.location.href = "/main"
+                    window.location.href = "${mainUrl}"
                 }
             });
 
@@ -50,7 +51,6 @@
                     $('#loading-overlay').fadeOut();
                 }
             };
-
             
             let ValidCheckFunc = {
                 // 영어 알파벳과 숫자만 허용
@@ -62,7 +62,7 @@
             let PageControlFunc ={
                 // 로그인 화면으로 이동
                 moveToLoginPage : function() {
-                    location.href = '/login';
+                    location.href = '${loginUrl}';
                 }
             };
 
@@ -209,22 +209,22 @@
         </div>
 
         <main>
-            <%-- 로그인 페이지로 이동 버튼 --%>
-            <div class="login-btn-box">
-                <button class="login-btn" id="loginButton" type="button" onclick=PageControlFunc.moveToLoginPage()>
-                <i class="fa-solid fa-arrow-left"></i>
-                &nbsp;로그인 페이지로 이동
-                </button>
-            </div>
-
-            <img class="logo-img" src="<c:url value='/images/logo/modusol_logo.png'/>" alt=""/>
-            <%-- 회원가입 타이틀 --%>
-            <div class="login-title" id="login">
-                <h2>회원가입</h2>
-            </div>
-
             <%-- 회원가입 폼 --%>
             <form class="login-frm", id="login-frm">
+                <%-- 로그인 페이지로 이동 버튼 --%>
+                <div class="login-btn-box back-btn-box">
+                    <button class="login-btn back-btn" id="loginButton" type="button" onclick=PageControlFunc.moveToLoginPage()>
+                        <span class="material-icons">arrow_back</span>
+                        <span class="back-btn-text">뒤로가기</span>
+                    </button>
+                </div>
+
+                <img class="logo-img" src="<c:url value='/images/logo/modusol_logo.png'/>" alt=""/>
+                <%-- 회원가입 타이틀 --%>
+                <div class="login-title" id="login">
+                    회원가입
+                </div>
+                
                 <%-- 아이디 중복확인 완료여부 --%>
                 <input type="hidden" name="idDupcheck", value="N" id="idDupCheck">
 
@@ -261,7 +261,7 @@
 
                 <%-- 직급 --%>
                 <div class="input-container">
-                    <select class="form-select" style="width:300px" id="jobGrade", name="jobGrade">
+                    <select class="form-select" id="jobGrade", name="jobGrade">
                     <option selected>직급을 선택해주세요</option>
                     <option value="JG1">이사</option>
                     <option value="JG2">본부장</option>

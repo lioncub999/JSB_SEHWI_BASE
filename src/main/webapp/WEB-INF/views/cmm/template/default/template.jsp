@@ -15,23 +15,10 @@
 
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
 
-    <title>모두솔루션 영상촬영 관리</title>
+    <title>모두솔루션 통합 관리 플랫폼</title>
     
   <link rel="icon" href="/favicon.ico" type="image/x-icon">
 
-    <style>
-    /* 로딩 오버레이 스타일 */
-    #loading-overlay {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.5);
-        z-index: 9999;
-    }
-    </style>
   </head>
   <body class="bdy">
     <script src="https://code.jquery.com/jquery-3.4.1.js"></script>

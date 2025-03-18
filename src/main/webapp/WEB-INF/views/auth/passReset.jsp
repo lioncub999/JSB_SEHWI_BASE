@@ -4,7 +4,7 @@
 <c:set var="passResetUrl" value="/auth/resetPass"/>
 <html>
 <head>
-    <link type="text/css" rel="stylesheet" href="<c:url value='/css/login.css'/>">
+    <link type="text/css" rel="stylesheet" href="<c:url value='/css/view/login.css'/>">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"/>
 </head>
 

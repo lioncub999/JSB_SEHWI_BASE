@@ -585,8 +585,11 @@
 
         <!-- 지도 -->
         <div class="map-search-container">
+            <div>☉ 전국 촬영 신청 지도</div>
             <input type="text" class="map-search-field" id="addressSearch" />
-            <button type="button" class="common-blue-btn" onclick=MapFunc.searchAddressToCoordinate() >주소 검색</button>
+            <button type="button" class="common-blue-btn search-btn" onclick=MapFunc.searchAddressToCoordinate() >
+                <span class="map-search-btn-text">주소 검색</span>
+            </button>
         </div>
         <div class="map-pin-explain-box">
             <div class="pin-box">

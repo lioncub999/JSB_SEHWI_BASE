@@ -3,9 +3,13 @@ th {
     font-weight: bold;
     background-color : rgb(107,146,164) !important;
     color : white !important;
+    text-align: center !important;   /* 수평 가운데 */
+    vertical-align: middle; /* 수직 가운데 */
 }
 td {
     font-size : 13px;
+    text-align: center !important;   /* 수평 가운데 */
+    vertical-align: middle; /* 수직 가운데 */
 }
 
 tr:hover {
@@ -36,4 +40,10 @@ textarea {
     border-radius: 10px;
     transition: border-color 0.3s ease; /* 부드러운 보더 색상 변경 */
     resize: none !important;
+}
+
+@media (max-width : 1024px) {
+    .expense-details {
+        display: none;
+    }
 }

@@ -10,7 +10,7 @@
 
 .map-pin-explain-box {
     position:absolute; 
-    top : 150px;
+    top : 120px;
     z-index : 10; 
     background-color : white;
     margin : 10px;
@@ -27,6 +27,29 @@
     width:100%;
     height:100%; 
     border-radius: 10px;
+}
+
+.map-search-field:focus {
+    border: 2px solid rgb(15,166,249);
+    outline: none;
+}
+
+.map-search-field {
+    width: 200px;
+    padding: 10px 10px;
+    font-size: 12px;
+    border: 2px solid black;
+    border-radius: 10px;
+    outline: none;
+    transition: all 0.3s ease-in-out;
+}
+
+.search-btn {
+    height: 42px;
+}
+
+.map-search-btn-text {
+    font-size: 12px;
 }
 
 .text-center {
@@ -56,4 +79,21 @@ th {
     font-weight: bold;
     background-color : rgb(107,146,164) !important;
     color : white !important;
+}
+
+@media (max-width : 1024px) {
+    .map-search-container {
+        width: 60%;
+    }
+    .map-pin-explain-box {
+        top: 170px;
+    }
+    .map-search-field,
+    .search-btn {
+        width: 100%;
+    }
+
+    .map-pin-explain-box {
+        display: none;
+    }
 }

@@ -472,28 +472,30 @@
     </div>
     
 
-    <div class="reqTopBox">
+    <div class="req-top-box">
         <button onclick="PageControlFunc.moveToReqAddPage()" class="common-blue-btn">촬영 신청</button>
 
-        <div style="display:flex">
+        <div class="search-option-box">
             <%-- 검색옵션 --%>
-            <div class="input-container">
-                <select class="form-select" style="width:150px; height : 50px" id="searchOption", name="searchOption">
+            <div class="input-container select-container">
+                <select class="form-select" id="searchOption", name="searchOption">
                     <option value="storeNm">상호명</option>
                     <option value="phone">사장님연락처</option>
                 </select>
             </div>
-            <input class="main-search-input" type="text" id="searchText" placeholder="검색" >
-            <button onclick=AjaxFunc.search() class="common-blue-btn main-search-btn" >
-                <div class="button-text">
-                    검색
-                </div>
-            </button>
-            <button onclick=PageFunc.resetSearch() class="common-blue-btn main-search-btn" >
-                <div class="button-text">
-                    초기화
-                </div>
-            </button>
+            <input class="main-search-field" type="text" id="searchText" placeholder="검색" >
+            <div class="button-container">
+                <button onclick=AjaxFunc.search() class="common-blue-btn main-search-btn" >
+                    <div class="button-text">
+                        검색
+                    </div>
+                </button>
+                <button onclick=PageFunc.resetSearch() class="common-blue-btn main-search-btn reset-btn" >
+                    <div class="button-text">
+                        초기화
+                    </div>
+                </button>
+            </div>
         </div>
     </div>
 
@@ -514,7 +516,7 @@
                 
             <!-- 현재 페이지 그룹에 맞는 페이지 버튼만 출력 -->
             <c:forEach begin="${startPage}" end="${endPage}" var="i">
-                <li class="page-item ${i == curPage ? 'active' : ''}">
+                <li class="page-item page-num ${i == curPage ? 'active' : ''}">
                     <a class="page-link" href="/videoReq?curPage=${i}&searchStoreNm=${param.searchStoreNm}&searchPhone=${param.searchPhone}" aria-label="">
                         <span aria-hidden="true">${i}</span>
                     </a>
@@ -540,37 +542,37 @@
         <table class="table table-bordered" >
             <thead class="text-center">
                 <tr>
-                    <th style="width: 3%; border-top-left-radius:10px;">신청<br>ID</th>
-                    <th style="width: 8%;">신청일</th>
-                    <th style="width: 6%;">신청자</th>
-                    <th style="width: 8%;">사장님<br>연락처</th>
-                    <th style="width: 10%;">상호명</th>
-                    <th style="width: 15%;">주소</th>
-                    <th style="width: 16%;">특이사항</th>
-                    <th style="width: 16%;">촬영담당자<br>특이사항</th>
-                    <th style="width: 5%;">촬영<br>담당자</th>
-                    <th style="width: 8%; border-top-right-radius:10px;">진행상태</th>
+                    <th style="width: 3%; border-top-left-radius:10px;" class="cell-req-id">신청<br>ID</th>
+                    <th style="width: 8%;" class="cell-cre-dt">신청일</th>
+                    <th style="width: 6%;" class="cell-cre-nm head">신청자</th>
+                    <th style="width: 8%;" class="cell-phone">사장님<br>연락처</th>
+                    <th style="width: 10%;" class="cell-store-nm">상호명</th>
+                    <th style="width: 15%;" class="cell-address">주소</th>
+                    <th style="width: 16%;" class="cell-note">특이사항</th>
+                    <th style="width: 16%;" class="cell-progress-note">촬영담당자<br>특이사항</th>
+                    <th style="width: 5%;" class="cell-manager-nm">촬영<br>담당자</th>
+                    <th style="width: 8%; border-top-right-radius:10px; cell-status">진행상태</th>
                 </tr>
             </thead>
             <tbody>
                 <c:forEach var="videoReq" items="${videoReqList}">
                     <tr onclick="PageFunc.updateModal('${videoReq.isUrgentReq}', '${videoReq.reqId}', '${videoReq.storeNm}', '${videoReq.creId}', '${videoReq.creNm}', '${videoReq.creJgNm}', '${videoReq.stringContractDt}', '${videoReq.stringCreDt}', '${videoReq.address}', '${videoReq.phone}', '${videoReq.managerNm}', '${videoReq.managerJgNm}', '${videoReq.note}', '${videoReq.status}', '${videoReq.progressNote}', '${videoReq.stringShootReserveDtm}', '${videoReq.stringShootCompleteDt}', '${videoReq.stringUploadCompleteDt}')" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                        <td class="text-center t-cell">${videoReq.reqId}</td>
-                        <td class="text-center t-cell">${videoReq.stringCreDt}</td>
-                        <td class="text-center t-cell">${videoReq.creNm == '' || videoReq.creNm == null  ? videoReq.creId : videoReq.creNm} ${videoReq.creJgNm}</td>
-                        <td class="text-center t-cell">
+                        <td class="text-center t-cell cell-req-id">${videoReq.reqId}</td>
+                        <td class="text-center t-cell cell-cre-dt">${videoReq.stringCreDt}</td>
+                        <td class="text-center t-cell cell-cre-nm">${videoReq.creNm == '' || videoReq.creNm == null  ? videoReq.creId : videoReq.creNm} ${videoReq.creJgNm}</td>
+                        <td class="text-center t-cell cell-phone">
                             ${videoReq.phone.substring(0,3)}-${videoReq.phone.substring(3,7)}-${videoReq.phone.substring(7)}
                         </td>
-                        <td class="t-cell">${videoReq.isUrgentReq == "Y" ?"<div style='color:red'>(긴급건)</div>" : ""}${videoReq.storeNm}</td>
-                        <td class="t-cell">${videoReq.address}</td>
-                        <td class="t-cell" style="text-align:left">
+                        <td class="t-cell cell-store-nm">${videoReq.isUrgentReq == "Y" ?"<div style='color:red'>(긴급건)</div>" : ""}${videoReq.storeNm}</td>
+                        <td class="t-cell cell-address">${videoReq.address}</td>
+                        <td class="t-cell cell-note" style="text-align:left">
                             ${videoReq.note.replace('\\n', '<br>')}
                         </td>
-                        <td class="t-cell" style="text-align:left">
+                        <td class="t-cell cell-progress-note" style="text-align:left">
                             ${videoReq.progressNote.replace('\\n', '<br>')}
                         </td>
-                        <td class="text-center t-cell">${videoReq.managerNm} ${videoReq.managerJgNm}</td>
-                        <td class="text-center t-cell">
+                        <td class="text-center t-cell cell-manager-nm">${videoReq.managerNm} ${videoReq.managerJgNm}</td>
+                        <td class="text-center t-cell cell-status">
                             <c:choose>
                                 <c:when test="${videoReq.status == 'COORDINATION'}">
                                     일정조율중

@@ -1,0 +1,184 @@
+th {
+    font-size : 13px;
+    font-weight: bold;
+    background-color : rgb(107,146,164) !important;
+    color : white !important;
+    text-align: center !important;   /* 수평 가운데 */
+    vertical-align: middle; /* 수직 가운데 */
+}
+td {
+    font-size : 13px;
+}
+
+tr:hover {
+    .t-cell {
+        cursor : pointer;
+        background-color: rgb(15,166,249) !important;
+    }
+}
+
+table tr:last-child td:first-child {
+    border-bottom-left-radius: 10px; /* 왼쪽 하단 모서리 둥글게 */
+}
+
+table tr:last-child td:last-child {
+    border-bottom-right-radius: 10px; /* 오른쪽 하단 모서리 둥글게 */
+}
+
+.select-container {
+    width: 120px !important;
+    height: 36px !important;
+}
+.form-select {
+    height: 42px;
+}
+
+select {
+    font-size : 12px !important;
+}
+
+.req-top-box {
+    display:flex;
+    justify-content: space-between;
+    padding-top: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-bottom : 10px;
+}
+
+.search-option-box {
+    display: flex;
+}
+
+.main-search-field:focus {
+    border: 2px solid rgb(15,166,249);
+    outline: none;
+}
+
+.main-search-field {
+    width : 150px;
+    padding: 10px 10px;
+    font-size: 12px;
+    border: 2px solid black;
+    border-radius: 10px;
+    outline: none;
+    transition: all 0.3s ease-in-out;
+}
+
+.create-frm {
+    width: 100% !important;
+}
+
+.video-req-table-container {
+    margin-left:10px;
+    margin-right:10px;
+}
+
+.button-container {
+    display: flex;
+}
+
+.main-search-btn {
+    width : 80px;
+
+    .button-text {
+        font-size : 15px;
+    }
+}
+
+textarea {
+    padding: 10px !important;
+    width : 95%;
+    border: 2px solid grey;
+    border-radius: 10px;
+    transition: border-color 0.3s ease; /* 부드러운 보더 색상 변경 */
+    resize: none !important;
+}
+
+.address {
+    width : 70% !important;
+}
+
+.address-btn {
+    width : 100% !important;
+}
+
+.button-text {
+    font-size: 12px;
+}
+
+
+.checkbox {
+    width : 30px !important;
+    height: 30px !important;
+}
+
+.paging {
+    a {
+        background-color : rgb(107,146,164) !important;
+    }
+    span {
+        color : white;
+    }
+
+    .active {
+        a {
+            background-color : rgb(0, 160, 253) !important;
+            border: 1px solid rgb(0, 160, 253) !important;
+        }
+        
+    }
+}
+
+@media (max-width : 1024px) {
+    .req-top-box
+    {
+        flex-direction: column;
+    }
+
+    .main-search-field {
+        width: 100%;
+    }
+
+    .page-num {
+        display: none;
+    }
+
+    .page-num.active {
+        display: block;
+    }
+
+    .cell-req-id,
+    .cell-cre-dt,
+    .cell-note,
+    .cell-address,
+    .cell-progress-note,
+    .cell-manager-nm
+    {
+        display: none;
+    }
+
+    .cell-cre-nm.head {
+        border-top-left-radius: 10px;
+    }
+    .main-search-btn {
+        width: 50%;
+    }
+
+    .search-option-box {
+        flex-direction: column;
+    }
+
+    .select-container {
+        margin-top: 20px;
+        width: 100% !important;
+    }
+
+    .main-search-input {
+        width: 100% !important;
+    }
+
+    table tr:last-child .cell-cre-nm {
+        border-bottom-left-radius: 10px; /* 왼쪽 하단 모서리 둥글게 */
+    }
+}

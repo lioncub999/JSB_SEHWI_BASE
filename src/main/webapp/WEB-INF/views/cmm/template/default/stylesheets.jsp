@@ -9,32 +9,34 @@
 <%@ include file="/WEB-INF/views/cmm/include/taglibs.jsp" %>
 
 <base href="/">
-<link type="text/css" rel="stylesheet" href="<c:url value='/css/normalize.css'/>">
+
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-<link type="text/css" rel="stylesheet" href="<c:url value='/css/layout.css'/>">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link type="text/css" rel="stylesheet" href="<c:url value='/css/common/normalize.css'/>">
+<link type="text/css" rel="stylesheet" href="<c:url value='/css/common/layout.css'/>">
+<link type="text/css" rel="stylesheet" href="<c:url value='/css/common/button.css'/>">
 
 <%-- /main으로 시작하는 URL에서만 main.css 추가 --%>
 <c:if test="${fn:startsWith(pageContext.request.requestURI, '/main')}">
-    <link type="text/css" rel="stylesheet" href="<c:url value='/css/main.css'/>">
+    <link type="text/css" rel="stylesheet" href="<c:url value='/css/view/main.css'/>">
 </c:if>
 
 <%-- /videoReq 시작하는 URL에서만 video.css 추가 --%>
 <c:if test="${fn:startsWith(pageContext.request.requestURI, '/videoReq')}">
-    <link type="text/css" rel="stylesheet" href="<c:url value='/css/video.css'/>">
+    <link type="text/css" rel="stylesheet" href="<c:url value='/css/view/video.css'/>">
 </c:if>
 
 <%-- /calendar 시작하는 URL에서만 calendar.css 추가 --%>
 <c:if test="${fn:startsWith(pageContext.request.requestURI, '/calendar')}">
-    <link type="text/css" rel="stylesheet" href="<c:url value='/css/calendar.css'/>">
+    <link type="text/css" rel="stylesheet" href="<c:url value='/css/view/calendar.css'/>">
 </c:if>
 
 <%-- /mypage 시작하는 URL에서만 mypage.css 추가 --%>
 <c:if test="${fn:startsWith(pageContext.request.requestURI, '/mypage')}">
-    <link type="text/css" rel="stylesheet" href="<c:url value='/css/mypage.css'/>">
+    <link type="text/css" rel="stylesheet" href="<c:url value='/css/view/mypage.css'/>">
 </c:if>
 
 <%-- /statistics 시작하는 URL에서만 statistics.css 추가 --%>
 <c:if test="${fn:startsWith(pageContext.request.requestURI, '/statistics')}">
-    <link type="text/css" rel="stylesheet" href="<c:url value='/css/statistics.css'/>">
+    <link type="text/css" rel="stylesheet" href="<c:url value='/css/view/statistics.css'/>">
 </c:if>
