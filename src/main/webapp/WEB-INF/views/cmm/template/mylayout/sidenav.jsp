@@ -9,6 +9,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <c:set var="logoutUrl" value="/auth/logout"/>
+<c:set var="loginUrl" value="/auth/login"/>
 <%
     String url = request.getServletPath();
     request.setAttribute("url", url);
@@ -28,7 +29,7 @@
                     Toast('top', 2000, 'success', '로그아웃이 완료되었습니다.');
 
                     setTimeout(function () {
-                        window.location.href = "/login"
+                        window.location.href = "${loginUrl}"
                     }, 1000)
                 } else {
                     alert('에러 발생')
@@ -55,46 +56,14 @@
     <%-- 메뉴 리스트 --%>
     <ul>
         <%-- 홈 --%>
-        <li class="nav-item <c:if test="${fn:startsWith(url, '/main')}">active</c:if>">
+        <li class="nav-item <c:if test="${fn:startsWith(url, '/video/')}">active</c:if>">
             <b></b>
             <b></b>
-            <a href="/main">
+            <a href="/video/videoMap">
                 <span class="material-icons">videocam</span>
                 <span class="nav-text">&nbsp;영상 촬영 관리</span>
             </a>
         </li>
-
-        <%-- 촬영 신청 리스트 --%>
-        <li class="nav-item <c:if test="${fn:startsWith(url, '/videoReq')}">active</c:if>">
-            <b></b>
-            <b></b>
-            <a href="/videoReq">
-                <span class="material-icons">list</span>
-                <span class="nav-text">&nbsp;촬영 신청 리스트</span>
-            </a>
-        </li>
-
-        <%-- 촬영 일정 캘린더 --%>
-        <li class="nav-item calendar <c:if test="${fn:startsWith(url, '/calendar')}">active</c:if>">
-            <b></b>
-            <b></b>
-            <a href="/calendar">
-                <span class="material-icons">calendar_month</span>
-                <span class="nav-text">&nbsp;촬영 일정 캘린더</span>
-            </a>
-        </li>
-
-        <%-- 촬영 통계&정산 --%>
-        <c:if test='${userGrade == 0}'>
-            <li class="nav-item statistics <c:if test="${fn:startsWith(url, '/statistics')}">active</c:if>">
-                <b></b>
-                <b></b>
-                <a href="/statistics">
-                    <span class="material-icons">analytics</span>
-                    <span class="nav-text">&nbsp;촬영 통계&정산</span>
-                </a>
-            </li>
-        </c:if>
 
         <%-- 마이페이지 --%>
         <li class="nav-item <c:if test="${fn:startsWith(url, '/mypage')}">active</c:if>">

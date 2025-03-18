@@ -47,7 +47,7 @@
             $(document).ready(function() {
                 // 로그인 세션 확인
                 if ("${passReset}" == "N") {
-                    window.location.href = "/main"
+                    window.location.href = "/video/videoMap"
                 }
             
             // 엔터키 감지 및 버튼 클릭 트리거
@@ -105,7 +105,7 @@
                             Toast('top', 1000, 'success', '비밀번호가 저장되었습니다!');
 
                             setTimeout(() => {
-                                window.location.href = '/main';
+                                window.location.href = '/video/videoMap';
                             }, 1000);
                         } else {
                             Toast('top', 1000, 'error', '오류가 발생했습니다! 지속 현상 발생시 개발자에게 문의해주세요!');

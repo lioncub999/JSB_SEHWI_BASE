@@ -1,116 +1,68 @@
-th {
-    font-size : 13px;
-    font-weight: bold;
-    background-color : rgb(107,146,164) !important;
-    color : white !important;
-    text-align: center !important;   /* 수평 가운데 */
-    vertical-align: middle; /* 수직 가운데 */
+.table-container {
+    padding-left: 5px;
+    padding-right: 5px;
 }
-td {
-    font-size : 13px;
-}
-
-tr:hover {
-    .t-cell {
-        cursor : pointer;
-        background-color: rgb(15,166,249) !important;
+.table {
+    th {
+        font-size : 13px;
+        font-weight: bold;
+        background-color : rgb(107,146,164) !important;
+        color : white !important;
+        text-align: center !important;   /* 수평 가운데 */
+        vertical-align: middle; /* 수직 가운데 */
+    }
+    td {
+        font-size : 13px;
+        text-align: center !important;   /* 수평 가운데 */
+        vertical-align: middle; /* 수직 가운데 */
+    }
+    tr:hover {
+        .t-cell {
+            cursor : pointer;
+            background-color: rgb(15,166,249) !important;
+        }
+    }
+    
+    .checkbox {
+        width : 30px !important;
+        height: 30px !important;
+    }
+    .checkbox-td {
+        text-align:left; 
+        display:flex; 
+        align-items:center; 
+    }
+    .create-address-search-tr {
+        .button-container {
+            display: flex;
+            width : 23%
+        }
+        
+        .main-search-btn {
+            width : 80px;
+        
+            .button-text {
+                font-size : 15px;
+            }
+        }
+        .address {
+            width : 64% !important;
+        }
+        
+        .address-btn {
+            width : 100% !important;
+        }
+    }
+    .create-address-search-cont {
+        display:flex; 
+        justify-content:left;
     }
 }
 
-table tr:last-child td:first-child {
-    border-bottom-left-radius: 10px; /* 왼쪽 하단 모서리 둥글게 */
-}
-
-table tr:last-child td:last-child {
-    border-bottom-right-radius: 10px; /* 오른쪽 하단 모서리 둥글게 */
-}
-
-.select-container {
-    width: 120px !important;
-    height: 36px !important;
-}
-.form-select {
-    height: 42px;
-}
-
-select {
-    font-size : 12px !important;
-}
-
-.req-top-box {
-    display:flex;
-    justify-content: space-between;
+.table-title {
+    text-align: left;
     padding-top: 10px;
-    padding-left: 10px;
-    padding-right: 10px;
-    margin-bottom : 10px;
-}
-
-.search-option-box {
-    display: flex;
-}
-
-.main-search-field:focus {
-    border: 2px solid rgb(15,166,249);
-    outline: none;
-}
-
-.main-search-field {
-    width : 150px;
-    padding: 10px 10px;
-    font-size: 12px;
-    border: 2px solid black;
-    border-radius: 10px;
-    outline: none;
-    transition: all 0.3s ease-in-out;
-}
-
-.create-frm {
-    width: 100% !important;
-}
-
-.video-req-table-container {
-    margin-left:10px;
-    margin-right:10px;
-}
-
-.button-container {
-    display: flex;
-}
-
-.main-search-btn {
-    width : 80px;
-
-    .button-text {
-        font-size : 15px;
-    }
-}
-
-textarea {
-    padding: 10px !important;
-    width : 95%;
-    border: 2px solid grey;
-    border-radius: 10px;
-    transition: border-color 0.3s ease; /* 부드러운 보더 색상 변경 */
-    resize: none !important;
-}
-
-.address {
-    width : 70% !important;
-}
-
-.address-btn {
-    width : 100% !important;
-}
-
-.button-text {
-    font-size: 12px;
-}
-
-
-.checkbox {
-    width : 30px !important;
-    height: 30px !important;
+    padding-left: 5px;
 }
 
 .paging {
@@ -129,57 +81,243 @@ textarea {
         }
         
     }
+    .pagination {
+        justify-content: center;
+    }
 }
 
+
+/* 촬영지도 검색 컨테이너 */
+.map-search-container {
+    position:absolute; 
+    z-index : 10; 
+    background-color : white;
+    margin : 10px;
+    padding : 10px; 
+    border-radius : 10px; 
+    border : 3px solid black;
+    text-align: left;
+
+    .title {
+        font-size: 14px;
+    }
+
+    .map-search-field {
+        width: 200px;
+        padding: 10px 10px;
+        font-size: 12px;
+        border: 2px solid black;
+        border-radius: 10px;
+        outline: none;
+    }
+
+    .map-search-field:focus {
+        border: 2px solid rgb(15,166,249);
+        outline: none;
+    }
+
+    .map-search-btn {
+        height: 42px;
+        
+        .map-search-btn-text {
+            font-size: 12px;
+        }
+    }
+}
+
+/* 촬영지도 핀 설명 컨테이너 */
+.map-pin-explain-box {
+    position:absolute; 
+    top : 180px;
+    z-index : 10; 
+    background-color : white;
+    margin : 10px;
+    padding : 10px; 
+    border-radius : 10px; 
+    border : 3px solid black;
+
+    .pin-box {
+        display: flex;
+    }
+
+    .pin-exp-title {
+        font-size: 12px;
+    }
+}
+
+/* 지도 */
+.map {
+    width:100%;
+    height:100%; 
+}
+
+.main-search-field:focus {
+    border: 2px solid rgb(15,166,249);
+    outline: none;
+}
+
+.main-search-field {
+    width : 100%;
+    padding: 10px 10px;
+    font-size: 12px;
+    border: 2px solid black;
+    border-radius: 10px;
+    outline: none;
+}
+
+.req-list-top-box {
+    display:flex;
+    justify-content: space-between;
+    padding-top: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-bottom : 10px;
+}
+
+.list-search-option-box {
+    display: flex;
+
+    .button-container {
+        display: flex;
+    }
+
+    .form-select {
+        width: 120px !important;
+        height: 42px;
+    }
+    
+    select {
+        font-size : 12px !important;
+    }
+}
+
+textarea {
+    font-size: 13px !important;
+    padding: 10px !important;
+    width : 95%;
+    border: 2px solid grey;
+    border-radius: 10px;
+    transition: border-color 0.3s ease; /* 부드러운 보더 색상 변경 */
+    resize: none !important;
+}
+
+/* 캘린더 */
+.calendar {
+    background-color : #e3e3e3 !important;
+
+    .fc-toolbar-title {
+        margin-top : 10px;
+        margin-left : 10px
+    }
+}
+
+.who-color-container {
+    z-index: 10;
+    position : absolute;
+    left: 50%;
+
+    padding: 10px;
+    background-color: white;
+    border : 3px solid black;
+    border-radius: 10px;
+
+    /* 이벤트 제목을 왼쪽 정렬 */
+    .fc-event-title {
+        text-align: left !important;
+        white-space: initial;
+        font-size: 12px !important;
+        color : black !important;
+    }
+
+    .fc-event-time {
+        text-align: left;
+        width: 63px !important;
+        font-size: 12px !important;
+        color : black !important;
+    }
+
+    .fc-daygrid-day-number {
+        color : black !important;
+    }
+
+    .fc-col-header-cell-cushion {
+        color : black !important;
+    }
+    .who-color {
+        display: flex;
+        align-items: center;
+    }
+}
+
+.mobile-text {
+    display: none;
+}
+
+
+
+/* 모바일, 테블릿 반응형 */
 @media (max-width : 1024px) {
-    .req-top-box
+    .paging {
+        .page-num {
+            display: none;
+        }
+    
+        .page-num.active {
+            display: block;
+        }
+    }
+    .req-list-top-box
     {
+        .select-container {
+            width: 100% !important;
+        }
+        .form-select {
+            width: 100% !important;
+        }
         flex-direction: column;
+        .list-search-option-box {
+            flex-direction: column;
+        }
+        .main-search-btn {
+            width: 50%;
+        }
     }
+    .map-search-container {
+        width: 60%;
 
-    .main-search-field {
-        width: 100%;
+        .map-search-field,
+        .map-search-btn {
+            width: 100%;
+        }
     }
-
-    .page-num {
+    .map-pin-explain-box {
         display: none;
     }
-
-    .page-num.active {
+    .video-req-list-table-container {
+        .cell-req-id,
+        .cell-cre-dt,
+        .cell-note,
+        .cell-address,
+        .cell-progress-note,
+        .cell-manager-nm
+        {
+            display: none;
+        }
+    }
+    .expense-details-title {
+        display: none;
+    }
+    .expense-details {
+        display: none;
+    }
+    .mobile-text {
         display: block;
     }
-
-    .cell-req-id,
-    .cell-cre-dt,
-    .cell-note,
-    .cell-address,
-    .cell-progress-note,
-    .cell-manager-nm
-    {
-        display: none;
+    .calendar {
+        height: 100%;
     }
-
-    .cell-cre-nm.head {
-        border-top-left-radius: 10px;
-    }
-    .main-search-btn {
-        width: 50%;
-    }
-
-    .search-option-box {
-        flex-direction: column;
-    }
-
-    .select-container {
-        margin-top: 20px;
-        width: 100% !important;
-    }
-
-    .main-search-input {
-        width: 100% !important;
-    }
-
-    table tr:last-child .cell-cre-nm {
-        border-bottom-left-radius: 10px; /* 왼쪽 하단 모서리 둥글게 */
+    .who-color-container {
+        top: 90px;
+        left: 45%;
     }
 }

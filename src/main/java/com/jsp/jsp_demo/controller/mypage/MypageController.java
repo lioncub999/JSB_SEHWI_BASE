@@ -103,7 +103,7 @@ public class MypageController {
 
         } catch (Exception e) {
             traceWriter.add("[Error] : " + e);
-            return "main/main";
+            return "auth/login";
         } finally {
             traceWriter.log(0);
         }

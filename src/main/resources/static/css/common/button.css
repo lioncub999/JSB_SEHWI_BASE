@@ -8,7 +8,6 @@
     padding: 5 5px; /* 적당한 내부 여백 */
     font-size: 14px; /* 글자 크기 */
     cursor: pointer; /* 마우스 포인터 모양 */
-    transition: all 0.3s ease; /* 부드러운 전환 효과 */
 }
 
 /* 마우스 올렸을 때 효과 */

@@ -42,7 +42,7 @@ public class AuthController {
      *  ┃    <GET>
      *  ┃    ● 로그인 화면
      *  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━*/
-    @GetMapping("/login")
+    @GetMapping("/auth/login")
     public String getLogin() {
         return "auth/login";
     }
@@ -262,6 +262,5 @@ public class AuthController {
         } finally {
             traceWriter.log(0);
         }
-
     }
 }

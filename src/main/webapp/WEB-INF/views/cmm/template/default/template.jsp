@@ -38,14 +38,14 @@
     <%--TODO: 로그인 세션 확인--%>
     <c:if test="${userId == null || userId == ''}">
       <script>
-        window.location.href = "/login"
+        window.location.href = "/auth/login"
       </script>
     </c:if>
 
     <%--TODO: 비밀번호 초기화 Y시 초기화 화면--%>
     <c:if test="${passReset == 'Y'}">
       <script>
-        window.location.href = "/resetPass"
+        window.location.href = "/auth/resetPass"
       </script>
     </c:if>
 
@@ -56,9 +56,10 @@
       </div>
       <%@ include file="/WEB-INF/views/cmm/template/mylayout/sidenav.jsp" %>
       <section class="content">
-        <div class="main-content">
           <%@ include file="/WEB-INF/views/cmm/template/mylayout/topnav.jsp" %>
-          <%@ include file="/WEB-INF/views/cmm/template/default/mainContents.jsp" %>
+          <div class="main-container">
+            <%@ include file="/WEB-INF/views/cmm/template/default/mainContents.jsp" %>
+          </div>
         </div>
       </section>
     </main>

@@ -16,7 +16,7 @@
 
 <c:if test="${passReset == 'N'}">
     <script>
-        window.location.href = "/main"
+        window.location.href = "/video/videoMap"
     </script>
 </c:if>
 <script>
@@ -34,7 +34,7 @@
                     Toast('top', 1000, 'success', '비밀번호 변경이 완료되었습니다.');
 
                     setTimeout(function() {
-                        window.location.href = "/main"
+                        window.location.href = "/video/videoMap"
                     }, 1000)
                 } else {
                     alert('에러 발생')

@@ -13,8 +13,8 @@
     <!--    ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛-->
     <decorator name="default" page="template/default/template.jsp">
         <!-- 메인 -->
-        <pattern>/main</pattern>
-        <pattern>/main/*</pattern>
+        <pattern>/video</pattern>
+        <pattern>/video/*</pattern>
 
         <!-- 촬영 신청 -->
         <pattern>/videoReq</pattern>

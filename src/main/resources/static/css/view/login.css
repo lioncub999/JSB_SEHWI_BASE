@@ -42,6 +42,9 @@ body {
 main {
     overflow: auto;
     text-align: center;
+
+    align-content: center;
+
     width: calc(100vw - 30px);
     height: calc(100dvh - 30px);
     background: rgb(250, 250, 250);
@@ -173,6 +176,12 @@ main {
 
 @media (max-width : 1024px) {
     main {
+        align-content: baseline;
+
+        .login-logo {
+            margin-top: 100px;
+        }
+
         .input-container {
             width : 250px;
         }

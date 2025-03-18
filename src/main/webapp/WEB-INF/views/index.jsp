@@ -10,7 +10,7 @@
 <html>
 <head>
     <script>
-        window.location.href = '/login';
+        window.location.href = '/auth/login';
     </script>
 </head>
 <body>

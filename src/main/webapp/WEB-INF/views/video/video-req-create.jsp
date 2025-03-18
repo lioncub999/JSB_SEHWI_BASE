@@ -9,14 +9,13 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 
-<c:set var="reqMainUrl" value="/videoReq"/>
-<c:set var="reqCreateUrl" value="/videoReq/reqCreate"/>
+<c:set var="videoReqListUrl" value="/video/videoReqList"/>
+<c:set var="videoReqCreateUrl" value="/video/videoReqCreate"/>
 
 <html>
     <head>
         <meta name="viewport"
             content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"/>
-        <link type="text/css" rel="stylesheet" href="<c:url value='/css/main.css'/>">
     </head>
     <body>
         <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
@@ -114,7 +113,7 @@
                     }
 
                     $.ajax({
-                        url: "${reqCreateUrl}",
+                        url: "${videoReqCreateUrl}",
                         type: "post",
                         cache: false,
                         data: formData,
@@ -126,7 +125,7 @@
                                 allowOutsideClick: false, // 팝업 외부 클릭 비활성화
                             }).then((result) => {
                                 if (result.isConfirmed) {
-                                    window.location.href = "${reqMainUrl}";
+                                    window.location.href = "${videoReqListUrl}";
                                 }
                             });
                         } else {
@@ -142,24 +141,23 @@
             }
         </script>
         
-        <div style="display : flex; justify-content: space-between">
-            <button class="common-blue-btn" type="button" onclick="PageControlFunc.moveToReqListPage()" style="margin-top:10px;margin-left:10px;">뒤로 이동</button>
+        <div style="display : flex; justify-content: flex-end">
             <button class="common-blue-btn" type="button" onclick="AjaxFunc.reqCreate()" style="margin-top:10px;margin-right:10px;">촬영 신청</button>
         </div>
 
         <%-- 신청 폼 --%>
-        <div style="margin-left:10px;margin-top:15px;margin-right:10px">
-            <form class="video-req-frm", id="video-req-frm">
-                <input type="hidden" id="longitude" name="longitude"/>
-                <input type="hidden" id="latitude" name="latitude"/>
-                <input type="hidden" id="address" name="address"/>
+        <form class="video-req-frm", id="video-req-frm">
+            <input type="hidden" id="longitude" name="longitude"/>
+            <input type="hidden" id="latitude" name="latitude"/>
+            <input type="hidden" id="address" name="address"/>
 
+            <div class="table-container">
                 <table class="table table-bordered">
                     <tr>
-                        <th style="border-top-left-radius:10px; width:20%">긴급건 여부</th>
-                        <td style="text-align:left; display:flex; align-items:center; border-top-right-radius:10px;">
+                        <th style="width:20%">긴급건<br>여부</th>
+                        <td class="checkbox-td">
                             <input type="checkbox" id="checkbox" class="checkbox" value="Y" name="isUrgentReq">
-                            <div style="margin-left:10px;">긴급건</div>
+                            <div>&nbsp;긴급건</div>
                         </td>
                     </tr>
                     <tr>
@@ -169,13 +167,13 @@
                         </td>
                     </tr>
                     <tr>
-                        <th>매장(상호)명</th>
+                        <th>매장명</th>
                         <td>
                             <input type="text" class="main-search-field create-frm" placeholder="매장명" id="storeNm" name="storeNm"/>
                         </td>
                     </tr>
                     <tr>
-                        <th>대표님 연락처 ('-' 제외)</th>
+                        <th>대표님<br>연락처 <br>('-' 제외)</th>
                         <td>
                             <input type="text" class="main-search-field create-frm" placeholder="대표님 연락처 ('-' 제외)" id="phone" name="phone"/>
                         </td>
@@ -192,10 +190,10 @@
                             <input class="main-search-field create-frm" type="text" class="form-control" id="datepicker" name="contractDt" readonly>
                         </td>
                     </tr>
-                    <tr>
-                        <th style="border-bottom-left-radius:10px">매장 주소</th>
-                        <td style="border-bottom-right-radius:10px">
-                            <div style="display:flex; justify-content:left">
+                    <tr class="create-address-search-tr">
+                        <th>매장주소</th>
+                        <td>
+                            <div class="create-address-search-cont">
                                 <input class="main-search-field address" type="text" id="addressSearch" placeholder="주소 입력" />
                                 <div class="button-container">
                                     <button class="common-blue-btn address-btn" type="button" id="addressSearchBtn" onclick="MapFunc.searchAddressAndShowPin()">
@@ -212,7 +210,7 @@
                         </td>
                     </tr>
                 </table>
-            </form>
-        </div>
+            </div>
+        </form>
     </body>
 </html>

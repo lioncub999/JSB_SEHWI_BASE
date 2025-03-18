@@ -12,10 +12,12 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 
-<c:set var="passResetUrl" value="/auth/resetPass"/>
+
 <c:set var="updateVideoReqUrl" value="/videoReq/updateVideoReq"/>
 <c:set var="changeJobGradeUrl" value="/mypage/changeJobGrade"/>
+<c:set var="passResetUrl" value="/auth/resetPass"/>
 <c:set var="logoutUrl" value="/auth/logout"/>
+<c:set var="loginUrl" value="/auth/login"/>
 
 <html>
     <head>
@@ -292,7 +294,7 @@
                     }).done(function (response) {
                         if (response) {
                             setTimeout(function () {
-                                window.location.href = "/login"
+                                window.location.href = "/auth/login"
                             }, 1000)
                         } else {
                             alert('에러 발생')
@@ -420,18 +422,18 @@
         <%@ include file="/WEB-INF/views/cmm/template/mylayout/modal/modal.jsp" %>
 
                 
-        <div style="margin-top:10px;margin-left:10px;margin-right :10px;">
+        <div class="table-title">
             ☉ 내 정보
         </div>
         <form class="mypage-frm", id="mypage-frm">
-            <div class="my-info-container">
+            <div class="table-container">
                 <table class="table table-bordered" >
                     <tbody>
                         <tr>
-                            <th style="width: 20%;border-top-left-radius:10px;">
+                            <th style="width: 20%;">
                                 아이디
                             </th>
-                            <td style="border-top-right-radius:10px;">
+                            <td>
                                 ${currentUserInfo.userId}
                             </td>
                         </tr>
@@ -472,10 +474,10 @@
                             </td>
                         </tr>
                         <tr>
-                            <th style="border-bottom-left-radius:10px;">
+                            <th>
                                 비밀번호 초기화
                             </th>
-                            <td style="border-bottom-right-radius:10px;">
+                            <td>
                                 <button type="button" class="common-blue-btn pass-reset-btn" onclick=PageFunc.passResetConfirmAlert()>비밀번호 초기화</button>
                             </td>
                         </tr>
@@ -484,11 +486,11 @@
             </div>
         </form>
 
-        <div style="margin-top:10px;margin-left:10px;margin-right :10px;">
+        <div class="table-title">
             ☉ 내 촬영신청 리스트
         </div>
         <%-- 페이지네이션 --%>
-        <nav class="paging" aria-label="Page navigation example" style="justify-items : center">
+        <nav class="paging" aria-label="Page navigation example">
             <ul class="pagination">
                 <li class="page-item">
                     <a class="page-link" href="/mypage?curPage=1" aria-label="Previous">
@@ -516,7 +518,7 @@
                         <span aria-hidden="true">&gt;</span>
                     </a>
                 </li>
-                <li>
+                <li class="page-item">
                     <a class="page-link" href="/mypage?curPage=${maxPage}" aria-label="Next">
                         <span aria-hidden="true">&gt;&gt;</span>
                     </a>
@@ -524,11 +526,11 @@
             </ul>
         </nav>
         <%-- 요청 리스트 테이블 --%>
-        <div class="my-req-list-container">
+        <div class="table-container">
             <table class="table table-bordered" >
                 <thead class="text-center">
                     <tr>
-                        <th style="width: 3%; border-top-left-radius:10px;" class="cell-req-id">신청<br>ID</th>
+                        <th style="width: 3%;" class="cell-req-id">신청<br>ID</th>
                         <th style="width: 8%;" class="cell-phone">사장님<br>연락처</th>
                         <th style="width: 10%;" class="cell-store-nm head">상호명</th>
                         <th style="width: 15%;" class="cell-address">주소</th>
@@ -536,7 +538,7 @@
                         <th style="width: 16%;" class="cell-progress-note">촬영담당자<br>특이사항</th>
                         <th style="width: 5%;" class="cell-manager-nm">촬영<br>담당자</th>
                         <th style="width: 10%;" class="cell-shoot-reserve-dtm">촬영<br>예정일</th>
-                        <th style="width: 8%; border-top-right-radius:10px;">진행상태</th>
+                        <th style="width: 8%;">진행상태</th>
                     </tr>
                 </thead>
                 <tbody>

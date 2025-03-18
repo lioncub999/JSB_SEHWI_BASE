@@ -1,7 +1,7 @@
 <%--
  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
  ┃
- ┃     ● 메인 페이지
+ ┃     ● 촬영 지도 페이지
  ┃
  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 --%>
@@ -9,8 +9,8 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 
 
-<c:set var="getVideoReqUrl" value="/videoReq/getRecentReqList"/>
-<c:set var="updateVideoReqUrl" value="/videoReq/updateVideoReq"/>
+<c:set var="getVideoReqUrl" value="/video/getRecentVideoReqList"/>
+<c:set var="videoReqUpdateUrl" value="/video/videoReqUpdate"/>
 
 <html>
 <head>
@@ -339,24 +339,24 @@
 
         <!-- 지도 -->
         <div class="map-search-container">
-            <div>☉ 전국 촬영 신청 지도</div>
+            <div class="title">☉ 전국 촬영 신청 지도</div>
             <input type="text" class="map-search-field" id="addressSearch" />
-            <button type="button" class="common-blue-btn search-btn" onclick=MapFunc.searchAddressToCoordinate() >
+            <button type="button" class="common-blue-btn map-search-btn" onclick=MapFunc.searchAddressToCoordinate() >
                 <span class="map-search-btn-text">주소 검색</span>
             </button>
         </div>
         <div class="map-pin-explain-box">
             <div class="pin-box">
                 <img src="/images/common/blue_marker.png" alt="">
-                <div>: 일정조율필요</div>
+                <div class="pin-exp-title">&nbsp;: 일정조율필요</div>
             </div>
             <div class="pin-box">
                 <img src="/images/common/red_marker.png" alt="">
-                <div>: 긴급건</div>
+                <div class="pin-exp-title">&nbsp;: 긴급건</div>
             </div>
             <div class="pin-box">
                 <img src="/images/common/green_marker.png" alt="">
-                <div>: 촬영대기</div>
+                <div class="pin-exp-title">&nbsp;: 촬영대기</div>
             </div>
         </div>
         <div id="map" class="map"></div>

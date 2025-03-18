@@ -16,9 +16,9 @@
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/common/layout.css'/>">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/common/button.css'/>">
 
-<%-- /main으로 시작하는 URL에서만 main.css 추가 --%>
-<c:if test="${fn:startsWith(pageContext.request.requestURI, '/main')}">
-    <link type="text/css" rel="stylesheet" href="<c:url value='/css/view/main.css'/>">
+<%-- /video으로 시작하는 URL에서만 video.css 추가 --%>
+<c:if test="${fn:startsWith(pageContext.request.requestURI, '/video')}">
+    <link type="text/css" rel="stylesheet" href="<c:url value='/css/view/video.css'/>">
 </c:if>
 
 <%-- /videoReq 시작하는 URL에서만 video.css 추가 --%>

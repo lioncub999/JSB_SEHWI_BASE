@@ -64,21 +64,24 @@
             }
         </script>
         <div class="who-color-container">
-            <div style="width : 10px; height : 10px; background-color : red; border-radius : 5px"></div>
-            <div>&nbsp;채근</div>
-            <div style="width : 10px"></div>
+            <div class="mobile-text">☉모바일은 가로로봐주세요</div>
+            <div class="who-color">
+                <div style="width : 10px; height : 10px; background-color : red; border-radius : 5px"></div>
+                <div>&nbsp;채근</div>
+                <div style="width : 10px"></div>
 
-            <div style="width : 10px; height : 10px; background-color : blue; border-radius : 5px"></div>
-            <div>&nbsp;성우</div>
-            <div style="width : 10px"></div>
+                <div style="width : 10px; height : 10px; background-color : blue; border-radius : 5px"></div>
+                <div>&nbsp;성우</div>
+                <div style="width : 10px"></div>
 
-            <div style="width : 10px; height : 10px; background-color : yellow; border-radius : 5px"></div>
-            <div>&nbsp;세휘</div>
-            <div style="width : 10px"></div>
+                <div style="width : 10px; height : 10px; background-color : yellow; border-radius : 5px"></div>
+                <div>&nbsp;세휘</div>
+                <div style="width : 10px"></div>
 
-            <div style="width : 10px; height : 10px; background-color : black; border-radius : 5px"></div>
-            <div>&nbsp;미정</div>
+                <div style="width : 10px; height : 10px; background-color : black; border-radius : 5px"></div>
+                <div>&nbsp;미정</div>
+            </div>
         </div>
-        <div id='calendar'></div>
+        <div class="calendar" id='calendar'></div>
     </body>
 </html>

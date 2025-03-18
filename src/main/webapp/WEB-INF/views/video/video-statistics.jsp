@@ -8,9 +8,10 @@
 <%@ include file="/WEB-INF/views/cmm/include/taglibs.jsp" %>
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 
-<c:set var="insertSpendUrl" value="/statistics/insertSpend"/>
-<c:set var="getSpendHistUrl" value="/statistics/getSpendHist"/>
-<c:set var="getGroupedSpendAmtUrl" value="/statistics/getGroupedSpendAmt"/>
+<c:set var="videoStatisticsUrl" value="/video/videoStatistics"/>
+<c:set var="insertSpendUrl" value="/video/statistics/insertSpend"/>
+<c:set var="getSpendHistUrl" value="/video/statistics/getSpendHist"/>
+<c:set var="getGroupedSpendAmtUrl" value="/video/statistics/getGroupedSpendAmt"/>
 
 
 <html>
@@ -87,7 +88,7 @@
                     const selectedYear = $('#calendar').val().substring(0,4);
                     const selectedMonth = $('#calendar').val().substring(6,8);
                     
-                    window.location.href = '/statistics?selectedYear='+ selectedYear + '&selectedMonth=' + selectedMonth;
+                    window.location.href = '${videoStatisticsUrl}?selectedYear='+ selectedYear + '&selectedMonth=' + selectedMonth;
                 },
 
                 validateNumberInput : function() {
@@ -231,7 +232,7 @@
                             const formattedTotalSpend = totalSpend.toLocaleString();
 
                             const sumRow = '<tr>' +
-                                        '<th style="border-bottom-left-radius:10px;">' + "합계" + '</th>' +
+                                        '<th>' + "합계" + '</th>' +
                                         '<td>₩&nbsp;' + formattedTotalSpend + '</td>' +
                                     '</tr>';
 
@@ -259,29 +260,29 @@
                         <form class="spend-frm", id="spend-frm">
                             <table class="table table-bordered" >
                                 <tr>
-                                    <th class="text-center" style="width : 20%; border-top-left-radius:10px">날짜</th>
+                                    <th class="text-center" style="width : 20%;">날짜</th>
                                     <td class="text-center"  style="width : 80%;" id ="modal-spend-dt">
                                         <div>
-                                            <input type="text" class="form-control" id="spendDt" name="spendDt" style="font-size:13px" readonly placeholder="지출 날짜를 입력하세요">
+                                            <input class="main-search-field" type="text" class="form-control" id="spendDt" name="spendDt" style="font-size:13px" readonly placeholder="지출 날짜를 입력하세요">
                                         </div>
                                     </td>
                                 </tr>
                                 <tr>
                                     <th class="text-center" style="width : 20%;">지출 내용</th>
                                     <td class="text-center"  style="width : 80%;" id ="modal-spend-what-for">
-                                        <input type="text" name="whatFor" id="whatFor" placeholder="지출 내용을 입력하세요" style="width:95%" />
+                                        <input class="main-search-field" type="text" name="whatFor" id="whatFor" placeholder="지출 내용을 입력하세요" />
                                     </td>
                                 </tr>
                                 <tr>
                                     <th class="text-center" style="width : 20%;">지출 금액</th>
                                     <td class="text-center"  style="width : 80%;" id ="modal-spend-amount">
-                                        <input type="text" id="amt" name="amt" oninput="PageFunc.validateNumberInput()" placeholder="숫자만 입력하세요" style="width : 95%">
+                                        <input class="main-search-field" type="text" id="amt" name="amt" oninput="PageFunc.validateNumberInput()" placeholder="숫자만 입력하세요" >
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th class="text-center" style="width : 20%; border-bottom-left-radius:10px">비고</th>
+                                    <th class="text-center" style="width : 20%;">비고</th>
                                     <td class="text-center"  style="width : 80%;" id ="modal-spend-note">
-                                        <input type="text" name="note" id="note" placeholder="비고" style="width:95%" />
+                                        <input class="main-search-field" type="text" name="note" id="note" placeholder="비고" />
                                     </td>
                                 </tr>
                             </table>
@@ -296,16 +297,16 @@
             </div>
         </div>
 
-        <div style="margin-top : 10px; margin-left : 10px;">
+        <div class="table-title">
             <input id='calendar' /> 
             <div>☉ 업로드 완료 갯수</div>
         </div>
-        <div class="statistics-container">
+        <div class="table-container">
             <table class="table table-bordered" style="margin-top : 10px;">
                 <tr>
-                    <th style="width : 30%;border-top-left-radius:10px;">이름</td>
+                    <th style="width : 30%;">이름</td>
                     <th style="width : 20%">업로드 갯수</td>
-                    <th style="width : 30%;border-top-right-radius:10px;">급여</td>
+                    <th style="width : 30%;">급여</td>
                 </tr>
 
                 <!-- 합계를 계산하기 위한 변수 선언 -->
@@ -335,7 +336,7 @@
             </table>
         </div>
 
-        <div style="margin-top:10px;margin-left:10px;margin-right :10px;">
+        <div class="table-title">
             ☉ 지출 경비 
             <button onclick=PageFunc.updateModal() class="common-blue-btn main-search-btn" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                 <div class="button-text">
@@ -344,13 +345,13 @@
             </button>
         </div>
 
-        <div class="statistics-container">
+        <div class="table-container">
             <table class="table table-bordered" style="margin-top : 10px;">
                 <tr>
-                    <th style="width : 10%; border-top-left-radius : 10px">
+                    <th style="width : 10%;">
                         이름
                     </th>
-                    <th style="width : 10%; border-top-right-radius : 10px">
+                    <th style="width : 10%;">
                         총 지출액
                     </th>
                 </tr>
@@ -358,11 +359,15 @@
             </table>
         </div>
 
+        <div class="table-title expense-details-title">
+            ☉ 지출 내용
+        </div>
 
-        <div class="statistics-container expense-details">
+
+        <div class="table-container expense-details">
             <table class="table table-bordered" style="margin-top : 10px;">
                 <tr>
-                    <th style="width : 10%; border-top-left-radius : 10px">
+                    <th style="width : 10%;">
                         날짜
                     </th>
                     <th style="width : 10%;">
@@ -377,7 +382,7 @@
                     <th style="width : 30%;">
                         비고
                     </th>
-                    <th style="width : 10%; border-top-right-radius : 10px">
+                    <th style="width : 10%;">
                         관리자확인
                     </th>
                 </tr>

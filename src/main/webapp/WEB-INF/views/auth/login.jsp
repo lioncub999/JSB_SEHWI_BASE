@@ -5,11 +5,12 @@
  ┃
  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 --%>
+
 <%@ include file="/WEB-INF/views/cmm/include/taglibs.jsp" %> <%--한국어 깨짐 방지--%>
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %> <%--한국어 깨짐 방지--%>
 
 
-<c:set var="mainUrl" value="/main"/>
+<c:set var="mainUrl" value="/video/videoMap"/>
 <c:set var="loginUrl" value="/auth/login"/>
 <c:set var="signUpUrl" value="/auth/signUp"/>
 
@@ -30,13 +31,13 @@
 
 
         <script>
+            // 로그인 세션 확인
+            if ("${userId}" != '') {
+                window.location.href = "${mainUrl}";
+            }
+
             <%-- Document Ready! --%>
             $(document).ready(function() {
-                // 로그인 세션 확인
-                if ("${userId}" != '') {
-                    window.location.href = "${mainUrl}";
-                }
-            
             // 엔터키 감지 및 버튼 클릭 트리거
                 document.addEventListener('keydown', function(event) {
                     if (event.key === 'Enter') {
@@ -138,13 +139,13 @@
 
         <main>
             <%-- 로그인 타이틀 --%>
-            <img class="logo-img" src="<c:url value='/images/logo/modusol_logo.png'/>" alt="" style="margin-top : 100px;"/>
+            <img class="logo-img login-logo" src="<c:url value='/images/logo/modusol_logo.png'/>" alt="" />
             <div class="login-title" id="login">
                 모두솔루션 통합 관리 플랫폼
             </div>
 
             <%-- 로그인 폼 --%>
-            <div style="position : relative">
+            <div>
                 <form class="login-frm", id="login-frm">
                     <div class="input-container">
                         <input type="text" class="input-field" placeholder="" name="userId" id="userId" />
