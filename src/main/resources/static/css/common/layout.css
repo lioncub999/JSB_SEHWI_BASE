@@ -25,16 +25,12 @@ main {
     display: flex;
     flex-direction: row;
 
-    margin-left: 10px;
-    margin-right: 10px;
-
     width: 100%;
-    height : calc(100dvh - 20px);
+    height : 100dvh;
 
     background: rgb(254, 254, 254);
     box-shadow: 0 0.5px 0 1px rgba(255, 255, 255, 0.23) inset,
     0 1px 0 0 rgba(255, 255, 255, 0.66) inset, 0 4px 16px rgba(0, 0, 0, 0.12);
-    border-radius: 15px;
     overflow-y: hidden;
 }
 
@@ -43,10 +39,9 @@ main {
     width: 200px;
     padding-top: 10px;
 
-    height : calc(100vh - 20px);
+    height : 100dvh;
     background: #6B92A4;
     overflow: auto;
-    border-radius: 15px 0 0 15px;
 
     .nav-title {
         display: block;
@@ -169,9 +164,36 @@ main {
     display: none;
 }
 
+.top-menu-container .col {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    height: 40px;
+
+    background-color: white;
+    border : 1px solid black;
+
+    .top-nav-text {
+        font-size: 11px;
+    }
+}
+
+.top-menu-container .row:first-child .col:first-child {
+    border-top-left-radius: 10px;
+}
+.top-menu-container .row:first-child .col:last-child {
+    border-top-right-radius: 10px;
+}
+
+
 @media (max-width : 1024px) {
     .side-nav-main {
         width: 50px;
+    }
+
+    .main-content {
+        height: calc(100% - 20px);
     }
 
     .nav-title {
@@ -188,3 +210,4 @@ main {
         display: none !important;
     }
 }
+

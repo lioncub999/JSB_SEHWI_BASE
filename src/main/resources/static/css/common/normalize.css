@@ -60,6 +60,7 @@ a {
     color          : #1e87f0;
     text-decoration: none;
     cursor         : pointer;
+    
 }
 
 a:hover {
@@ -437,13 +438,4 @@ pre {
 
 pre {
     margin: 0px !important;
-}
-
-/* 브라우저는 렌더링 속도, 정밀도에 대한 가독성을 강조 */
-@media screen and (min-width:960px) {
-
-    html,
-    body {
-        text-rendering: optimizeLegibility;
-    }
 }

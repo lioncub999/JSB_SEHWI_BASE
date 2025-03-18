@@ -36,6 +36,9 @@
         <!-- 한국어 로케일 파일 추가 -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/locales/bootstrap-datepicker.kr.min.js"></script>
 
+        <%-- 지도 함수 --%>
+        <script src="<c:url value='/js/util/mapUtils.js' />"></script>
+
         <script>
             <%-- Document Ready! --%>
             $(document).ready(function() {
@@ -50,89 +53,6 @@
             })
 
             let isAddressConfirmed = false;
-
-            let MapFunc = {
-                map : null,
-                markers : [],
-                openInfoWindow: null, // 현재 열린 InfoWindow를 저장
-                // 지도 초기화
-                initMap: function() {
-                    var mapOptions = {
-                        center: new naver.maps.LatLng(35.8, 127.5),
-                        zoom: 7
-                    };
-
-                    this.map = new naver.maps.Map('map', mapOptions);
-                    this.map.setCursor('pointer');
-
-                    infoWindow = new naver.maps.InfoWindow({
-                        anchorSkew: true
-                    });
-                },
-
-                // 지도 및 핀 그리기
-                drawMap: function(reqList) {
-                    if (!this.map) {
-                        this.initMap(); // 처음 한 번만 지도를 생성
-                    }
-                },
-
-                searchAddressToCoordinate: function() {
-                    const address = $("#addressSearch").val(); // 사용자 입력 주소
-                    naver.maps.Service.geocode({
-                        query: address
-                    }, (status, response) => {
-                        if (status === naver.maps.Service.Status.ERROR) {
-                            Toast('top', 1000, 'error', '네이버 지도 오류 발생!');
-                            return;
-                        }
-
-                        if (response.v2.meta.totalCount === 0) {
-                            Toast('top', 1000, 'warning', '검색된 주소가 없습니다!');
-                            return;
-                        }
-
-                        item = response.v2.addresses[0],
-                        point = new naver.maps.Point(item.x, item.y);
-
-                        infoWindow.setContent([
-                            '<table class="table table-striped table-bordered" style="margin : 0px">' +
-                                '<tr>' +
-                                    '<td class="text-center"> 검색 주소 </td>' +
-                                    '<td class="text-center">' + address + '</td>' +
-                                '<tr>' +
-                                '<tr>' +
-                                    '<td class="text-center"> 도로명 주소 </td>' +
-                                    '<td class="text-center">' + item.roadAddress + '</td>' +
-                                '<tr>' +
-                                '<tr>' +
-                                    '<td class="text-center"> 지번 주소 </td>' +
-                                    '<td class="text-center">' + item.jibunAddress + '</td>' +
-                                '<tr>' +
-                            '</table>' 
-                        ].join('\n'));
-
-                        // 위도, 경도 설정
-                        $("#address").val($("#addressSearch").val());
-                        const longitude = $("#longitude");
-                        const latitude = $("#latitude");
-
-                        // 주소 확인 버튼 활성화
-                        const confirmButton = $("#confirmAddressBtn");
-
-                        // 값 설정
-                        longitude.val(item.x);
-                        latitude.val(item.y)
-
-                        confirmButton.css("display", "inline-block");
-
-                        this.map.setCenter(point); // 화살표 함수로 this 유지
-                        this.map.setZoom(15);
-
-                        infoWindow.open(this.map, point);
-                    });
-                }
-            };
 
             let ActiveFunc = {
                 confirmAddress: function() {
@@ -278,7 +198,7 @@
                             <div style="display:flex; justify-content:left">
                                 <input class="main-search-field address" type="text" id="addressSearch" placeholder="주소 입력" />
                                 <div class="button-container">
-                                    <button class="common-blue-btn address-btn" type="button" id="addressSearchBtn" onclick="MapFunc.searchAddressToCoordinate()">
+                                    <button class="common-blue-btn address-btn" type="button" id="addressSearchBtn" onclick="MapFunc.searchAddressAndShowPin()">
                                         <div class="button-text">검색</div>
                                     </button>
                                 </div>

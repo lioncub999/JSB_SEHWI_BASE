@@ -60,7 +60,7 @@
             <b></b>
             <a href="/main">
                 <span class="material-icons">videocam</span>
-                <span class="nav-text">&nbsp;영상 촬영 지도</span>
+                <span class="nav-text">&nbsp;영상 촬영 관리</span>
             </a>
         </li>
 

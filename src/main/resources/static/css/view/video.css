@@ -114,6 +114,7 @@ textarea {
 }
 
 .paging {
+    justify-items : center;
     a {
         background-color : rgb(107,146,164) !important;
     }

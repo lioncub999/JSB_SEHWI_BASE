@@ -57,6 +57,7 @@
       <%@ include file="/WEB-INF/views/cmm/template/mylayout/sidenav.jsp" %>
       <section class="content">
         <div class="main-content">
+          <%@ include file="/WEB-INF/views/cmm/template/mylayout/topnav.jsp" %>
           <%@ include file="/WEB-INF/views/cmm/template/default/mainContents.jsp" %>
         </div>
       </section>
