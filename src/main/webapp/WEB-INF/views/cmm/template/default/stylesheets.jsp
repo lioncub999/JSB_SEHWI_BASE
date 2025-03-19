@@ -21,22 +21,13 @@
     <link type="text/css" rel="stylesheet" href="<c:url value='/css/view/video.css'/>">
 </c:if>
 
-<%-- /videoReq 시작하는 URL에서만 video.css 추가 --%>
-<c:if test="${fn:startsWith(pageContext.request.requestURI, '/videoReq')}">
-    <link type="text/css" rel="stylesheet" href="<c:url value='/css/view/video.css'/>">
+<%-- /contract 시작하는 URL에서만 video.css 추가 --%>
+<c:if test="${fn:startsWith(pageContext.request.requestURI, '/contract')}">
+    <link type="text/css" rel="stylesheet" href="<c:url value='/css/view/contract.css'/>">
 </c:if>
 
-<%-- /calendar 시작하는 URL에서만 calendar.css 추가 --%>
-<c:if test="${fn:startsWith(pageContext.request.requestURI, '/calendar')}">
-    <link type="text/css" rel="stylesheet" href="<c:url value='/css/view/calendar.css'/>">
-</c:if>
 
 <%-- /mypage 시작하는 URL에서만 mypage.css 추가 --%>
 <c:if test="${fn:startsWith(pageContext.request.requestURI, '/mypage')}">
     <link type="text/css" rel="stylesheet" href="<c:url value='/css/view/mypage.css'/>">
-</c:if>
-
-<%-- /statistics 시작하는 URL에서만 statistics.css 추가 --%>
-<c:if test="${fn:startsWith(pageContext.request.requestURI, '/statistics')}">
-    <link type="text/css" rel="stylesheet" href="<c:url value='/css/view/statistics.css'/>">
 </c:if>

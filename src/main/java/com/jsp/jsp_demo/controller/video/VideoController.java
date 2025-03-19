@@ -170,8 +170,8 @@ public class VideoController {
             Model model
     ) throws IOException {
         if (!"0".equals(request.getSession().getAttribute("userGrade"))) {
-            // 권한이 없으면 /video/videoMap으로 리다이렉트
-            response.sendRedirect("/video/videoMap");
+            // 권한이 없으면 /contract/contractMap 리다이렉트
+            response.sendRedirect("/contract/contractMap");
             return null; // 리다이렉트 후에 더 이상 처리할 필요 없음
         }
 

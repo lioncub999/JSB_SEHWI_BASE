@@ -27,7 +27,7 @@ let MapFunc = {
     },
 
     // 지도 핀 업데이트 (내용 수정시 핀 동적으로 업데이트용)
-    updatePins: function(reqList) {
+    updateVideoReqPins: function(reqList) {
         // 기존 핀 제거
         this.markers.forEach(marker => marker.setMap(null));
         this.markers = [];
@@ -110,17 +110,91 @@ let MapFunc = {
         });
     },
 
+    // 계약 지도 핀 업데이트
+    updateContractPins: function(contractList) {
+        console.log(contractList);
+        // 기존 핀 제거
+        this.markers.forEach(marker => marker.setMap(null));
+        this.markers = [];
+
+        // 새로운 핀 추가
+        contractList.forEach(contract => {
+            var marker = new naver.maps.Marker({
+                position: new naver.maps.LatLng(contract.latitude, contract.longitude),
+                map: this.map,
+                title: contract.storeNm,
+                animation: naver.maps.Animation.DROP,
+                icon: {
+                    url: '/images/common/red_marker.png',
+                    size: new naver.maps.Size(15, 23),
+                    origin: new naver.maps.Point(0, 0),
+                    anchor: new naver.maps.Point(5, 23)
+                }
+            });
+
+            this.markers.push(marker);
+
+            // 핀 클릭 시 나오는 설명
+            var infoWindow = new naver.maps.InfoWindow({
+                content: 
+                '<div style="padding:10px;">' +
+                    '<h6>상호명 : [' + contract.storeNm + ']</h6>' +
+                    '<table class="table table-bordered">' +
+                        '<tbody>'+
+                            '<tr style="border-top-left-radius:10px">'+
+                                '<th class="text-center" style="border-top-left-radius:10px">계약일</th>'+
+                                '<td class="text-center">'+contract.stringContractDt+'</td>'+
+                            '</tr>'+
+                            '<tr>'+
+                                '<th class="text-center">휴대폰번호</th>'+
+                                '<td class="text-center">'+contract.phone.substring(0,3)+'-'+contract.phone.substring(3,7)+'-'+contract.phone.substring(7)+'</td>'+
+                            '</tr>'+
+                            '<tr>'+
+                                '<th class="text-center">주소</th>'+
+                                '<td class="text-center">'+contract.address+'</td>'+
+                            '</tr>'+
+                            '<tr>'+
+                                '<th class="text-center">특이사항</th>'+
+                                '<td class="text-center"><pre><span>'+contract.note.replace(/\\n/g, '\n')+'<span></pre></td>'+
+                            '</tr>'+
+                        '</tbody>'+
+                    '</table>'+
+                    '<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop" ' +
+                        "매장상세" +
+                    '</button>' +
+                '</div>'
+            });
+
+            naver.maps.Event.addListener(marker, 'click', function () {
+                infoWindow.open(MapFunc.map, marker);
+                MapFunc.openInfoWindow = infoWindow; // 새 InfoWindow 저장
+            });
+        });
+    },
+
     // 지도 및 핀 그리기
-    drawMap: function(reqList) {
+    drawReqMap: function(reqList) {
         if (!this.map) {
             this.initMap(); // 처음 한 번만 지도를 생성
         }
 
-        // reqList가 유효한 경우에만 updatePins 실행
+        // reqList가 유효한 경우에만 updateVideoReqPins 실행
         if (reqList && Array.isArray(reqList) && reqList.length > 0) {
-            this.updatePins(reqList);
+            this.updateVideoReqPins(reqList);
         } else {
             console.warn("reqList가 비어 있거나 유효하지 않습니다.");
+        }
+    },
+    drawContMap: function(list) {
+        if (!this.map) {
+            this.initMap(); // 처음 한 번만 지도를 생성
+        }
+
+        // reqList가 유효한 경우에만 updateVideoReqPins 실행
+        if (list && Array.isArray(list) && list.length > 0) {
+            this.updateContractPins(list);
+        } else {
+            console.warn("list가 비어 있거나 유효하지 않습니다.");
         }
     },
 

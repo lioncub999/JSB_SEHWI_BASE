@@ -56,6 +56,15 @@
     <%-- 메뉴 리스트 --%>
     <ul>
         <%-- 홈 --%>
+        <li class="nav-item <c:if test="${fn:startsWith(url, '/contract/')}">active</c:if>">
+            <b></b>
+            <b></b>
+            <a href="/contract/contractMap">
+                <span class="material-icons">travel_explore</span>
+                <span class="nav-text">&nbsp;계약매장</span>
+            </a>
+        </li>
+        <%-- 홈 --%>
         <li class="nav-item <c:if test="${fn:startsWith(url, '/video/')}">active</c:if>">
             <b></b>
             <b></b>

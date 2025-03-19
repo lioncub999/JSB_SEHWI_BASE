@@ -18,21 +18,40 @@ public class StatisticsService {
     @Autowired
     StatisticsMapper statisticsMapper;
 
-    @Transactional(
-            propagation = Propagation.REQUIRED,
-            rollbackFor = IOException.class)
+    /* TODO:
+     *  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     *  ┃    ● 선택한 월 업로드 완료 촬영 보기
+     *  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━*/
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public List<Statistics> getSearchedDurationCompleteReq(SearchModel searchModel) {
         return statisticsMapper.getSearchedDurationCompleteReq(searchModel);
     }
 
+    /* TODO:
+     *  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     *  ┃    ● 지출 내역 입력
+     *  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━*/
+    @Transactional(
+            propagation = Propagation.REQUIRED,
+            rollbackFor = IOException.class)
     public void insertSpend(Spend spend) {
         statisticsMapper.insertSpend(spend);
     }
 
+    /* TODO:
+     *  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     *  ┃    ● 지출 내역 가져오기
+     *  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━*/
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public List<Spend> getSpendHist(Spend spend) {
         return statisticsMapper.getSpendHist(spend);
     }
 
+    /* TODO:
+     *  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     *  ┃    ● 촬영 담당자별 총 지출금액 가져오기
+     *  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━*/
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public List<Spend> getGroupedSpendAmt(Spend spend) {
         return statisticsMapper.getGroupedSpendAmt(spend);
     }

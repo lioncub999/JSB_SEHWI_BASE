@@ -185,10 +185,10 @@
         width: 120px !important;
         height: 42px;
     }
-    
-    select {
-        font-size : 12px !important;
-    }
+}
+
+select {
+    font-size : 12px !important;
 }
 
 textarea {

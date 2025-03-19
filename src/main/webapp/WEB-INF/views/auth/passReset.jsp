@@ -1,7 +1,9 @@
 <%@ include file="/WEB-INF/views/cmm/include/taglibs.jsp" %>
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
 
+<c:set var="mainUrl" value="/contract/contractMap"/>
 <c:set var="passResetUrl" value="/auth/resetPass"/>
+
 <html>
 <head>
     <link type="text/css" rel="stylesheet" href="<c:url value='/css/view/login.css'/>">
@@ -16,7 +18,7 @@
 
 <c:if test="${passReset == 'N'}">
     <script>
-        window.location.href = "/video/videoMap"
+        window.location.href = "${mainUrl}"
     </script>
 </c:if>
 <script>
@@ -34,7 +36,7 @@
                     Toast('top', 1000, 'success', '비밀번호 변경이 완료되었습니다.');
 
                     setTimeout(function() {
-                        window.location.href = "/video/videoMap"
+                        window.location.href = "${mainUrl}"
                     }, 1000)
                 } else {
                     alert('에러 발생')

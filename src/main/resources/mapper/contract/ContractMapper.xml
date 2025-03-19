@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jsp.jsp_demo.mapper.contract.ContractMapper">
+    <select id="getAllContractList"
+            resultType="com.jsp.jsp_demo.model.contract.ContractModel">
+        SELECT
+            CONT_ID,
+            CRE_ID,
+            STORE_NM,
+            ADDRESS,
+            LONGITUDE,
+            LATITUDE,
+            NOTE,
+            CONT_STATUS,
+            CONT_DT,
+            CONT_END_DT,
+            PHONE,
+            CASE
+                WHEN CONT_STATUS = 'TERMINATION' THEN 'TERMINATION'
+                WHEN CONT_END_DT &gt; NOW() THEN 'EXPIRATION'
+                ELSE 'CONTRACT'
+            END AS STATUS
+        FROM TBV_CONTRACT_M
+    </select>
+</mapper>

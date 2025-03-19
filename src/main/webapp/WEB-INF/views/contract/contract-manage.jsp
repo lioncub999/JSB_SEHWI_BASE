@@ -1,15 +1,11 @@
 <%--
  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
  ┃
- ┃     ● 촬영 신청 페이지
+ ┃     ● 계약매장관리 페이지
  ┃
  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 --%>
-<%@ include file="/WEB-INF/views/cmm/include/taglibs.jsp" %>
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
-
-<c:set var="videoReqListUrl" value="/video/videoReqList"/>
-<c:set var="videoReqCreateUrl" value="/video/videoReqCreate"/>
 
 <html>
     <head>
@@ -17,8 +13,6 @@
             content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"/>
     </head>
     <body>
-        <script src="<c:url value='/js/util/textUtils.js' />"></script>
-
         <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${naverMapsClientId}"></script>
         <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${naverMapsClientId}&submodules=geocoder"></script>
         <!-- Datepicker 스타일시트 -->

@@ -46,7 +46,7 @@
             <%-- Document Ready! --%>
             $(document).ready(function() {
                 // 초기 지도 생성 및 핀 그리기
-                MapFunc.drawMap(${reqList}); 
+                MapFunc.drawReqMap(${reqList}); 
 
                 // 엔터키 감지 및 버튼 클릭 트리거
                 const searchInput = $('#addressSearch');
@@ -325,7 +325,7 @@
                     .done((updatedReqList) => {
 
                         // 지도를 다시 그림
-                        MapFunc.drawMap(updatedReqList);
+                        MapFunc.drawReqMap(updatedReqList);
                     })
                     .fail((xhr, textStatus, thrownError) => {
                         Toast('top', 1000, 'error', '데이터를 가져오는 중 문제가 발생했습니다.');

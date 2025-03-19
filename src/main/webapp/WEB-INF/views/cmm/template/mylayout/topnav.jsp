@@ -51,6 +51,33 @@
                 </div>
             </div>
         </c:if>
-        <c:if test="${fn:startsWith(url, '/videoReq')}">video</c:if>
+        <c:if test="${fn:startsWith(url, '/contract/')}">
+            <div class="container-fluid top-menu-container">
+                <div class="row">
+                    <div class="col <c:if test="${fn:startsWith(url, '/contract/contractMap')}">active</c:if>" onclick="PageMoveFunc.movePage('/contract/contractMap')">
+                        <span class="material-icons">map</span>
+                        <span class="top-nav-text">&nbsp;계약지도</span>
+                    </div>
+                    <div class="col <c:if test="${fn:startsWith(url, '/contract/contractList')}">active</c:if>" onclick="PageMoveFunc.movePage('/contract/contractList')">
+                        <span class="material-icons">list</span>
+                        <span class="top-nav-text">&nbsp;계약리스트</span>
+                    </div>
+                    <div class="col <c:if test="${fn:startsWith(url, '/contract/contractManage')}">active</c:if>" onclick="PageMoveFunc.movePage('/contract/contractManage')">
+                        <c:if test='${userGrade == 0}'>
+                            <span class="material-icons">manage_accounts</span>
+                            <span class="top-nav-text">&nbsp;계약매장관리</span>
+                        </c:if>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                    </div>
+                    <div class="col">
+                    </div>
+                    <div class="col">
+                    </div>
+                </div>
+            </div>
+        </c:if>
     </body>
 </html>

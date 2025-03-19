@@ -10,7 +10,7 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %> <%--한국어 깨짐 방지--%>
 
 
-<c:set var="mainUrl" value="/video/videoMap"/>
+<c:set var="mainUrl" value="/contract/contractMap"/>
 <c:set var="loginUrl" value="/auth/login"/>
 <c:set var="signUpUrl" value="/auth/signUp"/>
 

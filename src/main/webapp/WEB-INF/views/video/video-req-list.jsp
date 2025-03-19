@@ -387,13 +387,13 @@
     <nav class="paging" aria-label="Page navigation example">
         <ul class="pagination">
             <li class="page-item">
-                <a class="page-link" href="/videoReq?curPage=1&searchStoreNm=${param.searchStoreNm}&searchPhone=${param.searchPhone}" aria-label="Previous">
+                <a class="page-link" href="${videoReqListUrl}?curPage=1&searchStoreNm=${param.searchStoreNm}&searchPhone=${param.searchPhone}" aria-label="Previous">
                     <span aria-hidden="true">&lt;&lt;</span>
                 </a>
             </li>
 
             <li class="page-item">
-                <a class="page-link" href="/videoReq?curPage=${curPage - 1 > 0 ? curPage- 1 : 1}&searchStoreNm=${param.searchStoreNm}&searchPhone=${param.searchPhone}" aria-label="">
+                <a class="page-link" href="${videoReqListUrl}?curPage=${curPage - 1 > 0 ? curPage- 1 : 1}&searchStoreNm=${param.searchStoreNm}&searchPhone=${param.searchPhone}" aria-label="">
                     <span aria-hidden="true">&lt;</span>
                 </a>
             </li>
@@ -401,19 +401,19 @@
             <!-- 현재 페이지 그룹에 맞는 페이지 버튼만 출력 -->
             <c:forEach begin="${startPage}" end="${endPage}" var="i">
                 <li class="page-item page-num ${i == curPage ? 'active' : ''}">
-                    <a class="page-link" href="/videoReq?curPage=${i}&searchStoreNm=${param.searchStoreNm}&searchPhone=${param.searchPhone}" aria-label="">
+                    <a class="page-link" href="${videoReqListUrl}?curPage=${i}&searchStoreNm=${param.searchStoreNm}&searchPhone=${param.searchPhone}" aria-label="">
                         <span aria-hidden="true">${i}</span>
                     </a>
                 </li>
             </c:forEach>
             
             <li class="page-item">
-                <a class="page-link" href="/videoReq?curPage=${curPage + 1 <= maxPage ? curPage + 1 : maxPage}&searchStoreNm=${param.searchStoreNm}&searchPhone=${param.searchPhone}" aria-label="">
+                <a class="page-link" href="${videoReqListUrl}?curPage=${curPage + 1 <= maxPage ? curPage + 1 : maxPage}&searchStoreNm=${param.searchStoreNm}&searchPhone=${param.searchPhone}" aria-label="">
                     <span aria-hidden="true">&gt;</span>
                 </a>
             </li>
             <li class="page-item">
-                <a class="page-link" href="/videoReq?curPage=${maxPage}&searchStoreNm=${param.searchStoreNm}&searchPhone=${param.searchPhone}" aria-label="Next">
+                <a class="page-link" href="${videoReqListUrl}?curPage=${maxPage}&searchStoreNm=${param.searchStoreNm}&searchPhone=${param.searchPhone}" aria-label="Next">
                     <span aria-hidden="true">&gt;&gt;</span>
                 </a>
             </li>

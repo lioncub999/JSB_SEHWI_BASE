@@ -12,21 +12,13 @@
     <!--    ┃  ◉ SiteMesh 포함 URL -->
     <!--    ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛-->
     <decorator name="default" page="template/default/template.jsp">
-        <!-- 메인 -->
+        <!-- 계약 -->
+        <pattern>/contract</pattern>
+        <pattern>/contract/*</pattern>
+        
+        <!-- 촬영 -->
         <pattern>/video</pattern>
         <pattern>/video/*</pattern>
-
-        <!-- 촬영 신청 -->
-        <pattern>/videoReq</pattern>
-        <pattern>/videoReq/*</pattern>
-
-        <!-- 캘린더 -->
-        <pattern>/calendar</pattern>
-        <pattern>/calendar/*</pattern>
-
-        <!-- 촬영 통계 & 정산 -->
-        <pattern>/statistics</pattern>
-        <pattern>/statistics/*</pattern>
 
         <!-- 마이페이지 -->
         <pattern>/mypage</pattern>
