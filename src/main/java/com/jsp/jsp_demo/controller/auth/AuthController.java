@@ -6,6 +6,7 @@ import com.jsp.jsp_demo.service.auth.AuthService;
 import com.jsp.jsp_demo.util.log.TraceWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -87,6 +88,11 @@ public class AuthController {
                     session.setAttribute("userGrade", loginUserInfo.getUserGrade());
                     session.setAttribute("passReset", loginUserInfo.getPassReset());
                     session.setMaxInactiveInterval(1800);
+
+                    // Spring Security 인증 정보 설정
+                    List<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority(loginUserInfo.getUserGrade()));
+                    Authentication authentication = new UsernamePasswordAuthenticationToken(loginUserInfo.getUserId(), null, authorities);
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
 
                     result = "success";
                 } else {
@@ -187,6 +193,7 @@ public class AuthController {
         authService.logAuthActive(request, userInput);
 
         request.getSession().invalidate();
+        SecurityContextHolder.clearContext(); // Spring Security 컨텍스트 초기화
 
         return true;
     }

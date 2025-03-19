@@ -13,7 +13,7 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 
 
-<c:set var="updateVideoReqUrl" value="/videoReq/updateVideoReq"/>
+<c:set var="videoReqUpdateUrl" value="/video/videoReqUpdate"/>
 <c:set var="changeJobGradeUrl" value="/mypage/changeJobGrade"/>
 <c:set var="passResetUrl" value="/auth/resetPass"/>
 <c:set var="logoutUrl" value="/auth/logout"/>
@@ -356,7 +356,7 @@
                     }
 
                     $.ajax({
-                        url: `${updateVideoReqUrl}`,
+                        url: "${videoReqUpdateUrl}",
                         type: 'POST',
                         cache: false,
                         data: formData,
