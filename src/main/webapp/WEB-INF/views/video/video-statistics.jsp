@@ -11,6 +11,7 @@
 <c:set var="videoStatisticsUrl" value="/video/videoStatistics"/>
 <c:set var="insertSpendUrl" value="/video/statistics/insertSpend"/>
 <c:set var="getSpendHistUrl" value="/video/statistics/getSpendHist"/>
+<c:set var="spendCheckUrl" value="/video/statistics/spendCheck"/>
 <c:set var="getGroupedSpendAmtUrl" value="/video/statistics/getGroupedSpendAmt"/>
 
 
@@ -182,8 +183,12 @@
 
                                 const note = item.note || '';
 
-                                const row = '<tr>' +
-                                        '<td>' + item.stringSpendDt + '</td>' +
+                                const managerClass = item.managerCheck === "Y" ? "check" : "no-check";
+                                const checkFunc = item.managerCheck === "Y" ? "" : "AjaxFunc.spendCheck("+item.id+")"
+
+                                const row = 
+                                    '<tr class="'+managerClass+'" onclick='+checkFunc+'>' +
+                                        '<td>'+item.stringSpendDt+'</td>' +
                                         '<td>' + item.creNm + ' ' + item.jobGradeNm + '</td>' +
                                         '<td>' + item.whatFor + '</td>' +
                                         '<td>' + formattedAmt + '</td>' +
@@ -196,6 +201,39 @@
                     }).fail((xhr, textStatus, thrownError) => { 
                         Toast('top', 1000, 'error', '데이터를 가져오는 중 문제가 발생했습니다.');
                         LoadingOverlay.hide();
+                    });
+                },
+
+                spendCheck : function(id) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: '관리자 외 절때 확인 금지(기록남음)',
+                        text : '영수증을 확인 했나요?',
+                        allowOutsideClick: false, // 팝업 외부 클릭 비활성화
+                        confirmButtonText : "넵!",
+                        showCancelButton : true,
+                        cancelButtonColor: "#d33",
+                        cancelButtonText: "취소",
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $.ajax({
+                                url: "${spendCheckUrl}",
+                                type: "post",
+                                cache: false,
+                                data: {'id' : id },
+                            }).done(function (response) {
+                                if (response) {
+                                    AjaxFunc.getSpendHist();
+                                    AjaxFunc.getGroupedSpendAmt();
+                                    Toast('top', 1000, 'success', '처리 완료.');
+                                } else {
+                                    Toast('top', 1000, 'error', '오류가 발생했습니다..');
+                                }
+                            }).fail((xhr, textStatus, thrownError) => { 
+                                Toast('top', 1000, 'error', '데이터를 가져오는 중 문제가 발생했습니다.');
+                                LoadingOverlay.hide();
+                            });
+                        }
                     });
                 },
 

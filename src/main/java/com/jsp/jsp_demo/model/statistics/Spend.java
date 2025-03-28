@@ -40,6 +40,8 @@ public class Spend implements Serializable {
 
     private String managerCheck;
 
+    private String checkId;
+
     private String selectedYear;
 
     private String selectedMonth;

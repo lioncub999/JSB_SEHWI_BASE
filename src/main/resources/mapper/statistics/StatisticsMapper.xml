@@ -77,6 +77,7 @@
                 B.JOB_GRADE
             FROM (
                 SELECT
+                    ID,
                     CRE_ID,
                     SPEND_DT,
                     DATE_FORMAT(SPEND_DT, '%Y-%m-%d') AS STRING_SPEND_DT,
@@ -116,6 +117,7 @@
             WHERE
                 SPEND_DT &gt;= CONCAT(#{selectedYear}, '-', LPAD(#{selectedMonth}, 2, '0'), '-01')
                 AND SPEND_DT &lt; DATE_ADD(DATE_FORMAT(CONCAT(#{selectedYear}, '-', LPAD(#{selectedMonth}, 2, '0'), '-01'), '%Y-%m-01'), INTERVAL 1 MONTH)
+                AND MANAGER_CHECK = "Y"
             GROUP BY
                 CRE_ID) A
         LEFT JOIN (
@@ -128,5 +130,12 @@
             ON tum.JOB_GRADE = tgc.CODE
         ) B ON A.CRE_ID = B.USER_ID
     </select>
+
+    <update id="spendCheck"
+            parameterType="com.jsp.jsp_demo.model.statistics.Spend">
+        UPDATE TBS_SPEND_H
+        SET MANAGER_CHECK = 'Y', CHECK_ID = #{checkId}
+        WHERE ID = #{id}
+    </update>
 
 </mapper>

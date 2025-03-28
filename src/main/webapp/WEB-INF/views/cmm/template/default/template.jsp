@@ -16,8 +16,7 @@
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
 
     <title>모두솔루션 통합 관리 플랫폼</title>
-    
-  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
 
   </head>
   <body class="bdy">

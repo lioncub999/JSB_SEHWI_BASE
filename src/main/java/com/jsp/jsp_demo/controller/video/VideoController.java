@@ -15,13 +15,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
@@ -426,6 +424,39 @@ public class VideoController {
         } catch (Exception e) {
             traceWriter.add("Error : " + e);
             return null;
+        } finally {
+            traceWriter.log(0);
+        }
+    }
+
+    /* TODO:
+     *  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     *  ┃    <POST>
+     *  ┃    ● 지출 내역 관리자 확인
+     *  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━*/
+    @ResponseBody
+    @PostMapping("/video/statistics/spendCheck")
+    public boolean spendCheck(
+            HttpServletRequest request,
+            Spend spend
+    ) {
+        TraceWriter traceWriter = new TraceWriter("", request.getMethod(), request.getServletPath());
+        traceWriter.add("[userInput.getId() : " + spend.getId() + "]");
+        traceWriter.add("");
+
+        traceWriter.add("");
+
+        HttpSession session = request.getSession(false);
+        String checkId = (String) session.getAttribute("userId");
+        traceWriter.add("[userInput.getCheckId() : " + spend.getCheckId() + "]");
+
+        spend.setCheckId(checkId);
+        try {
+            statisticsService.spendCheck(spend);
+            return true;
+        } catch (Exception e) {
+            traceWriter.add("Error : " + e);
+            return false;
         } finally {
             traceWriter.log(0);
         }

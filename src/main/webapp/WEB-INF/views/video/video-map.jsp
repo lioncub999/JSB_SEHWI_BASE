@@ -292,7 +292,7 @@
                     }
 
                     $.ajax({
-                        url: `${updateVideoReqUrl}`,
+                        url: `${videoReqUpdateUrl}`,
                         type: 'POST',
                         cache: false,
                         data: formData,

@@ -55,4 +55,15 @@ public class StatisticsService {
     public List<Spend> getGroupedSpendAmt(Spend spend) {
         return statisticsMapper.getGroupedSpendAmt(spend);
     }
+
+    /* TODO:
+     *  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     *  ┃    ● 지출 내역 관리자 확인
+     *  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━*/
+    @Transactional(
+            propagation = Propagation.REQUIRED,
+            rollbackFor = IOException.class)
+    public void spendCheck(Spend spend) {
+        statisticsMapper.spendCheck(spend);
+    }
 }
